@@ -2,10 +2,10 @@
 
 ### Requirements
 
-#### As a user i want
+#### As a user I want
 
-Land in the home page without log in
-* Home page will show products (For now Newly Updated)
+* Land in the home page without log in
+* Home page will show newly updated products
 * Home page will show categories. NO SUB CATEGORY
 * User can visit product details without log in
 * Add to cart will trigger the signin/signup process.
@@ -17,7 +17,7 @@ Land in the home page without log in
 * User can visit all his/hers order history
 * User can filter products by category
 
-#### As an admin i want
+#### As an admin I want
 * To see all recent orders
 * To change the status of those orders.
 * To add, update,delete products
