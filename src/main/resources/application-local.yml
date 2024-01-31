@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:ecdb
+    username: ecdev
+    password: password123
+    driverClassName: org.h2.Driver
+  h2:
+      console.enabled: true
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+  security:
+    user:
+      password: TestEC
+
+# App Properties
+app:
+  jwtSecret: 2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566D
+  jwtExpirationMs: 86400000
