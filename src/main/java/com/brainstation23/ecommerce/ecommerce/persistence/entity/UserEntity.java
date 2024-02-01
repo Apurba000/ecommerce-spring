@@ -1,10 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.USER_TABLE;
@@ -14,7 +11,7 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.USE
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = USER_TABLE,
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),

@@ -2,10 +2,7 @@ package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.CART_ITEM_TABLE;
@@ -15,7 +12,7 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.CAR
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = CART_ITEM_TABLE)
 public class CartItemEntity {
     @Id
