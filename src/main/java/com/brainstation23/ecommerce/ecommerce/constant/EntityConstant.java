@@ -16,4 +16,5 @@ public class EntityConstant {
     public static final String USER_ADDRESS_TABLE = "user_addresses";
     public static final String PRODUCT_CATEGORIES_TABLE = "product_categories";
     public static final String USER_CART_TABLE = "user_cart";
+    public static final String CART_TABLE = "cart";
 }

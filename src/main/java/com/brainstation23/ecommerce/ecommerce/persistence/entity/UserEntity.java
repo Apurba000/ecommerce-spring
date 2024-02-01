@@ -19,7 +19,7 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.*;
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = USER_TABLE,
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),

@@ -14,7 +14,7 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.ADD
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = ADDRESS_TABLE)
 public class AddressEntity {
     @Id
