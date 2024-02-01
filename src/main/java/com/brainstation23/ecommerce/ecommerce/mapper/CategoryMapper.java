@@ -1,7 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.mapper;
 
 import com.brainstation23.ecommerce.ecommerce.model.domain.Category;
-import com.brainstation23.ecommerce.ecommerce.model.dto.CategoryResponse;
+import com.brainstation23.ecommerce.ecommerce.model.dto.category.CategoryResponse;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CategoryEntity;
 import org.mapstruct.Mapper;
 

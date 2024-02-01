@@ -1,7 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.mapper;
 
 import com.brainstation23.ecommerce.ecommerce.model.domain.User;
-import com.brainstation23.ecommerce.ecommerce.model.dto.UserResponse;
+import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserResponse;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import org.mapstruct.Mapper;
 

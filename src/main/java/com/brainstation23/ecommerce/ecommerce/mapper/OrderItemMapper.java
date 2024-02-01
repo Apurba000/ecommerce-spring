@@ -1,7 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.mapper;
 
 import com.brainstation23.ecommerce.ecommerce.model.domain.OrderItem;
-import com.brainstation23.ecommerce.ecommerce.model.dto.OrderResponse;
+import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderResponse;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderItemEntity;
 import org.mapstruct.Mapper;
 
