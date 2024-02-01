@@ -6,3 +6,7 @@ spring:
     name: erp
   profiles:
     active: 'local'
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
