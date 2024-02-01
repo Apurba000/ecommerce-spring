@@ -29,5 +29,6 @@ public class AddressEntity {
     @NonNull
     @NotBlank
     @Size(max = 20)
-    private String zip_code;
+    @Column(name = "zip_code")
+    private String zipCode;
 }

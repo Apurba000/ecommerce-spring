@@ -72,4 +72,10 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List<AddressEntity> address = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = USER_CART_TABLE,
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_item_id"))
+    private List<CartItemEntity> cartItems = new ArrayList<>();
 }
