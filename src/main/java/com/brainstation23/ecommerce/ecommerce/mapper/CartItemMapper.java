@@ -1,7 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.mapper;
 
 import com.brainstation23.ecommerce.ecommerce.model.domain.CartItem;
-import com.brainstation23.ecommerce.ecommerce.model.dto.CartItemResponse;
+import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemResponse;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CartItemEntity;
 import org.mapstruct.Mapper;
 
