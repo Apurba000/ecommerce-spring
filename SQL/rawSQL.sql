@@ -66,7 +66,7 @@ CREATE TABLE cart (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE TABLE order_table (
+CREATE TABLE orders (
     id INT PRIMARY KEY NOT NULL,
     user_id INT,
     total_amount DECIMAL(10, 2),
@@ -77,12 +77,12 @@ CREATE TABLE order_table (
     FOREIGN KEY (delivery_address_id) REFERENCES addresses(id)
 );
 
-CREATE TABLE order_item (
+CREATE TABLE order_items (
     order_item_id INT PRIMARY KEY,
     order_id INT,
     product_id INT,
     quantity INT,
     unit_price DECIMAL(10, 2),
-    FOREIGN KEY (order_id) REFERENCES order_table(id),
+    FOREIGN KEY (order_id) REFERENCES orders(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
