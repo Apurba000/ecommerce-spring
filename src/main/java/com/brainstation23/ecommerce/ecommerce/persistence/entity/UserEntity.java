@@ -1,12 +1,16 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.USER_ROLES_TABLE;
 import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.USER_TABLE;
 
 @Entity
@@ -24,4 +28,41 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NonNull
+    @NotBlank
+    @Size(max = 50)
+    private String firstname;
+
+    @NonNull
+    @NotBlank
+    @Size(max = 50)
+    private String lastname;
+
+    @NonNull
+    @NotBlank
+    @Size(max = 50)
+    private String username;
+
+    @NonNull
+    @NotBlank
+    @Size(max = 255)
+    @Email
+    private String email;
+
+    @NonNull
+    @NotBlank
+    @Size(max = 20)
+    private String phone;
+
+    @NonNull
+    @NotBlank
+    @Size(max = 255)
+    private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = USER_ROLES_TABLE,
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleEntity> roles = new HashSet<>();
 }
