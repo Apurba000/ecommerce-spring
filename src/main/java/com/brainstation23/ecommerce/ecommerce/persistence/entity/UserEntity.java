@@ -7,11 +7,12 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.USER_ROLES_TABLE;
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.USER_TABLE;
+import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.*;
 
 @Entity
 @Getter
@@ -65,4 +66,10 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = USER_ADDRESS_TABLE,
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id"))
+    private List<AddressEntity> address = new ArrayList<>();
 }

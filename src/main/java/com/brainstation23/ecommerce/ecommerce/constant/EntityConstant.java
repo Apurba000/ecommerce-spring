@@ -13,4 +13,5 @@ public class EntityConstant {
     public static final String ORDER_TABLE = "orders";
     public static final String ORDER_ITEM_TABLE = "order_items";
     public static final String USER_ROLES_TABLE = "user_roles";
+    public static final String USER_ADDRESS_TABLE = "user_addresses";
 }
