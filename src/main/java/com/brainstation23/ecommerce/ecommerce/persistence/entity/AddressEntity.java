@@ -6,8 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.JdbcTypeCode;
 
 import java.math.BigInteger;
+import java.sql.Types;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,9 +20,9 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @Table(name = "addresses")
 public class AddressEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Id @GeneratedValue
+    @JdbcTypeCode(Types.VARCHAR)
+    private UUID id;
 
     @NotBlank
     @Size(max = 255)

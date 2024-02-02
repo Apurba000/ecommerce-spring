@@ -6,11 +6,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.Types;
+import java.util.*;
 
 
 @Entity
@@ -25,9 +26,10 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
+    @Id @GeneratedValue
+    @JdbcTypeCode(Types.VARCHAR)
+    private UUID id;
 
     @NotBlank
     @Size(max = 50)
