@@ -6,15 +6,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.ROLE_TABLE;
-
 @Entity
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = ROLE_TABLE)
+@Table(name = "roles")
 public class RoleEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

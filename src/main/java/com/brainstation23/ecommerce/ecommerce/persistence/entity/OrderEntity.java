@@ -8,15 +8,13 @@ import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.ORDER_TABLE;
-
 @Entity
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = ORDER_TABLE)
+@Table(name = "orders")
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +32,6 @@ public class OrderEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    @NonNull
     private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)

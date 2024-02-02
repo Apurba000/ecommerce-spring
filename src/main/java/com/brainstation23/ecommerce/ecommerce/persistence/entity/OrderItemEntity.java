@@ -7,14 +7,12 @@ import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.ORDER_ITEM_TABLE;
-
 @Entity
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@Table(name = ORDER_ITEM_TABLE)
+@Table(name = "order_items")
 public class OrderItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

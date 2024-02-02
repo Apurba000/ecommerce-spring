@@ -9,15 +9,13 @@ import lombok.experimental.Accessors;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.*;
 
 @Entity
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = PRODUCT_TABLE)
+@Table(name = "products")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +26,6 @@ public class ProductEntity {
     @Size(max = 50)
     private String name;
 
-    @NonNull
     @NotBlank
     @Column(name = "unit_price")
     private double unitPrice;
@@ -45,7 +42,7 @@ public class ProductEntity {
     private String imageUrl;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = PRODUCT_CATEGORIES_TABLE,
+    @JoinTable(  name = "product_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<CategoryEntity> categories = new ArrayList<>();
