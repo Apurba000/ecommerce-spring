@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: erp
+    name: ecommerce
   profiles:
     active: 'local'
 

@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.math.BigInteger;
+
 @Entity
 @Getter
 @Setter
@@ -17,7 +19,7 @@ import lombok.experimental.Accessors;
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank
     @Size(max = 255)

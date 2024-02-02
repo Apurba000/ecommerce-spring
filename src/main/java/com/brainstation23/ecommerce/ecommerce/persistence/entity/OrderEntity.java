@@ -5,8 +5,11 @@ import com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -18,20 +21,21 @@ import java.sql.Date;
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Column(name = "total_amount")
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
+    @CreatedDate
     @Column(name = "order_date")
-    private Date orderDate;
+    private Timestamp orderDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 50)
+    @Column(columnDefinition = "VARCHAR(50)")
     private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -17,38 +17,38 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl{
     private static final String USER_NOT_FOUND = "User Not Found";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    @Override
-    public Page<User> getAll(Pageable pageable) {
-        var entities = userRepository.findAll(pageable);
-        return entities.map(userMapper::entityToDomain);
-    }
-
-    @Override
-    public User getOne(Long id) {
-        var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
-        return userMapper.entityToDomain(entity);
-    }
-
-    @Override
-    public Long createOne(UserCreateRequest createRequest) {
-        var entity = new UserEntity();
-        var createdEntity = userRepository.save(entity);
-        return createdEntity.getId();
-    }
-
-    @Override
-    public void updateOne(Long id, UserUpdateRequest updateRequest) {
-        var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
-        userRepository.save(entity);
-    }
-
-    @Override
-    public void deleteOne(Long id) {
-        userRepository.deleteById(id);
-    }
+//
+//    @Override
+//    public Page<User> getAll(Pageable pageable) {
+//        var entities = userRepository.findAll(pageable);
+//        return entities.map(userMapper::entityToDomain);
+//    }
+//
+//    @Override
+//    public User getOne(Long id) {
+//        var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+//        return userMapper.entityToDomain(entity);
+//    }
+//
+//    @Override
+//    public Long createOne(UserCreateRequest createRequest) {
+//        var entity = new UserEntity();
+//        var createdEntity = userRepository.save(entity);
+//        return createdEntity.getId();
+//    }
+//
+//    @Override
+//    public void updateOne(Long id, UserUpdateRequest updateRequest) {
+//        var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+//        userRepository.save(entity);
+//    }
+//
+//    @Override
+//    public void deleteOne(Long id) {
+//        userRepository.deleteById(id);
+//    }
 }

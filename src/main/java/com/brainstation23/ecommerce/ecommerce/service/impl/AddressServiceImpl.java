@@ -17,41 +17,41 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AddressServiceImpl implements AddressService {
+public class AddressServiceImpl {
     public static final String ADDRESS_NOT_FOUND = "Address Not Found";
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
 
-
-    @Override
-    public Page<Address> getAll(Pageable pageable) {
-        var entities = addressRepository.findAll(pageable);
-        return entities.map(addressMapper::entityToDomain);
-    }
-
-    @Override
-    public Address getOne(Long id) {
-        var entity =  addressRepository.findById(id).orElseThrow(()->new NotFoundException(ADDRESS_NOT_FOUND));
-        return addressMapper.entityToDomain(entity);
-    }
-
-    @Override
-    public Long createOne(AddressCreateRequest createRequest) {
-        var entity = new AddressEntity();
-        //OtherCode
-        var createdEntity = addressRepository.save(entity);
-        return createdEntity.getId();
-    }
-
-    @Override
-    public void updateOne(Long id, AddressUpdateRequest updateRequest) {
-        var entity = addressRepository.findById(id).orElseThrow(()->new NotFoundException(ADDRESS_NOT_FOUND));
-        //Do Some Code
-        addressRepository.save(entity);
-    }
-
-    @Override
-    public void deleteOne(Long id) {
-        addressRepository.deleteById(id);
-    }
+//
+//    @Override
+//    public Page<Address> getAll(Pageable pageable) {
+//        var entities = addressRepository.findAll(pageable);
+//        return entities.map(addressMapper::entityToDomain);
+//    }
+//
+//    @Override
+//    public Address getOne(Long id) {
+//        var entity =  addressRepository.findById(id).orElseThrow(()->new NotFoundException(ADDRESS_NOT_FOUND));
+//        return addressMapper.entityToDomain(entity);
+//    }
+//
+//    @Override
+//    public Long createOne(AddressCreateRequest createRequest) {
+//        var entity = new AddressEntity();
+//        //OtherCode
+//        var createdEntity = addressRepository.save(entity);
+//        return createdEntity.getId();
+//    }
+//
+//    @Override
+//    public void updateOne(Long id, AddressUpdateRequest updateRequest) {
+//        var entity = addressRepository.findById(id).orElseThrow(()->new NotFoundException(ADDRESS_NOT_FOUND));
+//        //Do Some Code
+//        addressRepository.save(entity);
+//    }
+//
+//    @Override
+//    public void deleteOne(Long id) {
+//        addressRepository.deleteById(id);
+//    }
 }

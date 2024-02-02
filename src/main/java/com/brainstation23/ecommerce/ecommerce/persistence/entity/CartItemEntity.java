@@ -7,7 +7,8 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+
 
 @Entity
 @Getter
@@ -19,7 +20,7 @@ import java.sql.Date;
 public class CartItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -29,6 +30,6 @@ public class CartItemEntity {
     private int quantity;
 
     @CreatedDate
-    private Date date;
+    private Timestamp date;
 
 }

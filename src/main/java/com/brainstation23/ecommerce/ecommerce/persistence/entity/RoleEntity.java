@@ -16,11 +16,10 @@ import lombok.experimental.Accessors;
 public class RoleEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+        private int id;
 
         @Enumerated(EnumType.STRING)
-        @Column(length = 50)
-        @NonNull
+        @Column(columnDefinition = "VARCHAR(50)")
         private ERole name;
 
 }
