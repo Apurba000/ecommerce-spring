@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ecommerce Spring 2024</title>
+</head>
+<body>
+<h1>Hello Admin</h1>
+
+
+
+<table style="width:80%" border="1"
+       class = "table table-striped table-responsive-md">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Unit Price</th>
+            <th>Image Url</th>
+            <th>Categories</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="product:${product_list}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.unitPrice}"></td>
+            <td th:text="${product.imageUrl}"></td>
+            <td th:text="${product.categories}"></td>
+<!--            <td> <a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}"-->
+<!--                    class="btn btn-primary">Update</a>-->
+<!--                <a th:href="@{/deleteEmployee/{id}(id=${employee.id})}"-->
+<!--                   class="btn btn-danger">Delete</a>-->
+<!--            </td>-->
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+</body>
+</html>

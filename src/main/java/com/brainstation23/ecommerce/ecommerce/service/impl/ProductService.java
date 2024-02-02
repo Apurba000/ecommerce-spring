@@ -1,13 +1,8 @@
 package com.brainstation23.ecommerce.ecommerce.service.impl;
 
-import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException;
 import com.brainstation23.ecommerce.ecommerce.mapper.ProductMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
-import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateRequest;
-import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductUpdateRequest;
-import com.brainstation23.ecommerce.ecommerce.persistence.entity.ProductEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.ProductRepository;
-import com.brainstation23.ecommerce.ecommerce.service.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,24 +12,24 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ProductServiceImpl{
-    private static final String PRODUCT_NOT_FOUND = "Order Not Found";
+public class ProductService {
+    private static final String PRODUCT_NOT_FOUND = "Product Not Found";
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+
+
+    public Page<Product> getAll(Pageable pageable) {
+        var entities = productRepository.findAll(pageable);
+        return entities.map(productMapper::entityToDomain);
+    }
+
 //
-//    @Override
-//    public Page<Product> getAll(Pageable pageable) {
-//        var entities = productRepository.findAll(pageable);
-//        return entities.map(productMapper::entityToDomain);
-//    }
-//
-//    @Override
 //    public Product getOne(Long id) {
 //        var entity = productRepository.findById(id).orElseThrow(()->new NotFoundException(PRODUCT_NOT_FOUND));
 //        return productMapper.entityToDomain(entity);
 //    }
 //
-//    @Override
+//
 //    public Long createOne(ProductCreateRequest createRequest) {
 //        var entity = new ProductEntity();
 //
@@ -42,7 +37,6 @@ public class ProductServiceImpl{
 //        return createdEntity.getId();
 //    }
 //
-//    @Override
 //    public void updateOne(Long id, ProductUpdateRequest updateRequest) {
 //        var entity = productRepository.findById(id).orElseThrow(()->new NotFoundException(PRODUCT_NOT_FOUND));
 //
