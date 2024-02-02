@@ -13,7 +13,7 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.ROL
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = ROLE_TABLE)
 public class RoleEntity {
         @Id

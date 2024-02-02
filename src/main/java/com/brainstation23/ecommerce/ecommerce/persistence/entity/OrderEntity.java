@@ -15,7 +15,7 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.ORD
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = ORDER_TABLE)
 public class OrderEntity {
     @Id

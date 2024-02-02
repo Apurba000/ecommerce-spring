@@ -2,10 +2,7 @@ package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;

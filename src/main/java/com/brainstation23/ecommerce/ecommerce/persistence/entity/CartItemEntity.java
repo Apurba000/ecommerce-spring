@@ -16,7 +16,7 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.CAR
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = CART_ITEM_TABLE)
 public class CartItemEntity {
     @Id
