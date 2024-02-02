@@ -1,6 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
+import com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
