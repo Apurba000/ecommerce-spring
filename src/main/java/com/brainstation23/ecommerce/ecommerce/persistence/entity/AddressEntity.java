@@ -6,8 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.JdbcTypeCode;
 
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.ADDRESS_TABLE;
+import java.math.BigInteger;
+import java.sql.Types;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -15,18 +18,16 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.ADD
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = ADDRESS_TABLE)
+@Table(name = "addresses")
 public class AddressEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id @GeneratedValue
+    @JdbcTypeCode(Types.VARCHAR)
+    private UUID id;
 
-    @NonNull
     @NotBlank
     @Size(max = 255)
     private String details;
 
-    @NonNull
     @NotBlank
     @Size(max = 20)
     @Column(name = "zip_code")

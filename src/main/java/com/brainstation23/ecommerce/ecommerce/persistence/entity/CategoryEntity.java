@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.JdbcTypeCode;
 
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.CATEGORY_TABLE;
+import java.sql.Types;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -14,13 +16,12 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.CAT
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = CATEGORY_TABLE)
+@Table(name = "categories")
 public class CategoryEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id @GeneratedValue
+    @JdbcTypeCode(Types.VARCHAR)
+    private UUID id;
 
-    @NonNull
     @NotBlank
     @Size(max = 255)
     @Column(name = "category_name")

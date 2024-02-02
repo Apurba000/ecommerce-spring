@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.UUID;
 
-import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.CART_ITEM_TABLE;
 
 @Entity
 @Getter
@@ -17,21 +19,20 @@ import static com.brainstation23.ecommerce.ecommerce.constant.EntityConstant.CAR
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = CART_ITEM_TABLE)
+@Table(name = "cart_item")
 public class CartItemEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id @GeneratedValue
+    @JdbcTypeCode(Types.VARCHAR)
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @NonNull
     @NotBlank
     private int quantity;
 
     @CreatedDate
-    private Date date;
+    private Timestamp date;
 
 }

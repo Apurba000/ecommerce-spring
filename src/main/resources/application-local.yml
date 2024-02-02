@@ -1,13 +1,9 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:ecdb
-    username: ecdev
-    password: password123
-    driverClassName: org.h2.Driver
-  h2:
-      console.enabled: true
-  jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    url: jdbc:mysql://localhost:3306/ecommerce_spring
+    username: root
+    password: abAdmin
+    driverClassName: com.mysql.cj.jdbc.Driver
 
   security:
     user:
