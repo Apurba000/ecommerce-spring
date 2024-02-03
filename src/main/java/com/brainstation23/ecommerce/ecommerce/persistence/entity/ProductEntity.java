@@ -5,14 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.math.BigDecimal;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
+import static org.hibernate.annotations.CascadeType.*;
 
 @Entity
 @Getter
@@ -21,7 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "products")
 public class ProductEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
@@ -30,7 +30,6 @@ public class ProductEntity {
     @Size(max = 50)
     private String name;
 
-    @NotBlank
     @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
@@ -46,8 +45,9 @@ public class ProductEntity {
     private String imageUrl;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade({ PERSIST, REFRESH, MERGE})
     @JoinTable(  name = "product_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<CategoryEntity> categories = new ArrayList<>();
+    private Set<CategoryEntity> categories = new HashSet<>();
 }

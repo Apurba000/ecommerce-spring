@@ -1,13 +1,12 @@
 package com.brainstation23.ecommerce.ecommerce.model.domain;
 
-import com.brainstation23.ecommerce.ecommerce.persistence.entity.CategoryEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -20,5 +19,5 @@ public class Product {
     private BigDecimal unitPrice;
     private String description;
     private String imageUrl;
-    private List<Category> categories;
+    private Set<Category> categories;
 }
