@@ -5,7 +5,6 @@ import com.brainstation23.ecommerce.ecommerce.mapper.CartItemMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.CartItem;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemUpdateRequest;
-import com.brainstation23.ecommerce.ecommerce.persistence.entity.AddressEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CartItemEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.CartItemRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.CartItemService;
@@ -40,7 +39,9 @@ public class CartItemServiceImpl implements CartItemService{
     @Override
     public UUID createOne(CartItemCreateRequest createRequest) {
         var entity = new CartItemEntity();
-        //OtherCode
+        entity.setProduct(createRequest.getProduct())
+                .setDate(createRequest.getDate())
+                .setQuantity(createRequest.getQuantity());
         var createdEntity = cartItemRepository.save(entity);
         return createdEntity.getId();
     }
@@ -48,7 +49,9 @@ public class CartItemServiceImpl implements CartItemService{
     @Override
     public void updateOne(UUID id, CartItemUpdateRequest updateRequest) {
         var entity = cartItemRepository.findById(id).orElseThrow(()->new NotFoundException(CART_ITEM_NOT_FOUND));
-        //Do Some Code
+        entity.setProduct(updateRequest.getProduct())
+                .setDate(updateRequest.getDate())
+                .setQuantity(updateRequest.getQuantity());
         cartItemRepository.save(entity);
     }
 

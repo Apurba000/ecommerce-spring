@@ -1,6 +1,5 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.Address;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +12,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressResponse {
-    @NotEmpty
     private String details;
-
-    @NotEmpty
     private String zipCode;
 }
