@@ -5,7 +5,6 @@ import com.brainstation23.ecommerce.ecommerce.mapper.OrderItemMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.OrderItem;
 import com.brainstation23.ecommerce.ecommerce.model.dto.orderItem.OrderItemCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.orderItem.OrderItemUpdateRequest;
-import com.brainstation23.ecommerce.ecommerce.persistence.entity.CartItemEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderItemEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.OrderItemRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.OrderItemService;

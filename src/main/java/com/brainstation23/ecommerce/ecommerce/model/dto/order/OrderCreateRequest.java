@@ -1,6 +1,5 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.order;
 
-import com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.AddressEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import jakarta.validation.constraints.NotEmpty;

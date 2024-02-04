@@ -39,7 +39,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public UUID createOne(ProductCreateRequest createRequest) {
         var entity = new ProductEntity();
-
+        entity.setName(createRequest.getName())
+                .setCategories(createRequest.getCategories())
+                .setDescription(createRequest.getDescription())
+                .setUnitPrice(createRequest.getUnitPrice())
+                .setImageUrl(createRequest.getImageUrl());
         var createdEntity = productRepository.save(entity);
         return createdEntity.getId();
     }
@@ -47,7 +51,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void updateOne(UUID id, ProductUpdateRequest updateRequest) {
         var entity = productRepository.findById(id).orElseThrow(()->new NotFoundException(PRODUCT_NOT_FOUND));
-
+        entity.setName(updateRequest.getName())
+                .setCategories(updateRequest.getCategories())
+                .setDescription(updateRequest.getDescription())
+                .setUnitPrice(updateRequest.getUnitPrice())
+                .setImageUrl(updateRequest.getImageUrl());
         productRepository.save(entity);
     }
 
