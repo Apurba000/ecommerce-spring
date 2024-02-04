@@ -1,5 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
+import com.brainstation23.ecommerce.ecommerce.constant.ColumnConstant;
+import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -19,7 +21,7 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@Table(name = "products")
+@Table(name = EntityConstant.PRODUCTS)
 public class ProductEntity {
     @Id @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
@@ -31,7 +33,7 @@ public class ProductEntity {
     private String name;
 
     @NotBlank
-    @Column(name = "unit_price")
+    @Column(name = ColumnConstant.UNIT_PRICE)
     private BigDecimal unitPrice;
 
     @NonNull
@@ -42,12 +44,12 @@ public class ProductEntity {
     @NonNull
     @NotBlank
     @Size(max = 255)
-    @Column(name = "image_url")
+    @Column(name = ColumnConstant.IMAGE_URL)
     private String imageUrl;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "product_categories",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @JoinTable(  name = ColumnConstant.PRODUCT_CATEGORIES,
+            joinColumns = @JoinColumn(name = ColumnConstant.PRODUCT_ID),
+            inverseJoinColumns = @JoinColumn(name = ColumnConstant.CATEGORY_ID))
     private List<CategoryEntity> categories = new ArrayList<>();
 }

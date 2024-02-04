@@ -1,14 +1,17 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
+import com.brainstation23.ecommerce.ecommerce.constant.ColumnConstant;
+import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 
 import java.sql.Types;
 import java.util.*;
@@ -20,10 +23,10 @@ import java.util.*;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users",
+@Table(name = EntityConstant.USERS,
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
+                @UniqueConstraint(columnNames = ColumnConstant.USERNAME),
+                @UniqueConstraint(columnNames = ColumnConstant.EMAIL)
         })
 public class UserEntity {
 
@@ -57,20 +60,20 @@ public class UserEntity {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(  name = EntityConstant.USER_ROLES,
+            joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
+            inverseJoinColumns = @JoinColumn(name = ColumnConstant.ROLE_ID))
     private Set<RoleEntity> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "user_addresses",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id"))
+    @JoinTable(  name = EntityConstant.USER_ADDRESSES,
+            joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
+            inverseJoinColumns = @JoinColumn(name = ColumnConstant.ADDRESS_ID))
     private List<AddressEntity> address = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "user_cart",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "cart_item_id"))
+    @JoinTable(  name = EntityConstant.USER_CARTS,
+            joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
+            inverseJoinColumns = @JoinColumn(name = ColumnConstant.CART_ITEM_ID))
     private List<CartItemEntity> cartItems = new ArrayList<>();
 }

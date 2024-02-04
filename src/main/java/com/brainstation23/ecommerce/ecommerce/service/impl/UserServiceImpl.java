@@ -39,6 +39,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public UUID createOne(UserCreateRequest createRequest) {
         var entity = new UserEntity();
+        entity.setFirstname(createRequest.getFirstname())
+                .setLastname(createRequest.getLastname())
+                .setUsername(createRequest.getUsername())
+                .setEmail(createRequest.getEmail())
+                .setPassword(createRequest.getPassword())
+                .setPhone(createRequest.getPhone())
+                .setRoles(createRequest.getRoles())
+                .setAddress(createRequest.getAddress())
+                .setCartItems(createRequest.getCartItems());
         var createdEntity = userRepository.save(entity);
         return createdEntity.getId();
     }
@@ -46,6 +55,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateOne(UUID id, UserUpdateRequest updateRequest) {
         var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        entity.setFirstname(updateRequest.getFirstname())
+                .setLastname(updateRequest.getLastname())
+                .setUsername(updateRequest.getUsername())
+                .setEmail(updateRequest.getEmail())
+                .setPassword(updateRequest.getPassword())
+                .setPhone(updateRequest.getPhone())
+                .setRoles(updateRequest.getRoles())
+                .setAddress(updateRequest.getAddress())
+                .setCartItems(updateRequest.getCartItems());
         userRepository.save(entity);
     }
 

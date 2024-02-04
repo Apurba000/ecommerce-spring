@@ -1,6 +1,8 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
+import com.brainstation23.ecommerce.ecommerce.constant.ColumnConstant;
+import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +11,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.UUID;
@@ -20,21 +21,21 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "orders")
+@Table(name = EntityConstant.ORDERS)
 public class OrderEntity {
     @Id @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = ColumnConstant.PRODUCT_ID)
     private UserEntity user;
 
-    @Column(name = "total_amount")
+    @Column(name = ColumnConstant.TOTAL_AMOUNT)
     private BigDecimal totalAmount;
 
     @CreatedDate
-    @Column(name = "order_date")
+    @Column(name = ColumnConstant.ORDER_DATE)
     private Timestamp orderDate;
 
     @Enumerated(EnumType.STRING)
@@ -42,6 +43,6 @@ public class OrderEntity {
     private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "delivery_address_id")
+    @JoinColumn(name = ColumnConstant.DELIVERY_ADDRESS_ID)
     private AddressEntity deliveryAddress;
 }
