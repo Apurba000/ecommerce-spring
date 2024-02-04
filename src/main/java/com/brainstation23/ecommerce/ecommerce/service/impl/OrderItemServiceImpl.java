@@ -40,7 +40,10 @@ public class OrderItemServiceImpl implements OrderItemService{
     @Override
     public UUID createOne(OrderItemCreateRequest createRequest) {
         var entity = new OrderItemEntity();
-
+        entity.setOrder(createRequest.getOrder())
+                .setProduct(createRequest.getProduct())
+                .setQuantity(createRequest.getQuantity())
+                .setUnitPrice(createRequest.getUnitPrice());
         var createdEntity = orderItemRepository.save(entity);
         return createdEntity.getId();
     }
@@ -48,7 +51,10 @@ public class OrderItemServiceImpl implements OrderItemService{
     @Override
     public void updateOne(UUID id, OrderItemUpdateRequest updateRequest) {
         var entity = orderItemRepository.findById(id).orElseThrow(()->new NotFoundException(ORDER_ITEM_NOT_FOUND));
-        //Do Some Code
+        entity.setOrder(updateRequest.getOrder())
+                .setProduct(updateRequest.getProduct())
+                .setQuantity(updateRequest.getQuantity())
+                .setUnitPrice(updateRequest.getUnitPrice());
         orderItemRepository.save(entity);
     }
 

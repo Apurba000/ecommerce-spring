@@ -34,7 +34,7 @@ public class OrderController {
         return ResponseEntity.ok(entities.map(orderMapper::domainToResponse));
     }
 
-    @Operation(summary = "Getting order Item By Id")
+    @Operation(summary = "Getting order By Id")
     @GetMapping("{id}")
     public ResponseEntity<OrderResponse> getById(@PathVariable UUID id)
     {
