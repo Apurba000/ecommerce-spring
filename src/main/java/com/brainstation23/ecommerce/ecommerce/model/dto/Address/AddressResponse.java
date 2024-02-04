@@ -13,9 +13,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressResponse {
-    @NotEmpty
     private String details;
-
-    @NotEmpty
     private String zipCode;
 }

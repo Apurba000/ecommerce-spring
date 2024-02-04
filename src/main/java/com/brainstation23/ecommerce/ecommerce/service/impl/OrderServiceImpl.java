@@ -5,6 +5,7 @@ import com.brainstation23.ecommerce.ecommerce.mapper.OrderMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Order;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderUpdateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.OrderRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.OrderService;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -39,7 +42,11 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public UUID createOne(OrderCreateRequest createRequest) {
         var entity = new OrderEntity();
-
+        entity.setOrderDate(Timestamp.from(Instant.now()))
+                .setUser(createRequest.getUser())
+                .setTotalAmount(createRequest.getTotalAmount())
+                .setDeliveryAddress(createRequest.getDeliveryAddress())
+                .setStatus(OrderStatus.PENDING);
         var createdEntity = orderRepository.save(entity);
         return createdEntity.getId();
     }
@@ -47,7 +54,11 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void updateOne(UUID id, OrderUpdateRequest updateRequest) {
         var entity = orderRepository.findById(id).orElseThrow(()->new NotFoundException(ORDER_NOT_FOUND));
-
+        entity
+                .setUser(updateRequest.getUser())
+                .setTotalAmount(updateRequest.getTotalAmount())
+                .setDeliveryAddress(updateRequest.getDeliveryAddress())
+                .setStatus(updateRequest.getStatus());
         orderRepository.save(entity);
     }
 

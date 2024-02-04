@@ -1,5 +1,6 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.category;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,5 +13,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class CategoryUpdateRequest {
+    @NotEmpty
     private String categoryName;
 }

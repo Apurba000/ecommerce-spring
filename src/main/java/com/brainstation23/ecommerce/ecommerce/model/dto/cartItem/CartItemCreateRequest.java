@@ -1,13 +1,10 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.cartItem;
 
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.ProductEntity;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Timestamp;
 
@@ -17,7 +14,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItemCreateRequest {
+    @NotNull
     private ProductEntity product;
+    @NotEmpty
     private int quantity;
+    @NotEmpty
     private Timestamp date;
 }

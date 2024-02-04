@@ -40,7 +40,7 @@ public class OrderItemServiceImpl implements OrderItemService{
     @Override
     public UUID createOne(OrderItemCreateRequest createRequest) {
         var entity = new OrderItemEntity();
-        //OtherCode
+
         var createdEntity = orderItemRepository.save(entity);
         return createdEntity.getId();
     }
