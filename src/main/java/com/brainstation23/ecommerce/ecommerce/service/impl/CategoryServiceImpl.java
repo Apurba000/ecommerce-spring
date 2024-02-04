@@ -26,7 +26,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Page<Category> getAll(Pageable pageable) {
-
         var entities = categoryRepository.findAll(pageable);
         return entities.map(categoryMapper::entityToDomain);
     }
@@ -40,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public UUID createOne(CategoryCreateRequest createRequest) {
         var entity = new CategoryEntity();
-        //OtherCode
+        entity.setCategoryName(createRequest.getCategoryName());
         var createdEntity = categoryRepository.save(entity);
         return createdEntity.getId();
     }
@@ -48,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public void updateOne(UUID id, CategoryUpdateRequest updateRequest) {
         var entity = categoryRepository.findById(id).orElseThrow(()->new NotFoundException(CATEGORY_NOT_FOUND));
-        //Do Some Code
+        entity.setCategoryName(updateRequest.getCategoryName());
         categoryRepository.save(entity);
     }
 
