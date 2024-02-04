@@ -6,10 +6,12 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.Address.AddressUpdateReq
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface AddressService {
     Page<Address> getAll(Pageable pageable);
-    Address getOne(Long id);
-    Long createOne(AddressCreateRequest createRequest);
-    void updateOne(Long id, AddressUpdateRequest updateRequest);
-    void deleteOne(Long id);
+    Address getOne(UUID id);
+    UUID createOne(AddressCreateRequest createRequest);
+    void updateOne(UUID id, AddressUpdateRequest updateRequest);
+    void deleteOne(UUID id);
 }

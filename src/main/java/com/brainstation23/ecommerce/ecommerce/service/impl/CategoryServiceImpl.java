@@ -14,44 +14,46 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CategoryServiceImpl {
+public class CategoryServiceImpl implements CategoryService{
     private static final String CATEGORY_NOT_FOUND = "Category Not Found";
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
-//
-//    @Override
-//    public Page<Category> getAll(Pageable pageable) {
-//
-//        var entities = categoryRepository.findAll(pageable);
-//        return entities.map(categoryMapper::entityToDomain);
-//    }
-//
-//    @Override
-//    public Category getOne(Long id) {
-//        var entity =  categoryRepository.findById(id).orElseThrow(()->new NotFoundException(CATEGORY_NOT_FOUND));
-//        return categoryMapper.entityToDomain(entity);
-//    }
-//
-//    @Override
-//    public Long createOne(CategoryCreateRequest createRequest) {
-//        var entity = new CategoryEntity();
-//        //OtherCode
-//        var createdEntity = categoryRepository.save(entity);
-//        return createdEntity.getId();
-//    }
-//
-//    @Override
-//    public void updateOne(Long id, CategoryUpdateRequest updateRequest) {
-//        var entity = categoryRepository.findById(id).orElseThrow(()->new NotFoundException(CATEGORY_NOT_FOUND));
-//        //Do Some Code
-//        categoryRepository.save(entity);
-//    }
-//
-//    @Override
-//    public void deleteOne(Long id) {
-//        categoryRepository.deleteById(id);
-//    }
+
+    @Override
+    public Page<Category> getAll(Pageable pageable) {
+
+        var entities = categoryRepository.findAll(pageable);
+        return entities.map(categoryMapper::entityToDomain);
+    }
+
+    @Override
+    public Category getOne(UUID id) {
+        var entity =  categoryRepository.findById(id).orElseThrow(()->new NotFoundException(CATEGORY_NOT_FOUND));
+        return categoryMapper.entityToDomain(entity);
+    }
+
+    @Override
+    public UUID createOne(CategoryCreateRequest createRequest) {
+        var entity = new CategoryEntity();
+        //OtherCode
+        var createdEntity = categoryRepository.save(entity);
+        return createdEntity.getId();
+    }
+
+    @Override
+    public void updateOne(UUID id, CategoryUpdateRequest updateRequest) {
+        var entity = categoryRepository.findById(id).orElseThrow(()->new NotFoundException(CATEGORY_NOT_FOUND));
+        //Do Some Code
+        categoryRepository.save(entity);
+    }
+
+    @Override
+    public void deleteOne(UUID id) {
+        categoryRepository.deleteById(id);
+    }
 }

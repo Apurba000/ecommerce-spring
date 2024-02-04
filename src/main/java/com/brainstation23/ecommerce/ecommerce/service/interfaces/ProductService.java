@@ -6,10 +6,12 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductUpdateReq
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface ProductService {
     Page<Product> getAll(Pageable pageable);
-    Product getOne(Long id);
-    Long createOne(ProductCreateRequest createRequest);
-    void updateOne(Long id, ProductUpdateRequest updateRequest);
-    void deleteOne(Long id);
+    Product getOne(UUID id);
+    UUID createOne(ProductCreateRequest createRequest);
+    void updateOne(UUID id, ProductUpdateRequest updateRequest);
+    void deleteOne(UUID id);
 }

@@ -14,43 +14,45 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class OrderServiceImpl{
+public class OrderServiceImpl implements OrderService{
     private static final String ORDER_NOT_FOUND = "Order Not Found";
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-//
-//    @Override
-//    public Page<Order> getAll(Pageable pageable) {
-//        var entities = orderRepository.findAll(pageable);
-//        return entities.map(orderMapper::entityToDomain);
-//    }
-//
-//    @Override
-//    public Order getOne(Long id) {
-//        var entity = orderRepository.findById(id).orElseThrow(()->new NotFoundException(ORDER_NOT_FOUND));
-//        return orderMapper.entityToDomain(entity);
-//    }
-//
-//    @Override
-//    public Long createOne(OrderCreateRequest createRequest) {
-//        var entity = new OrderEntity();
-//
-//        var createdEntity = orderRepository.save(entity);
-//        return createdEntity.getId();
-//    }
-//
-//    @Override
-//    public void updateOne(Long id, OrderUpdateRequest updateRequest) {
-//        var entity = orderRepository.findById(id).orElseThrow(()->new NotFoundException(ORDER_NOT_FOUND));
-//
-//        orderRepository.save(entity);
-//    }
-//
-//    @Override
-//    public void deleteOne(Long id) {
-//        orderRepository.deleteById(id);
-//    }
+
+    @Override
+    public Page<Order> getAll(Pageable pageable) {
+        var entities = orderRepository.findAll(pageable);
+        return entities.map(orderMapper::entityToDomain);
+    }
+
+    @Override
+    public Order getOne(UUID id) {
+        var entity = orderRepository.findById(id).orElseThrow(()->new NotFoundException(ORDER_NOT_FOUND));
+        return orderMapper.entityToDomain(entity);
+    }
+
+    @Override
+    public UUID createOne(OrderCreateRequest createRequest) {
+        var entity = new OrderEntity();
+
+        var createdEntity = orderRepository.save(entity);
+        return createdEntity.getId();
+    }
+
+    @Override
+    public void updateOne(UUID id, OrderUpdateRequest updateRequest) {
+        var entity = orderRepository.findById(id).orElseThrow(()->new NotFoundException(ORDER_NOT_FOUND));
+
+        orderRepository.save(entity);
+    }
+
+    @Override
+    public void deleteOne(UUID id) {
+        orderRepository.deleteById(id);
+    }
 }

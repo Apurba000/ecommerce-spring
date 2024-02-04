@@ -6,10 +6,12 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.category.CategoryUpdateR
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface CategoryService {
     Page<Category> getAll(Pageable pageable);
-    Category getOne(Long id);
-    Long createOne(CategoryCreateRequest createRequest);
-    void updateOne(Long id, CategoryUpdateRequest updateRequest);
-    void deleteOne(Long id);
+    Category getOne(UUID id);
+    UUID createOne(CategoryCreateRequest createRequest);
+    void updateOne(UUID id, CategoryUpdateRequest updateRequest);
+    void deleteOne(UUID id);
 }
