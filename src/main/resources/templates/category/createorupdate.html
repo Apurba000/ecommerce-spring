@@ -1,0 +1,18 @@
+<div class="container">
+  <hr>
+  <h2 th:if="${isNew}">New Category</h2>
+  <h2 th:if="${!isNew}">Update Category</h2>
+  <form th:if="${isNew}" action="#" th:action="@{/admin/categories/save}" th:object="${category}" method="POST">
+    <div class="input-group mb-3">
+      <input type="text" th:field="*{categoryName}" placeholder="Category Name">
+    </div>
+    <button type="submit" >Save</button>
+  </form>
+  <form th:if="${!isNew}" action="#" th:action="@{/admin/categories/update}" th:object="${category}" method="POST">
+    <input type="hidden" th:field="*{id}"/>
+    <input type="text" th:field="*{categoryName}" placeholder="Category Name">
+    <button type="submit" >Update</button>
+  </form>
+  <hr>
+  <a th:href="@{/admin/categories}"> Back to Categories</a>
+</div>

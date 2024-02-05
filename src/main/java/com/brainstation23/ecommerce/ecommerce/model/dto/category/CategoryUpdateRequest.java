@@ -7,12 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
 public class CategoryUpdateRequest {
+    @NotEmpty
+    private UUID id;
     @NotEmpty
     private String categoryName;
 }
