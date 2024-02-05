@@ -65,7 +65,7 @@ public class ProductController {
     public ResponseEntity<Void> updateOne(@PathVariable UUID id,
                                           @RequestBody @Valid ProductCreateUpdateRequest updateRequest) {
         log.info("Updating a Product ({}): {} ", id, updateRequest);
-        productService.updateOne(id, updateRequest);
+        productService.updateOne(updateRequest);
         return ResponseEntity.noContent().build();
     }
     @Operation(summary = "Delete Single Product")
