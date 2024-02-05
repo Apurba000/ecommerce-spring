@@ -6,10 +6,12 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.orderItem.OrderItemUpdat
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface OrderItemService {
     Page<OrderItem> getAll(Pageable pageable);
-    OrderItem getOne(Long id);
-    Long createOne(OrderItemCreateRequest createRequest);
-    void updateOne(Long id, OrderItemUpdateRequest updateRequest);
-    void deleteOne(Long id);
+    OrderItem getOne(UUID id);
+    UUID createOne(OrderItemCreateRequest createRequest);
+    void updateOne(UUID id, OrderItemUpdateRequest updateRequest);
+    void deleteOne(UUID id);
 }

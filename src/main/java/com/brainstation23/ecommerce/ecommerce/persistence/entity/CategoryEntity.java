@@ -1,5 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
+import com.brainstation23.ecommerce.ecommerce.constant.ColumnConstant;
+import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

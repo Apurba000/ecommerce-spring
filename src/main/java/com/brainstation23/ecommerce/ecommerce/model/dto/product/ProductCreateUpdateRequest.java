@@ -12,8 +12,12 @@ import java.util.UUID;
 @ToString
 @Getter
 @Setter
-public class ProductCreateUpdateRequest {
-    private UUID id;
+@Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductCreateRequest {
+    @NotEmpty
+    @Size(max = 50)
     private String name;
     private BigDecimal unitPrice;
     private String description;

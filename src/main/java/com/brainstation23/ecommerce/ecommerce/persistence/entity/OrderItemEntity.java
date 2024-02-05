@@ -1,6 +1,8 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
+import com.brainstation23.ecommerce.ecommerce.constant.ColumnConstant;
+import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -15,7 +17,7 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@Table(name = "order_items")
+@Table(name = EntityConstant.ORDER_ITEMS)
 public class OrderItemEntity {
     @Id @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
@@ -26,11 +28,11 @@ public class OrderItemEntity {
     private BigDecimal unitPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = ColumnConstant.ORDER_ID)
     private OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = ColumnConstant.PRODUCT_ID)
     private ProductEntity product;
 
 }

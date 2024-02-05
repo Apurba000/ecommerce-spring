@@ -1,6 +1,8 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
+import com.brainstation23.ecommerce.ecommerce.constant.ColumnConstant;
+import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -19,14 +21,14 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cart_item")
+@Table(name = EntityConstant.CART_ITEM)
 public class CartItemEntity {
     @Id @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = ColumnConstant.PRODUCT_ID)
     private ProductEntity product;
 
     @NotBlank

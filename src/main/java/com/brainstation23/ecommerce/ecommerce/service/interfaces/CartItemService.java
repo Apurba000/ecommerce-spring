@@ -6,10 +6,12 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemUpdateR
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface CartItemService {
     Page<CartItem> getAll(Pageable pageable);
-    CartItem getOne(Long id);
-    Long createOne(CartItemCreateRequest createRequest);
-    void updateOne(Long id, CartItemUpdateRequest updateRequest);
-    void deleteOne(Long id);
+    CartItem getOne(UUID id);
+    UUID createOne(CartItemCreateRequest createRequest);
+    void updateOne(UUID id, CartItemUpdateRequest updateRequest);
+    void deleteOne(UUID id);
 }

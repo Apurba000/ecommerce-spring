@@ -1,5 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
+import com.brainstation23.ecommerce.ecommerce.constant.ColumnConstant;
+import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -30,7 +32,6 @@ public class ProductEntity {
     @Size(max = 50)
     private String name;
 
-    @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
     @NonNull
@@ -41,7 +42,6 @@ public class ProductEntity {
     @NonNull
     @NotBlank
     @Size(max = 255)
-    @Column(name = "image_url")
     private String imageUrl;
 
     @ManyToMany(fetch = FetchType.LAZY)

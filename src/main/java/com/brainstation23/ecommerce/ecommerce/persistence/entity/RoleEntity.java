@@ -1,6 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
+import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "roles")
+@Table(name = EntityConstant.ROLES)
 public class RoleEntity {
         @Id @GeneratedValue
         @JdbcTypeCode(Types.VARCHAR)
