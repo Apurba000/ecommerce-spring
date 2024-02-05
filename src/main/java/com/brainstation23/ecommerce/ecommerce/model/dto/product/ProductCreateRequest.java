@@ -24,7 +24,6 @@ public class ProductCreateRequest {
     @Size(max = 50)
     private String name;
 
-    @NotEmpty
     private BigDecimal unitPrice;
 
     @NotEmpty

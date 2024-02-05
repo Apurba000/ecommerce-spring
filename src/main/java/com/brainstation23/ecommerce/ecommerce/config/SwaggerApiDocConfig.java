@@ -11,7 +11,7 @@ import io.swagger.v3.oas.models.servers.Server;
 public class SwaggerApiDocConfig {
     @Bean
     public OpenAPI customOpenAPI() {
-        final Info info = new Info().title("Java Trainees 2023").version("1.0.0")
+        final Info info = new Info().title("ECommerce App").version("1.0.0")
                 .license(new License().name("© Brain Station 23 Ltd.").url("https://brainstation-23.com"));
         return new OpenAPI()
                 .addServersItem(new Server().url("/"))

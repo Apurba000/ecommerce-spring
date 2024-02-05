@@ -44,14 +44,14 @@ public class ProductController {
         return ResponseEntity.ok(entities.map(productMapper::domainToResponse));
     }
 
-    /*@Operation(summary = "Getting Product By Id")
+    @Operation(summary = "Getting Product By Id")
     @GetMapping("{id}")
     public ResponseEntity<ProductResponse> getById(@PathVariable UUID id)
     {
         log.info("Getting Details of Product({})", id);
         var entity = productService.getOne(id);
         return ResponseEntity.ok(productMapper.domainToResponse(entity));
-    }*/
+    }
 
     @Operation(summary = "Creating New Single Product")
     @PostMapping
@@ -62,7 +62,7 @@ public class ProductController {
         return ResponseEntity.created(location).build();
     }
 
-    /*@Operation(summary = "Update Single Product")
+    @Operation(summary = "Update Single Product")
     @PutMapping("{id}")
     public ResponseEntity<Void> updateOne(@PathVariable UUID id,
                                           @RequestBody @Valid ProductUpdateRequest updateRequest) {
@@ -70,12 +70,11 @@ public class ProductController {
         productService.updateOne(id, updateRequest);
         return ResponseEntity.noContent().build();
     }
-*/
-    /*@Operation(summary = "Delete Single Product")
+    @Operation(summary = "Delete Single Product")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteOne(@PathVariable UUID id) {
         log.info("Deleting a product ({}) ", id);
         productService.deleteOne(id);
         return ResponseEntity.noContent().build();
-    }*/
+    }
 }

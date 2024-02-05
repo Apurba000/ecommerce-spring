@@ -4,6 +4,7 @@ import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException
 import com.brainstation23.ecommerce.ecommerce.mapper.ProductMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CategoryEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.ProductEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.CategoryRepository;
@@ -36,13 +37,12 @@ public class ProductService {
         return entities.map(productMapper::entityToDomain);
     }
 
-    //
-//    public Product getOne(Long id) {
-//        var entity = productRepository.findById(id).orElseThrow(()->new NotFoundException(PRODUCT_NOT_FOUND));
-//        return productMapper.entityToDomain(entity);
-//    }
-//
-//
+    public Product getOne(UUID id) {
+        var entity = productRepository.findById(id).orElseThrow(()->new NotFoundException(PRODUCT_NOT_FOUND));
+        return productMapper.entityToDomain(entity);
+    }
+
+
     public UUID createOne(ProductCreateRequest createRequest) {
         var productEntity = getProductEntity(createRequest);
         var createdEntity = productRepository.save(productEntity);
@@ -64,15 +64,14 @@ public class ProductService {
         return productEntity.setCategories(categories);
     }
 
-//
-//    public void updateOne(Long id, ProductUpdateRequest updateRequest) {
-//        var entity = productRepository.findById(id).orElseThrow(()->new NotFoundException(PRODUCT_NOT_FOUND));
-//
-//        productRepository.save(entity);
-//    }
-//
-//    @Override
-//    public void deleteOne(Long id) {
-//        productRepository.deleteById(id);
-//    }
+
+    public void updateOne(UUID id, ProductUpdateRequest updateRequest) {
+        var entity = productRepository.findById(id).orElseThrow(()->new NotFoundException(PRODUCT_NOT_FOUND));
+
+        productRepository.save(entity);
+    }
+
+    public void deleteOne(UUID id) {
+        productRepository.deleteById(id);
+    }
 }
