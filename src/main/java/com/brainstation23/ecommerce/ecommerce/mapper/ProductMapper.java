@@ -11,4 +11,7 @@ public interface ProductMapper {
     Product entityToDomain(ProductEntity entity);
     ProductResponse domainToResponse(Product product);
     ProductEntity requestToEntity(ProductCreateRequest productCreateRequest);
+    Product requestToDomain(ProductCreateRequest productCreateRequest);
+    ProductEntity domainToEntity(Product product);
+
 }
