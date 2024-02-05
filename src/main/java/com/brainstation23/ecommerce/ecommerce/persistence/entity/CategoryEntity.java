@@ -8,6 +8,8 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,4 +27,7 @@ public class CategoryEntity {
     @NotBlank
     @Size(max = 255)
     private String categoryName;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<ProductEntity> products = new HashSet<>();
 }
