@@ -4,6 +4,7 @@ import com.brainstation23.ecommerce.ecommerce.mapper.ProductMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.impl.ProductService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ public class AdminController {
     private static final String REDIRECT_ADMIN = "redirect:/admin";
     private final ProductService productService;
     private final ProductMapper productMapper;
+    private final CategoryService categoryService;
 
     @GetMapping
     public String adminBoard(Model model) {
@@ -42,6 +44,8 @@ public class AdminController {
     @GetMapping("/addnewproduct")
     public String addProduct(Model model) {
         ProductCreateUpdateRequest productCreateRequest = new ProductCreateUpdateRequest();
+        var categories = categoryService.getAllCategory();
+        model.addAttribute("categories", categories);
         model.addAttribute(ATTRIBUTE_PRODUCT, productCreateRequest);
         return "new_product";
     }
@@ -57,6 +61,8 @@ public class AdminController {
         Product product = productService.getOne(id);
         ProductCreateUpdateRequest request = productMapper.domainToRequest(product);
         request.buildCateGoryStr();
+        var categories = categoryService.getAllCategory();
+        model.addAttribute("categories", categories);
         model.addAttribute(ATTRIBUTE_PRODUCT, request);
         return "update_product";
     }

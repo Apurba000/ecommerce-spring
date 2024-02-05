@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,6 +29,11 @@ public class CategoryServiceImpl implements CategoryService{
     public Page<Category> getAll(Pageable pageable) {
         var entities = categoryRepository.findAll(pageable);
         return entities.map(categoryMapper::entityToDomain);
+    }
+
+    @Override
+    public List<CategoryEntity> getAllCategory() {
+        return categoryRepository.findAll();
     }
 
     @Override
@@ -54,5 +60,11 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public void deleteOne(UUID id) {
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Category getByName(String name) {
+        var entity = categoryRepository.findByCategoryName(name).orElseThrow(()->new NotFoundException(CATEGORY_NOT_FOUND));
+        return categoryMapper.entityToDomain(entity);
     }
 }
