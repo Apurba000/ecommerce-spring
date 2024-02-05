@@ -1,6 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.product;
 
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CategoryEntity;
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,12 @@ public class ProductCreateRequest {
     @NotEmpty
     private String imageUrl;
 
-    private List<CategoryEntity> categories = new ArrayList<>();
+    private String categoryStr;
+    private List<CategoryEntity> categories;
+    public void buildCategoryEntities(){
+        if (!StringUtils.isEmpty(categoryStr)){
+            this.categories = new ArrayList<>();
+            categories.add(new CategoryEntity().setCategoryName(categoryStr));
+        }
+    }
 }

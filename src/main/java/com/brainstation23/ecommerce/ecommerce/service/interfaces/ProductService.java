@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
+/*
 public interface ProductService {
     Page<Product> getAll(Pageable pageable);
     Product getOne(UUID id);
@@ -15,3 +16,4 @@ public interface ProductService {
     void updateOne(UUID id, ProductUpdateRequest updateRequest);
     void deleteOne(UUID id);
 }
+*/

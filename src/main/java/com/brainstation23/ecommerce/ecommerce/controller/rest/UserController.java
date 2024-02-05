@@ -1,4 +1,4 @@
-package com.brainstation23.ecommerce.ecommerce.controller;
+package com.brainstation23.ecommerce.ecommerce.controller.rest;
 
 import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserCreateRequest;
@@ -6,6 +6,7 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserResponse;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.UUID;
 
+@Tag(name = "User")
 @Slf4j
 @RestController
 @AllArgsConstructor

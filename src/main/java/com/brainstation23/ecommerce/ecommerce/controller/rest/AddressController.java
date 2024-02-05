@@ -1,4 +1,4 @@
-package com.brainstation23.ecommerce.ecommerce.controller;
+package com.brainstation23.ecommerce.ecommerce.controller.rest;
 
 import com.brainstation23.ecommerce.ecommerce.mapper.AddressMapper;
 import com.brainstation23.ecommerce.ecommerce.model.dto.Address.AddressCreateRequest;
@@ -6,6 +6,7 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.Address.AddressResponse;
 import com.brainstation23.ecommerce.ecommerce.model.dto.Address.AddressUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.UUID;
 
+@Tag(name = "Address")
 @Slf4j
 @RestController
 @AllArgsConstructor
