@@ -26,11 +26,8 @@
                 <td th:text="${product.unitPrice}"></td>
                 <td th:text="${product.imageUrl}"></td>
                 <td th:text="${product.categoriesStr()}"></td>
-                <!--            <td> <a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}"-->
-                <!--                    class="btn btn-primary">Update</a>-->
-                <!--                <a th:href="@{/deleteEmployee/{id}(id=${employee.id})}"-->
-                <!--                   class="btn btn-danger">Delete</a>-->
-                <!--            </td>-->
+                <td> <a th:href="@{/admin/showFormForUpdate/{id}(id=${product.id})}">Update</a>
+                <td> <a th:href="@{/admin/deleteProduct/{id}(id=${product.id})}">Delete</a>
             </tr>
         </tbody>
     </table>
