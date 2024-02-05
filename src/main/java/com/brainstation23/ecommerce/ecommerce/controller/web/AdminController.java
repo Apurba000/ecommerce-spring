@@ -2,7 +2,7 @@ package com.brainstation23.ecommerce.ecommerce.controller.web;
 
 import com.brainstation23.ecommerce.ecommerce.mapper.ProductMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
-import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.impl.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -13,10 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,18 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
     private static final String ATTRIBUTE_PRODUCT = "product";
-
+    private static final String REDIRECT_ADMIN = "redirect:/admin";
     private final ProductService productService;
-    private final ProductMapper mapper;
+    private final ProductMapper productMapper;
 
     @GetMapping
     public String adminBoard(Model model) {
         Page<Product> pageProductDomains = productService.getAll(getDefaultProductPage());
-
-//        log.info("ProductDomains List Total = " + pageProductDomains.getTotalElements());
-//        pageProductDomains.forEach(it -> log.info(it.getName()));
-
-        model.addAttribute("product_list", pageProductDomains.map(mapper::domainToResponse));
+        model.addAttribute("product_list", pageProductDomains.map(productMapper::domainToResponse));
         return "admin_home";
     }
     private Pageable getDefaultProductPage(){
@@ -44,19 +39,37 @@ public class AdminController {
                 Sort.Order.desc("id")));
     }
 
-
     @GetMapping("/addnewproduct")
     public String addProduct(Model model) {
-        ProductCreateRequest productCreateRequest = new ProductCreateRequest();
+        ProductCreateUpdateRequest productCreateRequest = new ProductCreateUpdateRequest();
         model.addAttribute(ATTRIBUTE_PRODUCT, productCreateRequest);
         return "new_product";
     }
 
     @PostMapping("/save")
-    public String saveProduct(@ModelAttribute(ATTRIBUTE_PRODUCT) ProductCreateRequest productCreateRequest) {
-        productCreateRequest.buildCategoryEntities();
+    public String saveProduct(@ModelAttribute(ATTRIBUTE_PRODUCT) ProductCreateUpdateRequest productCreateRequest) {
         productService.createOne(productCreateRequest);
-        return "redirect:/admin";
+        return REDIRECT_ADMIN;
     }
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFormUpdate(@PathVariable(value = "id") UUID id, Model model) {
+        Product product = productService.getOne(id);
+        ProductCreateUpdateRequest request = productMapper.domainToRequest(product);
+        request.buildCateGoryStr();
+        model.addAttribute(ATTRIBUTE_PRODUCT, request);
+        return "update_product";
+    }
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute(ATTRIBUTE_PRODUCT) ProductCreateUpdateRequest productUpdateRequest) {
+        productService.updateOne(productUpdateRequest);
+        return REDIRECT_ADMIN;
+    }
+
+    @GetMapping("/deleteProduct/{id}")
+    public String deleteEmployee(@PathVariable(value = "id") UUID id) {
+        productService.deleteOne(id);
+        return REDIRECT_ADMIN;
+    }
+
 
 }
