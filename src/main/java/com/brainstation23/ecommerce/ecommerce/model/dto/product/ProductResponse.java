@@ -1,5 +1,11 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.product;
 
+import com.brainstation23.ecommerce.ecommerce.model.domain.Category;
+
+import java.math.BigDecimal;
+import java.util.Set;
+import java.util.UUID;
+
 public class ProductResponse {
     private UUID id;
     private String name;

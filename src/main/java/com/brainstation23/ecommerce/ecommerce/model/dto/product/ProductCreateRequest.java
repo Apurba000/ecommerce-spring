@@ -1,6 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.product;
 
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CategoryEntity;
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

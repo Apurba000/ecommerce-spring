@@ -4,12 +4,13 @@ import com.brainstation23.ecommerce.ecommerce.mapper.ProductMapper;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductResponse;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductUpdateRequest;
-import com.brainstation23.ecommerce.ecommerce.service.interfaces.ProductService;
+import com.brainstation23.ecommerce.ecommerce.service.impl.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,18 @@ import java.util.UUID;
 @Tag(name = "Product")
 @Slf4j
 @RestController
-@AllArgsConstructor
 @RequestMapping(value = "api/products")
 public class ProductController {
     private final ProductService productService;
     private final ProductMapper productMapper;
+    @Autowired
+    public ProductController(ProductService productService, ProductMapper productMapper)
+    {
+        this.productService = productService;
+        this.productMapper = productMapper;
+    }
+
+
 
     @Operation(summary = "Getting All Products")
     @GetMapping("")
