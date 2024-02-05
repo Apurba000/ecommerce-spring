@@ -1,9 +1,10 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.product;
 
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CategoryEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductCreateRequest {
+public class ProductCreateUpdateRequest {
+    private UUID id;
     @NotEmpty
     @Size(max = 50)
     private String name;

@@ -5,7 +5,6 @@ import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.impl.ProductService;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +32,8 @@ public class AdminController {
         model.addAttribute("product_list", pageProductDomains.map(productMapper::domainToResponse));
         return "admin_home";
     }
-    private Pageable getDefaultProductPage(){
+
+    private Pageable getDefaultProductPage() {
         return PageRequest.of(0, 20, Sort.by(
                 Sort.Order.asc("name"),
                 Sort.Order.desc("id")));
@@ -51,6 +51,7 @@ public class AdminController {
         productService.createOne(productCreateRequest);
         return REDIRECT_ADMIN;
     }
+
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormUpdate(@PathVariable(value = "id") UUID id, Model model) {
         Product product = productService.getOne(id);
@@ -59,6 +60,7 @@ public class AdminController {
         model.addAttribute(ATTRIBUTE_PRODUCT, request);
         return "update_product";
     }
+
     @PostMapping("/update")
     public String updateProduct(@ModelAttribute(ATTRIBUTE_PRODUCT) ProductCreateUpdateRequest productUpdateRequest) {
         productService.updateOne(productUpdateRequest);
