@@ -1,3 +1,4 @@
+/*
 package com.brainstation23.ecommerce.ecommerce.service.interfaces;
 
 import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
@@ -12,3 +13,4 @@ public interface ProductService {
     Long createOne(ProductCreateUpdateRequest createRequest);
     void deleteOne(Long id);
 }
+*/

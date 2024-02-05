@@ -1,11 +1,9 @@
 package com.brainstation23.ecommerce.ecommerce.service.impl;
 
 import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException;
-import com.brainstation23.ecommerce.ecommerce.mapper.CategoryMapper;
 import com.brainstation23.ecommerce.ecommerce.mapper.ProductMapper;
-import com.brainstation23.ecommerce.ecommerce.model.domain.Category;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
-import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CategoryEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.ProductEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.CategoryRepository;

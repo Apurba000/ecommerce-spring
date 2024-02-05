@@ -1,14 +1,12 @@
 package com.brainstation23.ecommerce.ecommerce.controller.rest;
 
 import com.brainstation23.ecommerce.ecommerce.mapper.ProductMapper;
-import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductResponse;
-import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.impl.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,7 +53,7 @@ public class ProductController {
 
     @Operation(summary = "Creating New Single Product")
     @PostMapping
-    public ResponseEntity<Void> createOne(@RequestBody @Valid ProductCreateRequest createRequest) {
+    public ResponseEntity<Void> createOne(@RequestBody @Valid ProductCreateUpdateRequest createRequest) {
         log.info("Creating a Product : {} ", createRequest);
         var id = productService.createOne(createRequest);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
@@ -65,9 +63,9 @@ public class ProductController {
     @Operation(summary = "Update Single Product")
     @PutMapping("{id}")
     public ResponseEntity<Void> updateOne(@PathVariable UUID id,
-                                          @RequestBody @Valid ProductUpdateRequest updateRequest) {
+                                          @RequestBody @Valid ProductCreateUpdateRequest updateRequest) {
         log.info("Updating a Product ({}): {} ", id, updateRequest);
-        productService.updateOne(id, updateRequest);
+        productService.updateOne(updateRequest);
         return ResponseEntity.noContent().build();
     }
     @Operation(summary = "Delete Single Product")
