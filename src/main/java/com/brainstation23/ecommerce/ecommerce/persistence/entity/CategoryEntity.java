@@ -24,6 +24,5 @@ public class CategoryEntity {
 
     @NotBlank
     @Size(max = 255)
-    @Column(name = "category_name")
     private String categoryName;
 }

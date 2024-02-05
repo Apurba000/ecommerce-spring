@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Ecommerce</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Ecommerce</h1>
+        <hr>
+            <h2>Save Product</h2>
+
+            <form action="#" th:action="@{/admin/save}" th:object="${product}" method="POST">
+                <input type="text" th:field="*{name}" placeholder="Product Name">
+                <input type="text" th:field="*{description}" placeholder="Product Description">
+                <input type="text" th:field="*{unitPrice}" placeholder="Product Price">
+                <input type="text" th:field="*{imageUrl}" placeholder="Product Image">
+                <select th:field="*{categoryStr}">
+                    <option th:value="'MEN'" th:text="MEN"></option>
+                    <option th:value="'WOMEN'" th:text="WOMEN"></option>
+                    <option th:value="'CHILDREEN'" th:text="CHILDREEN"></option>
+                    <option th:value="'OTHERS'" th:text="OTHERS"></option>
+                </select>
+                <button type="submit" >Save Product</button>
+            </form>
+        <hr>
+        <a th:href="@{/admin}"> Back to Admin panel</a>
+    </div>
+</body>
+</html>
