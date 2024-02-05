@@ -18,7 +18,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = EntityConstant.CATEGORIES)
+@Table(name = "categories")
 public class CategoryEntity {
     @Id @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
@@ -26,6 +26,5 @@ public class CategoryEntity {
 
     @NotBlank
     @Size(max = 255)
-    @Column(name = ColumnConstant.CATEGORY_NAME)
     private String categoryName;
 }

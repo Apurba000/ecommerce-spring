@@ -1,10 +1,15 @@
 package com.brainstation23.ecommerce.ecommerce.model.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import java.util.UUID;
+
 @Getter
 @Setter
-@AllArgsConstructor
+@Accessors(chain = true)
 public class Category {
+    private UUID id;
+    private String categoryName;
 }

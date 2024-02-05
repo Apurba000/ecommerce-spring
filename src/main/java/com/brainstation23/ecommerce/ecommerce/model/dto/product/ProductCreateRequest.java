@@ -32,5 +32,12 @@ public class ProductCreateRequest {
     @NotEmpty
     private String imageUrl;
 
-    private List<CategoryEntity> categories = new ArrayList<>();
+    private String categoryStr;
+    private List<CategoryEntity> categories;
+    public void buildCategoryEntities(){
+        if (!StringUtils.isEmpty(categoryStr)){
+            this.categories = new ArrayList<>();
+            categories.add(new CategoryEntity().setCategoryName(categoryStr));
+        }
+    }
 }
