@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Service
@@ -42,9 +43,8 @@ public class CartItemServiceImpl implements CartItemService{
     @Override
     public UUID createOne(CartItemCreateRequest createRequest) {
         var entity = new CartItemEntity();
-
         entity.setProduct(getProduct(createRequest.getProductId()))
-                .setDate(createRequest.getDate())
+                .setDate(getCurrentTimeStamp())
                 .setQuantity(createRequest.getQuantity());
         var createdEntity = cartItemRepository.save(entity);
         return createdEntity.getId();
@@ -67,5 +67,9 @@ public class CartItemServiceImpl implements CartItemService{
     private ProductEntity getProduct(UUID id)
     {
         return productRepository.findById(id).orElseThrow(()->new NotFoundException("No Product Found"));
+    }
+    private Timestamp getCurrentTimeStamp()
+    {
+        return new Timestamp(System.currentTimeMillis());
     }
 }
