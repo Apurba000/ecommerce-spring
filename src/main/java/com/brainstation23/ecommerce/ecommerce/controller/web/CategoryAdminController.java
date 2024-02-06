@@ -31,8 +31,8 @@ public class CategoryAdminController {
         Page<Category> categories = categoryService.getAll(getDefaultCategoryPage());
         model.addAttribute("category_list", categories.map(categoryMapper::domainToResponse));
         model.addAttribute("pageTitle", "All Categories");
-        model.addAttribute("content", "category/index");
-        return "base";
+        model.addAttribute("content", "admin/category/index");
+        return "admin/base";
     }
     @GetMapping("/addnew")
     public String addProduct(Model model) {
@@ -40,8 +40,8 @@ public class CategoryAdminController {
         model.addAttribute(ATTRIBUTE_CATEGORY, categoryCreateRequest);
         model.addAttribute("isNew", true);
         model.addAttribute("pageTitle", "Add New");
-        model.addAttribute("content", "category/createorupdate");
-        return "base";
+        model.addAttribute("content", "admin/category/createorupdate");
+        return "admin/base";
     }
     @GetMapping("/update/{categoryId}")
     public String updateCategory(@PathVariable UUID categoryId, Model model) {
@@ -49,8 +49,8 @@ public class CategoryAdminController {
         model.addAttribute("isNew", false);
         model.addAttribute(ATTRIBUTE_CATEGORY, category);
         model.addAttribute("pageTitle", "Update Category");
-        model.addAttribute("content", "category/createOrUpdate");
-        return "base";
+        model.addAttribute("content", "admin/category/createOrUpdate");
+        return "admin/base";
     }
 
     @PostMapping("/update")

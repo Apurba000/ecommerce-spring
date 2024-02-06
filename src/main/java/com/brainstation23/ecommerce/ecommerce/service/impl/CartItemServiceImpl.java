@@ -6,7 +6,9 @@ import com.brainstation23.ecommerce.ecommerce.model.domain.CartItem;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CartItemEntity;
+import com.brainstation23.ecommerce.ecommerce.persistence.entity.ProductEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.CartItemRepository;
+import com.brainstation23.ecommerce.ecommerce.persistence.repository.ProductRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.CartItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class CartItemServiceImpl implements CartItemService{
     private static final String CART_ITEM_NOT_FOUND = "Cart Item Not Found";
     private final CartItemRepository cartItemRepository;
+    private final ProductRepository productRepository;
     private final CartItemMapper cartItemMapper;
 
     @Override
@@ -39,7 +42,8 @@ public class CartItemServiceImpl implements CartItemService{
     @Override
     public UUID createOne(CartItemCreateRequest createRequest) {
         var entity = new CartItemEntity();
-        entity.setProduct(createRequest.getProduct())
+
+        entity.setProduct(getProduct(createRequest.getProductId()))
                 .setDate(createRequest.getDate())
                 .setQuantity(createRequest.getQuantity());
         var createdEntity = cartItemRepository.save(entity);
@@ -49,7 +53,7 @@ public class CartItemServiceImpl implements CartItemService{
     @Override
     public void updateOne(UUID id, CartItemUpdateRequest updateRequest) {
         var entity = cartItemRepository.findById(id).orElseThrow(()->new NotFoundException(CART_ITEM_NOT_FOUND));
-        entity.setProduct(updateRequest.getProduct())
+        entity.setProduct(getProduct(updateRequest.getProductId()))
                 .setDate(updateRequest.getDate())
                 .setQuantity(updateRequest.getQuantity());
         cartItemRepository.save(entity);
@@ -58,5 +62,10 @@ public class CartItemServiceImpl implements CartItemService{
     @Override
     public void deleteOne(UUID id) {
         cartItemRepository.deleteById(id);
+    }
+
+    private ProductEntity getProduct(UUID id)
+    {
+        return productRepository.findById(id).orElseThrow(()->new NotFoundException("No Product Found"));
     }
 }
