@@ -31,6 +31,10 @@ public class CartItemEntity {
     @JoinColumn(name = ColumnConstant.PRODUCT_ID)
     private ProductEntity product;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
     @NotBlank
     private int quantity;
 

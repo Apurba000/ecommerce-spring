@@ -23,8 +23,7 @@ public class OpenUserController {
     //private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/create")
-    public String createUser(Model model)
-    {
+    public String createUser(Model model) {
         UserCreateRequest userCreateRequest = new UserCreateRequest();
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "New User");
         model.addAttribute(ATTRIBUTE_CONTENT, "user/usercrud/create");

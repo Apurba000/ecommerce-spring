@@ -15,10 +15,7 @@
                         <form action="/landingpage/add-to-cart" method="POST">
                             <input type="hidden" name="productId" th:value="${product.getId()}">
                             <div class="input-group mb-3">
-                                <div class="p-1">
-                                    <input type="number" name="quantity" class="form-control" placeholder="Quantity" min="1" required>
-                                </div>
-                                <div class="p-1 input-group-append">
+                                <div class="p-1 ">
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
                                 </div>
                             </div>
