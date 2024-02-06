@@ -75,16 +75,11 @@ public class AdminController {
     public String showFormUpdate(@PathVariable(value = "id") UUID id, Model model) {
         Product product = productService.getOne(id);
         ProductCreateUpdateRequest request = productMapper.domainToRequest(product);
-//        request.buildCateGoryStr();
-//        var categories = categoryService.getAll();
-//        model.addAttribute("categories", categories);
-//        model.addAttribute(ATTRIBUTE_PRODUCT, request);
-//        return "update_product";
-
         var categories = categoryService.getAll();
         model.addAttribute("categories", categories.stream()
                 .map(categoryMapper::domainToResponse)
                 .collect(Collectors.toList()));
+
         model.addAttribute(ATTRIBUTE_PRODUCT, request);
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Update Product");
         model.addAttribute(ATTRIBUTE_CONTENT, "admin/add_update_product");

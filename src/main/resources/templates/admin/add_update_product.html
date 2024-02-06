@@ -4,6 +4,7 @@
     <h2>Save Product</h2>
 
     <form action="#" th:action="${action}" th:object="${product}" method="POST">
+        <input type="hidden" th:field="*{id}" th:value="${product.id}">
         <input type="text" th:field="*{name}" placeholder="Product Name">
         <input type="text" th:field="*{description}" placeholder="Product Description">
         <input type="text" th:field="*{unitPrice}" placeholder="Product Price">

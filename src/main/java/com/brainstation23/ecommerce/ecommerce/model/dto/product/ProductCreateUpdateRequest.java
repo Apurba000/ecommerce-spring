@@ -20,8 +20,4 @@ public class ProductCreateUpdateRequest {
     private String imageUrl;
     private String cateGoryId;
     private List<CategoryEntity> categories;
-//    public void buildCateGoryStr(){
-//        this.categoryStr = (categories == null || categories.isEmpty()) ?
-//                "No Category Found" : categories.get(0).getCategoryName();
-//    }
 }
