@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,10 +18,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItemUpdateRequest {
-    @NotNull
-    private ProductEntity product;
+    private UUID productId;
     @NotEmpty
     private int quantity;
-    @NotEmpty
     private Timestamp date;
 }

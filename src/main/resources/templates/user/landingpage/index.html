@@ -1,0 +1,30 @@
+<div class="container mt-5">
+    <div class="row">
+        <!-- Loop through each product in the product_list -->
+        <div th:each="product : ${product_list}" class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- Product image -->
+                <img th:src="${product.getImageUrl()}" class="card-img-top" alt="Product Image">
+                <div class="card-body">
+                    <!-- Product name -->
+                    <h5 th:text="${product.getName()}" class="card-title"></h5>
+                    <!-- Product description -->
+                    <p th:text="${product.getDescription()}" class="card-text"></p>
+                    <!-- Form to add product to cart -->
+                    <form action="/add-to-cart" method="POST">
+                        <!-- Hidden input for product ID -->
+                        <input type="hidden" name="productId" th:value="${product.getId()}">
+                        <!-- Quantity input -->
+                        <div class="input-group mb-3">
+                            <input type="number" name="quantity" class="form-control" placeholder="Quantity" min="1" required>
+                            <div class="input-group-append">
+                                <!-- Add to cart button -->
+                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
