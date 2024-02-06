@@ -1,24 +1,59 @@
+
 <div class="container mt-5">
     <div class="row">
         <!-- Loop through each product in the product_list -->
         <div th:each="product : ${product_list}" class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <!-- Product image -->
-                <img th:src="${product.getImageUrl()}" class="card-img-top" alt="Product Image">
+            <a style="text-decoration: none; color: inherit;" th:href="@{/landingpage/{id}(id=${product.id})}">
+                <div class="card mb-4 shadow-sm">
+                    <!-- Product image -->
+                    <img th:src="${product.getImageUrl()}" class="card-img-top" alt="Product Image" style="max-width: 200px; height: 300px;">
+                    <div class="card-body">
+                        <h5 th:utext="'Product Name: <b>' + ${product.getName()} + '</b>'" class="card-title"></h5>
+                        <p th:utext="'Unit Price: <b>' + ${product.getUnitPrice()} + '</b>'" class="card-text"></p>
+                        <p th:utext="'Category: <b>' + ${product.categories[0].categoryName} + '</b>'" class="card-text"></p>
+                        <p th:utext="'Description: <b>' + ${product.getDescription()} + '</b>'" class="card-text"></p>
+                        <form action="/landingpage/add-to-cart" method="POST">
+                            <input type="hidden" name="productId" th:value="${product.getId()}">
+                            <div class="input-group mb-3">
+                                <div class="p-1">
+                                    <input type="number" name="quantity" class="form-control" placeholder="Quantity" min="1" required>
+                                </div>
+                                <div class="p-1 input-group-append">
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!--
+
+
+<div class="container mt-5">
+    <div class="row">
+        &lt;!&ndash; Loop through each product in the product_list &ndash;&gt;
+        <div th:each="product : ${product_list}" class="col-md-4">
+            <div  class="card mb-4 shadow-sm" th:onclick="'window.location.href = \'/landingpage/\' + ${product.id}'">
+                &lt;!&ndash; Product image &ndash;&gt;
+                <img th:src="${product.getImageUrl()}" class="card-img-top" alt="Product Image" style = "max-width: 200px; height: 300px;">
                 <div class="card-body">
-                    <!-- Product name -->
-                    <h5 th:text="${product.getName()}" class="card-title"></h5>
-                    <!-- Product description -->
-                    <p th:text="${product.getDescription()}" class="card-text"></p>
-                    <!-- Form to add product to cart -->
-                    <form action="/add-to-cart" method="POST">
-                        <!-- Hidden input for product ID -->
+                    <h5 th:utext="'Product Name: <b>' + ${product.getName()} + '</b>'" class="card-title"></h5>
+                    <p th:utext="'Unit Price: <b>' + ${product.getUnitPrice()} + '</b>'" class="card-text"></p>
+                    <p th:utext="'Category: <b>' + ${product.categories[0].categoryName} + '</b>'" class="card-text"></p>
+                    <p th:utext="'Description: <b>' + ${product.getDescription()} + '</b>'" class="card-text"></p>
+
+                    <form action="/landingpage/add-to-cart" method="POST">
                         <input type="hidden" name="productId" th:value="${product.getId()}">
-                        <!-- Quantity input -->
                         <div class="input-group mb-3">
-                            <input type="number" name="quantity" class="form-control" placeholder="Quantity" min="1" required>
-                            <div class="input-group-append">
-                                <!-- Add to cart button -->
+                            <div class="p-1">
+                                <input type="number" name="quantity" class="form-control" placeholder="Quantity" min="1" required>
+                            </div>
+                            <div class="p-1 input-group-append">
                                 <button type="submit" class="btn btn-primary">Add to Cart</button>
                             </div>
                         </div>
@@ -27,4 +62,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
