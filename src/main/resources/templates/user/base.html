@@ -26,10 +26,12 @@
                     <a class="nav-link" href="#">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
             </ul>
         </div>
+        <a class="btn btn-primary m-1" th:href="@{/user/create}">SignUp</a>
+        <a class="btn btn-secondary m-1">Login</a>
     </div>
 </nav>
 <div class="mt-5" id="content" th:replace="${content}"></div>

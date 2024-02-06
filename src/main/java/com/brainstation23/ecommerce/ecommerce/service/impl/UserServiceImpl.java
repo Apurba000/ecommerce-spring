@@ -5,7 +5,10 @@ import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.User;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
+import com.brainstation23.ecommerce.ecommerce.persistence.entity.RoleEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
+import com.brainstation23.ecommerce.ecommerce.persistence.repository.RoleRepository;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.UserRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -22,6 +27,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService{
     private static final String USER_NOT_FOUND = "User Not Found";
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final UserMapper userMapper;
 
     @Override
@@ -39,15 +45,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public UUID createOne(UserCreateRequest createRequest) {
         var entity = new UserEntity();
+        var role = roleRepository.findByName(ERole.USER).orElseThrow(()-> new NotFoundException("ROLE NOT FOUND"));
+        var roles = new HashSet<RoleEntity>();
+        roles.add(role);
         entity.setFirstname(createRequest.getFirstname())
                 .setLastname(createRequest.getLastname())
                 .setUsername(createRequest.getUsername())
                 .setEmail(createRequest.getEmail())
                 .setPassword(createRequest.getPassword())
                 .setPhone(createRequest.getPhone())
-                .setRoles(createRequest.getRoles())
-                .setAddress(createRequest.getAddress())
-                .setCartItems(createRequest.getCartItems());
+                .setRoles(roles);
         var createdEntity = userRepository.save(entity);
         return createdEntity.getId();
     }
