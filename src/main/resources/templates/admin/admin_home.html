@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <h1>Hello Admin</h1>
+    <button><a th:href="@{/admin/addnewproduct}">Add Product</a></button>
+
+    <table class="table table-bordered" >
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Unit Price</th>
+            <th scope="col">Image Url</th>
+            <th scope="col">Categories</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product:${product_list}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.unitPrice}"></td>
+            <td th:text="${product.imageUrl}"></td>
+            <td th:text="${product.categoriesStr()}"></td>
+            <td> <a class="mr-3 btn btn-secondary" th:href="@{/admin/showFormForUpdate/{id}(id=${product.id})}">Update</a>
+            <td> <a class="ml-3 btn btn-danger" th:href="@{/admin/deleteProduct/{id}(id=${product.id})}">Delete</a>
+        </tr>
+        </tbody>
+    </table>
+</div>

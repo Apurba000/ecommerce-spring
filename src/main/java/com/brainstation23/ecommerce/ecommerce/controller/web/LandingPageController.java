@@ -41,7 +41,7 @@ public class LandingPageController {
     };
 
     @PostMapping("/add-to-cart")
-    public String addToCart(@ModelAttribute("cartItem") CartItemCreateRequest cartItemCreateRequest, Model model) {
+    public String addToCart(@ModelAttribute("cartItem") CartItemCreateRequest cartItemCreateRequest) {
         cartItemService.createOne(cartItemCreateRequest);
         return "redirect:/products";
     }

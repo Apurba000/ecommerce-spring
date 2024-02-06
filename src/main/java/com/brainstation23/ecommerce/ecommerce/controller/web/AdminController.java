@@ -26,6 +26,11 @@ import java.util.stream.Collectors;
 public class AdminController {
     private static final String ATTRIBUTE_PRODUCT = "product";
     private static final String REDIRECT_ADMIN = "redirect:/admin";
+
+    private static final String ADMIN_BASE = "admin/base";
+
+    private static final String ATTRIBUTE_PAGE_TITLE = "pageTitle";
+    private static final String ATTRIBUTE_CONTENT = "content";
     private final ProductService productService;
     private final ProductMapper productMapper;
     private final CategoryService categoryService;
@@ -35,7 +40,9 @@ public class AdminController {
     public String adminBoard(Model model) {
         Page<Product> pageProductDomains = productService.getAll(getDefaultProductPage());
         model.addAttribute("product_list", pageProductDomains.map(productMapper::domainToResponse));
-        return "admin_home";
+        model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Admin Home");
+        model.addAttribute(ATTRIBUTE_CONTENT, "admin/admin_home");
+        return ADMIN_BASE;
     }
 
     private Pageable getDefaultProductPage() {
@@ -52,7 +59,10 @@ public class AdminController {
                 .map(categoryMapper::domainToResponse)
                 .collect(Collectors.toList()));
         model.addAttribute(ATTRIBUTE_PRODUCT, productCreateRequest);
-        return "new_product";
+        model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Add Product");
+        model.addAttribute(ATTRIBUTE_CONTENT, "admin/add_update_product");
+        model.addAttribute("action", "/admin/save");
+        return ADMIN_BASE;
     }
 
     @PostMapping("/save")
@@ -65,11 +75,21 @@ public class AdminController {
     public String showFormUpdate(@PathVariable(value = "id") UUID id, Model model) {
         Product product = productService.getOne(id);
         ProductCreateUpdateRequest request = productMapper.domainToRequest(product);
-        request.buildCateGoryStr();
+//        request.buildCateGoryStr();
+//        var categories = categoryService.getAll();
+//        model.addAttribute("categories", categories);
+//        model.addAttribute(ATTRIBUTE_PRODUCT, request);
+//        return "update_product";
+
         var categories = categoryService.getAll();
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", categories.stream()
+                .map(categoryMapper::domainToResponse)
+                .collect(Collectors.toList()));
         model.addAttribute(ATTRIBUTE_PRODUCT, request);
-        return "update_product";
+        model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Update Product");
+        model.addAttribute(ATTRIBUTE_CONTENT, "admin/add_update_product");
+        model.addAttribute("action", "/admin/update");
+        return ADMIN_BASE;
     }
 
     @PostMapping("/update")
