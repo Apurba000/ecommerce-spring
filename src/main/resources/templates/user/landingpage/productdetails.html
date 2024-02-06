@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <div class="card mb-4 shadow-sm">
+                <img th:src="${product.getImageUrl()}" class="card-img-top" alt="Product Image" style = "max-width: 300px; height: 500px;">
+                <div class="card-body">
+                    <h5 th:utext="'Product Name: <b>' + ${product.getName()} + '</b>'" class="card-title"></h5>
+                    <p th:utext="'Unit Price: <b>' + ${product.getUnitPrice()} + '</b>'" class="card-text"></p>
+                    <p th:utext="'Category: <b>' + ${product.categories[0].categoryName} + '</b>'" class="card-text"></p>
+                    <p th:utext="'Description: <b>' + ${product.getDescription()} + '</b>'" class="card-text"></p>
+                    <form action="/landingpage/add-to-cart" method="POST">
+                        <input type="hidden" name="productId" th:value="${product.getId()}">
+                        <div class="input-group mb-3">
+                            <div class="p-1">
+                                <input type="number" name="quantity" class="form-control" placeholder="Quantity" min="1" required>
+                            </div>
+                            <div class="p-1 input-group-append">
+                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+</div>

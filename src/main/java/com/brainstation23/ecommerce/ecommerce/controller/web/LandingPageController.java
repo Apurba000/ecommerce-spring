@@ -14,10 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,6 +38,13 @@ public class LandingPageController {
         model.addAttribute(ATTRIBUTE_CART_ITEM, cartItemCreateRequest);
         return "user/base";
     };
+    @GetMapping("/{id}")
+    public String getProductDetails(@PathVariable UUID id, Model model) {
+        Product product = productService.getOne(id);
+        model.addAttribute("product", product);
+        model.addAttribute("content", "user/landingpage/productdetails");
+        return "user/base";
+    }
 
     @PostMapping("/add-to-cart")
     public String addToCart(@ModelAttribute("cartItem") CartItemCreateRequest cartItemCreateRequest) {
