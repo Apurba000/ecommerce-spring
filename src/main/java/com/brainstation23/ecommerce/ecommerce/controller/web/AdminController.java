@@ -1,5 +1,6 @@
 package com.brainstation23.ecommerce.ecommerce.controller.web;
 
+import com.brainstation23.ecommerce.ecommerce.mapper.CategoryMapper;
 import com.brainstation23.ecommerce.ecommerce.mapper.ProductMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateUpdateRequest;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,6 +29,7 @@ public class AdminController {
     private final ProductService productService;
     private final ProductMapper productMapper;
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @GetMapping
     public String adminBoard(Model model) {
@@ -44,8 +47,10 @@ public class AdminController {
     @GetMapping("/addnewproduct")
     public String addProduct(Model model) {
         ProductCreateUpdateRequest productCreateRequest = new ProductCreateUpdateRequest();
-        var categories = categoryService.getAllCategory();
-        model.addAttribute("categories", categories);
+        var categories = categoryService.getAll();
+        model.addAttribute("categories", categories.stream()
+                .map(categoryMapper::domainToResponse)
+                .collect(Collectors.toList()));
         model.addAttribute(ATTRIBUTE_PRODUCT, productCreateRequest);
         return "new_product";
     }
@@ -61,7 +66,7 @@ public class AdminController {
         Product product = productService.getOne(id);
         ProductCreateUpdateRequest request = productMapper.domainToRequest(product);
         request.buildCateGoryStr();
-        var categories = categoryService.getAllCategory();
+        var categories = categoryService.getAll();
         model.addAttribute("categories", categories);
         model.addAttribute(ATTRIBUTE_PRODUCT, request);
         return "update_product";

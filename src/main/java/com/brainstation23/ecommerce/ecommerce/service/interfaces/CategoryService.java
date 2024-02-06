@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface CategoryService {
     Page<Category> getAll(Pageable pageable);
-    List<CategoryEntity> getAllCategory();
+    List<Category> getAll();
     Category getOne(UUID id);
     UUID createOne(CategoryCreateRequest createRequest);
     void updateOne(UUID id, CategoryUpdateRequest updateRequest);

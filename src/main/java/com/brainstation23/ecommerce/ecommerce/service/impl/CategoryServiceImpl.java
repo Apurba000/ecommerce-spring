@@ -12,10 +12,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,8 +34,11 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<CategoryEntity> getAllCategory() {
-        return categoryRepository.findAll();
+    public List<Category> getAll() {
+        List<CategoryEntity> entities =  categoryRepository.findAll();
+        return entities.stream()
+                .map(categoryMapper::entityToDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
