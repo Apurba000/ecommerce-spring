@@ -18,10 +18,10 @@ public class ProductCreateUpdateRequest {
     private BigDecimal unitPrice;
     private String description;
     private String imageUrl;
-    private String categoryStr;
+    private String cateGoryId;
     private List<CategoryEntity> categories;
-    public void buildCateGoryStr(){
-        this.categoryStr = (categories == null || categories.isEmpty()) ?
-                "No Category Found" : categories.get(0).getCategoryName();
-    }
+//    public void buildCateGoryStr(){
+//        this.categoryStr = (categories == null || categories.isEmpty()) ?
+//                "No Category Found" : categories.get(0).getCategoryName();
+//    }
 }

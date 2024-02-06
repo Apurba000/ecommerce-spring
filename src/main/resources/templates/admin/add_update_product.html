@@ -8,8 +8,8 @@
         <input type="text" th:field="*{description}" placeholder="Product Description">
         <input type="text" th:field="*{unitPrice}" placeholder="Product Price">
         <input type="text" th:field="*{imageUrl}" placeholder="Product Image">
-        <select th:field="*{categoryStr}">
-            <option th:each="category : ${categories}" th:value="${category.getCategoryName()}" th:text="${category.getCategoryName()}"></option>
+        <select th:field="*{cateGoryId}">
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
         </select>
         <button type="submit" >Save Product</button>
     </form>

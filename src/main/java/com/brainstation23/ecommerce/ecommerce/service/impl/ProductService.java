@@ -51,14 +51,14 @@ public class ProductService {
     }
 
     private ProductEntity getProductEntity(ProductCreateUpdateRequest request){
-        var categoryStr = request.getCategoryStr();
+        var cateGoryId = request.getCateGoryId();
         Set<CategoryEntity> categories = new HashSet<>();
 
         var productEntity = productMapper.requestToEntity(request);
-        if (StringUtils.isEmpty(categoryStr)){
+        if (StringUtils.isEmpty(cateGoryId)){
             throw new NotFoundException(CATEGORY_CANT_BE_EMPTY);
         } else {
-            CategoryEntity category = categoryRepository.findByCategoryName(categoryStr)
+            CategoryEntity category = categoryRepository.findById(UUID.fromString(cateGoryId))
                     .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_FOUND));
             categories.add(category);
         }
