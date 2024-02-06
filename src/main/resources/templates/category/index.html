@@ -1,0 +1,22 @@
+<div class="container mt-5">
+    <a class="mr-3 btn btn-primary" th:href="@{/admin/categories/addnew}">Create</a>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Category Name</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category:${category_list}">
+            <td th:text="${category.categoryName}"></td>
+            <td>
+
+                <a class="mr-3 btn btn-secondary" th:href="@{/admin/categories/update/{id}(id=${category.id})}">Update</a>
+
+                <a class="ml-3 btn btn-danger" th:href="@{/admin/categories/delete/{id}(id=${category.id})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
