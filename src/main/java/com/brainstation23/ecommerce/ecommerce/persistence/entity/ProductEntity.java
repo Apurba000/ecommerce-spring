@@ -41,7 +41,7 @@ public class ProductEntity {
 
     @NonNull
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 255, message = "Product IMAGE URL Too large")
     private String imageUrl;
 
     @ManyToMany(fetch = FetchType.LAZY)

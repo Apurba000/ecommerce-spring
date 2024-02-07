@@ -35,7 +35,6 @@ public class CartItemEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @NotBlank
     private int quantity;
 
     @CreatedDate
