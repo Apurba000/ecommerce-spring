@@ -28,7 +28,7 @@ public class CartItemEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = ColumnConstant.PRODUCT_ID)
+    @JoinColumn(name = "product_id")
     private ProductEntity product;
 
     @ManyToOne(fetch = FetchType.LAZY)
