@@ -11,8 +11,8 @@
                 <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
             </div>
             <!-- Edit Button -->
-            <a th:href="@{/userupdateanddetails/update/{id}(id=${user.id})}" class="btn btn-primary">Update</a>
-            <a th:href="@{/userupdateanddetails/passwordchange/{id}(id=${user.id})}" class="btn btn-danger">Change Password</a>
+            <a th:href="@{/userdetails/update}" class="btn btn-primary">Update</a>
+            <a th:href="@{/userdetails/passwordchange}" class="btn btn-danger">Change Password</a>
         </div>
     </div>
 </div>
