@@ -73,4 +73,8 @@ public class UserEntity {
 
     @OneToMany(mappedBy="user")
     private List<CartItemEntity> cartItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<OrderEntity> orders = new ArrayList<>();
+
 }

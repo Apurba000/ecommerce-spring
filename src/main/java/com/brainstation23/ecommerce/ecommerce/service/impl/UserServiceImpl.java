@@ -3,10 +3,12 @@ package com.brainstation23.ecommerce.ecommerce.service.impl;
 import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException;
 import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.User;
+import com.brainstation23.ecommerce.ecommerce.model.dto.user.ChangePasswordRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserSignInRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
+import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.RoleEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.RoleRepository;
@@ -16,13 +18,13 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -31,6 +33,9 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService{
     private static final String USER_NOT_FOUND = "User Not Found";
     private static final String INVALID_CRED = "Invalid Credentials!";
+    private static final String WRONG_PASSWORD = "Wrong Password";
+    private static final String PASSWORD_NOT_MATCH = "Password Not Matched";
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
@@ -72,11 +77,23 @@ public class UserServiceImpl implements UserService{
                 .setLastname(updateRequest.getLastname())
                 .setUsername(updateRequest.getUsername())
                 .setEmail(updateRequest.getEmail())
-                .setPassword(updateRequest.getPassword())
                 .setPhone(updateRequest.getPhone())
-                .setRoles(updateRequest.getRoles())
-                .setAddress(updateRequest.getAddress())
-                .setCartItems(updateRequest.getCartItems());
+                .setAddress(updateRequest.getAddress());
+        userRepository.save(entity);
+    }
+
+    @Override
+    public void changePassword(UUID id, ChangePasswordRequest changePasswordRequest) {
+        var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        if(!Objects.equals(entity.getPassword(), changePasswordRequest.getOldPassword()))
+        {
+            throw new RuntimeException(WRONG_PASSWORD);
+        }
+        if(!Objects.equals(changePasswordRequest.getConfirmPassword(), changePasswordRequest.getNewPassword()))
+        {
+            throw new RuntimeException(PASSWORD_NOT_MATCH);
+        }
+        entity.setPassword(changePasswordRequest.getConfirmPassword());
         userRepository.save(entity);
     }
 
@@ -93,6 +110,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity getSessionUser() {
         return (UserEntity) httpSession.getAttribute("user");
+    }
+
+    @Override
+    public List<OrderEntity> getAllOrdersByUser(UUID userId) {
+        var entity = userRepository.findById(userId).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        return entity.getOrders();
     }
 
     private UserEntity temporarySignIn(UserSignInRequest signInRequest){
