@@ -15,12 +15,12 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/userupdateanddetails")
+@RequestMapping("/usedetails")
 public class UserUpdateAndDetailsController {
     private final UserService userService;
     private static final String USER_NOT_FOUND = "User Not Found";
     private static final String ATTRIBUTE_USER = "user";
-    private static final String REDIRECT_USER = "redirect:/userupdateanddetails/{id}";
+    private static final String REDIRECT_USER = "redirect:/usedetails/{id}";
     @GetMapping("/{userId}")
     public String getUserDetails(@PathVariable UUID userId, Model model) {
         User user = userService.getOne(userId);
@@ -41,7 +41,7 @@ public class UserUpdateAndDetailsController {
     @PostMapping("/update")
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) UserUpdateRequest userUpdateRequest) {
         userService.updateOne(userUpdateRequest.getId(),userUpdateRequest);
-        return "redirect:/userupdateanddetails/"+userUpdateRequest.getId();
+        return "redirect:/usedetails/"+userUpdateRequest.getId();
     }
 
     @GetMapping("/passwordchange/{userId}")
@@ -55,13 +55,14 @@ public class UserUpdateAndDetailsController {
     @PostMapping("/updatepassword")
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) ChangePasswordRequest passwordChangeRequest) {
         userService.changePassword(passwordChangeRequest.getId(),passwordChangeRequest);
-        return "redirect:/userupdateanddetails/"+passwordChangeRequest.getId();
+        return "redirect:/usedetails/"+passwordChangeRequest.getId();
     }
 
-    @GetMapping("/getorders/{userId}")
-    public String getOrdersByUserId(@PathVariable UUID userId, Model model)
+    @GetMapping("/getorders")
+    public String getOrdersByUserId(Model model)
     {
-        var orders = userService.getAllOrdersByUser(userId);
+        var currentUser = userService.getSessionUser();
+        var orders = userService.getAllOrdersByUser(currentUser.getId());
         model.addAttribute("pageTitle", "Orders");
         model.addAttribute("order_list", orders);
         model.addAttribute("content", "user/order/index");
