@@ -69,4 +69,13 @@ public class CartController {
         return "redirect:/user/cart";
     }
 
+    @PostMapping("/place_order")
+    public String placeOrder() {
+        UserEntity userSession = userService.getSessionUser();
+        User user = userService.getOne(userSession.getId());
+        var cartItemList = user.getCartItems();
+
+        return "redirect:/user/cart";
+    }
+
 }
