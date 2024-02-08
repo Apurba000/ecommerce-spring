@@ -30,8 +30,9 @@ public class OrderEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = ColumnConstant.PRODUCT_ID)
+    @JoinColumn(name = "user_id")
     private UserEntity user;
+
 
     @Column(name = ColumnConstant.TOTAL_AMOUNT)
     private BigDecimal totalAmount;

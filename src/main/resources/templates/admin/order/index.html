@@ -1,0 +1,36 @@
+<div class="container mt-5">
+    <div class="container mt-5">
+        <h1>Process Orders</h1>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Total Amount</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${order_list}">
+                <form id="orderStatusForm" action="/admin/orders/changeOrderStatus" th:object="${orderUpdateRequest}" method="post">
+                    <input name="id" type="hidden" th:value="${order.id}" >
+                    <td th:text="${order.totalAmount}"></td>
+                    <td th:text="${order.orderDate}"></td>
+                    <td>
+                        <select name="status" class="form-control">
+                            <option th:each="status : ${T(com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus).values()}"
+                                    th:value="${status}"
+                                    th:selected="${status == order.status}"
+                                    th:text="${status}">
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-sm update-btn">Update</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

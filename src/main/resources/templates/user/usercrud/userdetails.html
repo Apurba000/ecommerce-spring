@@ -1,0 +1,18 @@
+<!-- User Details Page HTML -->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mt-5">User Details</h1>
+            <div class="mt-3">
+                <p><strong>First Name:</strong> <span th:text="${user.firstname}"></span></p>
+                <p><strong>Last Name:</strong> <span th:text="${user.lastname}"></span></p>
+                <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+                <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
+            </div>
+            <!-- Edit Button -->
+            <a th:href="@{/userupdateanddetails/update/{id}(id=${user.id})}" class="btn btn-primary">Update</a>
+            <a th:href="@{/userupdateanddetails/passwordchange/{id}(id=${user.id})}" class="btn btn-danger">Change Password</a>
+        </div>
+    </div>
+</div>
