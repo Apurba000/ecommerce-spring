@@ -54,7 +54,7 @@ public class LandingPageController {
 
         cartItemCreateRequest.setUser(user);
         cartItemService.createOne(cartItemCreateRequest);
-        return "redirect:/landingpage";
+        return "redirect:/user/cart";
     }
 
     private Pageable getDefaultProductPage() {
