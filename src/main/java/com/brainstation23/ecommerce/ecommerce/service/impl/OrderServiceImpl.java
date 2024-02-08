@@ -66,4 +66,11 @@ public class OrderServiceImpl implements OrderService{
     public void deleteOne(UUID id) {
         orderRepository.deleteById(id);
     }
+
+    @Override
+    public void updateOrderStatus(UUID id, OrderStatus orderStatus) {
+        var order = orderRepository.findById(id).orElseThrow(()->new NotFoundException(ORDER_NOT_FOUND));
+        order.setStatus(orderStatus);
+        orderRepository.save(order);
+    }
 }

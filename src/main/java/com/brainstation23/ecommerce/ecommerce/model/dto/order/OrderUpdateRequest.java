@@ -11,18 +11,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderUpdateRequest {
-    @NotNull
+    private UUID id;
     private UserEntity user;
-    @NotEmpty
     private BigDecimal totalAmount;
-    @NotEmpty
     private OrderStatus status;
-    @NotEmpty
     private AddressEntity deliveryAddress;
 }
