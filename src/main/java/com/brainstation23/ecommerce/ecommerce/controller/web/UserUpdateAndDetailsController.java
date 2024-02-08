@@ -15,12 +15,13 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/usedetails")
+@RequestMapping(UserUpdateAndDetailsController.USER_DETAILS)
 public class UserUpdateAndDetailsController {
     private final UserService userService;
+    public static final String USER_DETAILS = "/userdetails";
     private static final String USER_NOT_FOUND = "User Not Found";
     private static final String ATTRIBUTE_USER = "user";
-    private static final String REDIRECT_USER = "redirect:/usedetails/{id}";
+    private static final String REDIRECT_USER = "redirect:/useretails/{id}";
     @GetMapping("/{userId}")
     public String getUserDetails(@PathVariable UUID userId, Model model) {
         User user = userService.getOne(userId);
@@ -41,7 +42,7 @@ public class UserUpdateAndDetailsController {
     @PostMapping("/update")
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) UserUpdateRequest userUpdateRequest) {
         userService.updateOne(userUpdateRequest.getId(),userUpdateRequest);
-        return "redirect:/usedetails/"+userUpdateRequest.getId();
+        return "redirect:/USER_DETAILS/"+userUpdateRequest.getId();
     }
 
     @GetMapping("/passwordchange/{userId}")
@@ -55,7 +56,7 @@ public class UserUpdateAndDetailsController {
     @PostMapping("/updatepassword")
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) ChangePasswordRequest passwordChangeRequest) {
         userService.changePassword(passwordChangeRequest.getId(),passwordChangeRequest);
-        return "redirect:/usedetails/"+passwordChangeRequest.getId();
+        return "redirect:/USER_DETAILS/"+passwordChangeRequest.getId();
     }
 
     @GetMapping("/getorders")
@@ -68,5 +69,4 @@ public class UserUpdateAndDetailsController {
         model.addAttribute("content", "user/order/index");
         return "user/base";
     }
-
 }
