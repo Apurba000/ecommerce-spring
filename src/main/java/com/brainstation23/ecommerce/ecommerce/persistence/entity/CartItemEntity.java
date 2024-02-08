@@ -28,10 +28,13 @@ public class CartItemEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = ColumnConstant.PRODUCT_ID)
+    @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @NotBlank
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
     private int quantity;
 
     @CreatedDate

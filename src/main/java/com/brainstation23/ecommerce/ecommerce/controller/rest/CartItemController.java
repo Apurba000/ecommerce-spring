@@ -1,9 +1,8 @@
 package com.brainstation23.ecommerce.ecommerce.controller.rest;
 
 import com.brainstation23.ecommerce.ecommerce.mapper.CartItemMapper;
-import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemResponse;
-import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.CartItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,7 +46,7 @@ public class CartItemController {
 
     @Operation(summary = "Creating New Single Cart Item")
     @PostMapping
-    public ResponseEntity<Void> createOne(@RequestBody @Valid CartItemCreateRequest createRequest) {
+    public ResponseEntity<Void> createOne(@RequestBody @Valid CartItemCreateUpdateRequest createRequest) {
         log.info("Creating a Cart Item: {} ", createRequest);
         var id = cartItemService.createOne(createRequest);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
@@ -57,9 +56,9 @@ public class CartItemController {
     @Operation(summary = "Update Single Cart Item")
     @PutMapping("{id}")
     public ResponseEntity<Void> updateOne(@PathVariable UUID id,
-                                          @RequestBody @Valid CartItemUpdateRequest updateRequest) {
+                                          @RequestBody @Valid CartItemCreateUpdateRequest updateRequest) {
         log.info("Updating a Cart Item({}): {} ", id, updateRequest);
-        cartItemService.updateOne(id, updateRequest);
+        cartItemService.updateOne(updateRequest);
         return ResponseEntity.noContent().build();
     }
 

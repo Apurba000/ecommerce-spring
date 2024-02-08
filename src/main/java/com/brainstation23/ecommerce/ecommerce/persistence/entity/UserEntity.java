@@ -71,9 +71,6 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ADDRESS_ID))
     private List<AddressEntity> address = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = EntityConstant.USER_CARTS,
-            joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
-            inverseJoinColumns = @JoinColumn(name = ColumnConstant.CART_ITEM_ID))
+    @OneToMany(mappedBy="user")
     private List<CartItemEntity> cartItems = new ArrayList<>();
 }

@@ -29,19 +29,19 @@ public class ProductEntity {
 
     @NonNull
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 50, message = "Product Name Max 50 Characters")
     private String name;
 
     private BigDecimal unitPrice;
 
     @NonNull
     @NotBlank
-    @Size(max = 200)
+    @Size(max = 200, message = "Product DESCRIPTION Max 200 Characters")
     private String description;
 
     @NonNull
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 255, message = "Product IMAGE URL Too large")
     private String imageUrl;
 
     @ManyToMany(fetch = FetchType.LAZY)

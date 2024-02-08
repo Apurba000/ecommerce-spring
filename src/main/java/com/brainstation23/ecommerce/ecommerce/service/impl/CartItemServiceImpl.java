@@ -3,8 +3,7 @@ package com.brainstation23.ecommerce.ecommerce.service.impl;
 import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException;
 import com.brainstation23.ecommerce.ecommerce.mapper.CartItemMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.CartItem;
-import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateRequest;
-import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemUpdateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CartItemEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.ProductEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.CartItemRepository;
@@ -36,23 +35,40 @@ public class CartItemServiceImpl implements CartItemService{
 
     @Override
     public CartItem getOne(UUID id) {
-        var entity =  cartItemRepository.findById(id).orElseThrow(()->new NotFoundException(CART_ITEM_NOT_FOUND));
+        var entity =  cartItemRepository.findById(id)
+                .orElseThrow(()->new NotFoundException(CART_ITEM_NOT_FOUND));
         return cartItemMapper.entityToDomain(entity);
     }
 
     @Override
-    public UUID createOne(CartItemCreateRequest createRequest) {
-        var entity = new CartItemEntity();
-        entity.setProduct(getProduct(createRequest.getProductId()))
-                .setDate(getCurrentTimeStamp())
-                .setQuantity(createRequest.getQuantity());
-        var createdEntity = cartItemRepository.save(entity);
-        return createdEntity.getId();
+    public UUID createOne(CartItemCreateUpdateRequest createRequest) {
+        if (createRequest.getQuantity() == 0) createRequest.setQuantity(1); // Default Quantity 1
+
+        var optional = cartItemRepository.findByProductIdAndUserId(createRequest.getProductId()
+                , createRequest.getUser().getId());
+        if (optional.isPresent()){
+            var entity = optional.get();
+            entity.setProduct(getProduct(createRequest.getProductId()))
+                    .setDate(getCurrentTimeStamp())
+                    .setQuantity(createRequest.getQuantity());
+            cartItemRepository.save(entity);
+           return entity.getId();
+        } else {
+            var entity = new CartItemEntity();
+            entity.setProduct(getProduct(createRequest.getProductId()))
+                    .setDate(getCurrentTimeStamp())
+                    .setQuantity(createRequest.getQuantity())
+                    .setUser(createRequest.getUser());
+            var createdEntity = cartItemRepository.save(entity);
+            return createdEntity.getId();
+        }
     }
 
+
     @Override
-    public void updateOne(UUID id, CartItemUpdateRequest updateRequest) {
-        var entity = cartItemRepository.findById(id).orElseThrow(()->new NotFoundException(CART_ITEM_NOT_FOUND));
+    public void updateOne(CartItemCreateUpdateRequest updateRequest) {
+        var entity = cartItemRepository.findById(updateRequest.getId())
+                .orElseThrow(()->new NotFoundException(CART_ITEM_NOT_FOUND));
         entity.setProduct(getProduct(updateRequest.getProductId()))
                 .setDate(updateRequest.getDate())
                 .setQuantity(updateRequest.getQuantity());
@@ -64,12 +80,11 @@ public class CartItemServiceImpl implements CartItemService{
         cartItemRepository.deleteById(id);
     }
 
-    private ProductEntity getProduct(UUID id)
-    {
-        return productRepository.findById(id).orElseThrow(()->new NotFoundException("No Product Found"));
+    private ProductEntity getProduct(UUID id) {
+        return productRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("No Product Found"));
     }
-    private Timestamp getCurrentTimeStamp()
-    {
+    private Timestamp getCurrentTimeStamp() {
         return new Timestamp(System.currentTimeMillis());
     }
 }

@@ -1,0 +1,31 @@
+<div class="container mt-5">
+    <h1>This is your cart</h1>
+
+    <table class="table table-bordered" >
+        <thead>
+        <tr>
+            <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item: ${cart_items}">
+            <img th:src="${item.getProduct().imageUrl}" class="card-img-top" alt="Product Image" style="max-width: 200px; height: 300px;">
+            <td th:text="${item.product.name}"> </td>
+            <td th:text="${item.quantity}"> </td>
+            <td th:text="${item.product.unitPrice}"> </td>
+<!--            <td th:text="${product.name}"></td>-->
+<!--            <td th:text="${product.description}"></td>-->
+<!--            <td th:text="${product.unitPrice}"></td>-->
+<!--            <td th:text="${product.imageUrl}"></td>-->
+<!--            <td th:text="${product.categoriesStr()}"></td>-->
+            <td> <a class="mr-3 btn btn-secondary" th:href="@{/}">Update</a>
+            <td> <a class="ml-3 btn btn-danger" th:href="@{/}">Delete</a>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary m-1" th:href="@{${previousUrl}}"> Go Back </a>
+</div>

@@ -13,6 +13,8 @@ import org.springframework.data.annotation.CreatedDate;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -45,4 +47,7 @@ public class OrderEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = ColumnConstant.DELIVERY_ADDRESS_ID)
     private AddressEntity deliveryAddress;
+
+    @OneToMany(mappedBy="order")
+    private Set<OrderItemEntity> items = new HashSet<>();
 }

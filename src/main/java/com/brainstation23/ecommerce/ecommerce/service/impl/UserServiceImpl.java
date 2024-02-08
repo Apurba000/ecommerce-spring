@@ -4,6 +4,7 @@ import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException
 import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.User;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserCreateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserSignInRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.RoleEntity;
@@ -11,8 +12,11 @@ import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.RoleRepository;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.UserRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,9 +30,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private static final String USER_NOT_FOUND = "User Not Found";
+    private static final String INVALID_CRED = "Invalid Credentials!";
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
+    private final HttpSession httpSession;
 
     @Override
     public Page<User> getAll(Pageable pageable) {
@@ -77,5 +83,27 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteOne(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserEntity signIn(UserSignInRequest signInRequest) {
+        return temporarySignIn(signInRequest);
+    }
+
+    @Override
+    public UserEntity getSessionUser() {
+        return (UserEntity) httpSession.getAttribute("user");
+    }
+
+    private UserEntity temporarySignIn(UserSignInRequest signInRequest){
+        UserEntity user = (UserEntity) httpSession.getAttribute("user");
+        if (user == null) user = userRepository.findByUsername(signInRequest.getUsername())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+
+        if (!StringUtils.equals(user.getPassword(), signInRequest.getPassword()))
+            throw new NotFoundException(INVALID_CRED);
+
+        httpSession.setAttribute("user", user);
+        return user;
     }
 }

@@ -1,5 +1,6 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.cartItem;
 
+import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,9 +16,12 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItemCreateRequest {
+public class CartItemCreateUpdateRequest {
+    private UUID id;
     private UUID productId;
     @NotEmpty
     private int quantity;
     private Timestamp date;
+
+    private UserEntity user;
 }
