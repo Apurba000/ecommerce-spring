@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserUpdateAndDetailsController {
     private final UserService userService;
     public static final String USER_DETAILS = "/userdetails";
-    private static final String USER_NOT_FOUND = "User Not Found";
     private static final String ATTRIBUTE_USER = "user";
     private static final String REDIRECT_USER = "redirect:/useretails";
     @GetMapping
@@ -40,7 +39,7 @@ public class UserUpdateAndDetailsController {
     @PostMapping("/update")
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) UserUpdateRequest userUpdateRequest) {
         userService.updateOne(userUpdateRequest.getId(),userUpdateRequest);
-        return "redirect:/USER_DETAILS/"+userUpdateRequest.getId();
+        return REDIRECT_USER;
     }
 
     @GetMapping("/passwordchange")
@@ -55,7 +54,7 @@ public class UserUpdateAndDetailsController {
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) ChangePasswordRequest passwordChangeRequest) {
         var user = userService.getSessionUser();
         userService.changePassword(user.getId(),passwordChangeRequest);
-        return "redirect:/USER_DETAILS";
+        return REDIRECT_USER;
     }
 
     @GetMapping("/getorders")
