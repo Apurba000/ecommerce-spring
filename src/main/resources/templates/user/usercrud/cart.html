@@ -34,6 +34,10 @@
     <div><h3>Total :  <span th:text="${cart.calculateTotal()}"/> </h3>
     </div>
 
+    <form th:action="@{/user/cart/place_order}" method="POST">
+        <button type="submit" class="btn btn-primary"> Place Order</button>
+    </form>
+
     <a class="btn btn-primary m-1" th:href="@{${previousUrl}}"> Go Back </a>
-    <a class="btn btn-primary m-1" th:href="@{/user/cart/place_order}"> Place Order </a>
+
 </div>

@@ -26,11 +26,11 @@ public class AddressEntity {
     private UUID id;
 
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 255, message = "Address Details max size 255 characters")
     private String details;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 20, message = "Address Zip code max 20 characters")
     @Column(name = ColumnConstant.ZIP_CODE)
     private String zipCode;
 }

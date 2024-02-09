@@ -1,11 +1,12 @@
 package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
-import com.brainstation23.ecommerce.ecommerce.constant.ColumnConstant;
 import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,7 +24,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = EntityConstant.CART_ITEM)
 public class CartItemEntity {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
