@@ -28,7 +28,7 @@ public class OrderItemEntity {
     private BigDecimal unitPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = ColumnConstant.ORDER_ID)
+    @JoinColumn(name = "order_id")
     private OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY)

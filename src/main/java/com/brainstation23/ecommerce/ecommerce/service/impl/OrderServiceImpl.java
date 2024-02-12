@@ -13,6 +13,7 @@ import com.brainstation23.ecommerce.ecommerce.persistence.entity.AddressEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderItemEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
+import com.brainstation23.ecommerce.ecommerce.persistence.repository.OrderItemRepository;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.OrderRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -62,10 +63,19 @@ public class OrderServiceImpl implements OrderService{
                 .setUser(userEntity)
                 .setTotalAmount(createRequest.getTotalAmount())
                 .setDeliveryAddress(addressEntity)
-                .setStatus(OrderStatus.PENDING)
-                .setItems(orderItemEntities);
+                .setStatus(OrderStatus.PENDING);
         var createdEntity = orderRepository.save(entity);
+
+         createOrderItems(createdEntity, orderItemEntities);
         return createdEntity.getId();
+    }
+
+    private void createOrderItems(OrderEntity orderEntity, Set<OrderItemEntity> orderItemEntities){
+        for (OrderItemEntity itemEntity : orderItemEntities){
+            itemEntity.setOrder(orderEntity);
+            orderEntity.getItems().add(itemEntity);
+        }
+        orderRepository.save(orderEntity);
     }
 
     @Override
