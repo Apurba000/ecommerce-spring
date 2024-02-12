@@ -15,7 +15,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangePasswordRequest {
-    private UUID id;
     @NotEmpty
     private String oldPassword;
     @NotEmpty

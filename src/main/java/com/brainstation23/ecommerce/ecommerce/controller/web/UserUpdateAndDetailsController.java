@@ -1,6 +1,5 @@
 package com.brainstation23.ecommerce.ecommerce.controller.web;
 
-import com.brainstation23.ecommerce.ecommerce.model.domain.User;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.ChangePasswordRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,20 +17,19 @@ import java.util.UUID;
 public class UserUpdateAndDetailsController {
     private final UserService userService;
     public static final String USER_DETAILS = "/userdetails";
-    private static final String USER_NOT_FOUND = "User Not Found";
     private static final String ATTRIBUTE_USER = "user";
-    private static final String REDIRECT_USER = "redirect:/useretails/{id}";
-    @GetMapping("/{userId}")
-    public String getUserDetails(@PathVariable UUID userId, Model model) {
-        User user = userService.getOne(userId);
+    private static final String REDIRECT_USER = "redirect:/useretails";
+    @GetMapping
+    public String getUserDetails(Model model) {
+        var user = userService.getSessionUser();
         model.addAttribute(ATTRIBUTE_USER, user);
         model.addAttribute("pageTitle", "User Details");
         model.addAttribute("content", "user/usercrud/userdetails");
         return "user/base";
     }
-    @GetMapping("/update/{userId}")
-    public String updateUser(@PathVariable UUID userId, Model model) {
-        User user = userService.getOne(userId);
+    @GetMapping("/update")
+    public String updateUser( Model model) {
+        var user = userService.getSessionUser();
         model.addAttribute(ATTRIBUTE_USER, user);
         model.addAttribute("pageTitle", "Update User");
         model.addAttribute("content", "user/usercrud/update_user");
@@ -42,21 +39,22 @@ public class UserUpdateAndDetailsController {
     @PostMapping("/update")
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) UserUpdateRequest userUpdateRequest) {
         userService.updateOne(userUpdateRequest.getId(),userUpdateRequest);
-        return "redirect:/USER_DETAILS/"+userUpdateRequest.getId();
+        return REDIRECT_USER;
     }
 
-    @GetMapping("/passwordchange/{userId}")
-    public String passwordChange(@PathVariable UUID userId, Model model) {
-        var user = userService.getOne(userId);
+    @GetMapping("/passwordchange")
+    public String passwordChange(Model model) {
+        var currentUser = userService.getSessionUser();;
         model.addAttribute("pageTitle", "Change Password");
-        model.addAttribute("id", user.getId());
+        model.addAttribute("id", currentUser.getId());
         model.addAttribute("content", "user/usercrud/changepass");
         return "user/base";
     }
     @PostMapping("/updatepassword")
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) ChangePasswordRequest passwordChangeRequest) {
-        userService.changePassword(passwordChangeRequest.getId(),passwordChangeRequest);
-        return "redirect:/USER_DETAILS/"+passwordChangeRequest.getId();
+        var user = userService.getSessionUser();
+        userService.changePassword(user.getId(),passwordChangeRequest);
+        return REDIRECT_USER;
     }
 
     @GetMapping("/getorders")
