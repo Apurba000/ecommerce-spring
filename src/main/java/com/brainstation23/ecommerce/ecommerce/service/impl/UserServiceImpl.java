@@ -113,6 +113,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void clearCart(UUID userId) {
+        var entity = userRepository.findById(userId)
+                .orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        entity.getCartItems().clear();
+        userRepository.save(entity);
+    }
+
+    @Override
     public UserEntity signIn(UserSignInRequest signInRequest) {
         return temporarySignIn(signInRequest);
     }

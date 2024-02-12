@@ -38,7 +38,7 @@
 
     <form th:action="@{/user/cart/place_order}" th:object="${deliveryAddress}" method="POST">
         <select id="addressId" th:field="*{id}">
-            <option value="" selected disabled hidden>Select Delivery Address</option>
+            <option th:if="${addressList == null || addressList.isEmpty()}" th:value="null">No delivery address found!</option>
             <option th:each="address : ${addressList}" th:value="${address.id}" th:text="${address.details}"></option>
         </select>
 
@@ -46,8 +46,6 @@
 
         <button type="submit" class="btn btn-primary"> Place Order </button>
     </form>
-
-
 
 
 

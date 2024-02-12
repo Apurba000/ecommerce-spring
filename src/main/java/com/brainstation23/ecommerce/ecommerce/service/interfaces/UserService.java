@@ -23,4 +23,5 @@ public interface UserService {
     UserEntity signIn(UserSignInRequest signInRequest);
     UserEntity getSessionUser();
     List<OrderEntity> getAllOrdersByUser(UUID userId);
+    void clearCart(UUID userId);
 }
