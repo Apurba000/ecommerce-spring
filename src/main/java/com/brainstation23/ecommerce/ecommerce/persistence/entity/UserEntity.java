@@ -69,7 +69,7 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ROLE_ID))
     private Set<RoleEntity> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cascade({ PERSIST, REFRESH, MERGE, DETACH})
     @JoinTable(  name = EntityConstant.USER_ADDRESSES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),

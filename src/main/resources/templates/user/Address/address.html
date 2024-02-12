@@ -1,0 +1,28 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-3">
+
+        </div>
+        <div class="col-6">
+            <h1 th:text="${pageTitle}">Add/Edit Address</h1>
+            <form th:action="@{/user/addresses/save}" method="post" class="mt-3">
+                <input type="hidden" name="previousUrl" th:value="${previousUrl}">
+                <input type="hidden" name="id" th:value="${address.id}"> <!-- Add hidden input for address ID -->
+
+                <div class="m-1 form-group">
+                    <label for="details">Details:</label>
+                    <input type="text" class="form-control" id="details" name="details" th:value="${address.details}" maxlength="255" required>
+                </div>
+                <div class="m-1 form-group">
+                    <label for="zipCode">Zip code:</label>
+                    <input type="text" class="form-control" id="zipCode" name="zipCode" th:value="${address.zipCode}" maxlength="20" required>
+                </div>
+                <button type="submit" class="m-1 btn btn-primary">Submit</button>
+                <a th:href="@{${previousUrl}}" class="m-1 btn btn-danger">Cancel</a>
+            </form>
+        </div>
+        <div class="col-3">
+
+        </div>
+    </div>
+</div>
