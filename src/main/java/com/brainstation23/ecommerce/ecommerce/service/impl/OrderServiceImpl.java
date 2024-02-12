@@ -47,6 +47,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Order getOne(UUID id) {
         var entity = orderRepository.findById(id).orElseThrow(()->new NotFoundException(ORDER_NOT_FOUND));
+        entity.getItems().size();
         return orderMapper.entityToDomain(entity);
     }
 

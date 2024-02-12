@@ -1,22 +1,24 @@
 <div class="container mt-5">
-    <div class="container mt-5">
-        <h1>All Orders</h1>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th scope="col">Total Amount</th>
-                <th scope="col">Order Date</th>
-                <th scope="col">Status</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr th:each="order : ${order_list}">
-                    <input name="id" type="hidden" th:value="${order.id}" >
-                    <td th:text="${order.totalAmount}"></td>
-                    <td th:text="${order.orderDate}"></td>
-                    <td th:text="${order.status}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h1>All Orders</h1>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Total Amount</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${order_list}">
+            <input name="id" type="hidden" th:value="${order.id}">
+            <td th:text="${order.totalAmount}"></td>
+            <td th:text="${order.orderDate}"></td>
+            <td th:text="${order.status}"></td>
+            <td> <!-- Action column -->
+                <a th:href="@{/user/getOrder/{orderId}(orderId=${order.id})}" class="btn btn-primary">Order Details</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>

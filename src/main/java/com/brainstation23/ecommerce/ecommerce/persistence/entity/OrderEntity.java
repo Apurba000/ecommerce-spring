@@ -56,7 +56,7 @@ public class OrderEntity {
     @JoinColumn(name = ColumnConstant.DELIVERY_ADDRESS_ID)
     private AddressEntity deliveryAddress;
 
-    @OneToMany(mappedBy = "order", orphanRemoval = true)
+    @OneToMany(mappedBy = "order", orphanRemoval = true, fetch = FetchType.EAGER)
     @Cascade({ALL})
     private Set<OrderItemEntity> items = new HashSet<>();
 }
