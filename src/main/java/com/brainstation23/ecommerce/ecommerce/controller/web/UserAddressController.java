@@ -35,7 +35,8 @@ public class UserAddressController {
     @GetMapping
     public String getUserAddresses(Model model) {
         var user = userService.getSessionUser();
-        var addresses = user.getAddress();
+        var getUser = userService.getOne(user.getId());
+        var addresses = getUser.getAddress();
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "UserAddresses");
         model.addAttribute("addresses", addresses); // Change to "addresses" instead of "user_addresses"
         model.addAttribute(ATTRIBUTE_CONTENT, "user/address/index");
