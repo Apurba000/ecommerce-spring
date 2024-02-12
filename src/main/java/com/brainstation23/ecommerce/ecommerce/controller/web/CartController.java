@@ -106,6 +106,8 @@ public class CartController {
 
         User user = userService.getOne(userSession.getId());
 
+        if (user.getCartItems().isEmpty()) throw new NotFoundException("Cart is Empty!");
+
         placeOrder(deliveryAddress, user);
 
         userService.clearCart(user.getId());
