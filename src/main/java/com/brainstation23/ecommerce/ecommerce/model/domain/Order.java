@@ -1,6 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.model.domain;
 
 import com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus;
+import com.brainstation23.ecommerce.ecommerce.persistence.entity.AddressEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderItemEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,6 @@ public class Order {
     private Timestamp orderDate;
 
     private OrderStatus status;
+    private AddressEntity deliveryAddress;
     private Set<OrderItemEntity> items;
 }

@@ -52,7 +52,7 @@ public class OrderEntity {
     @Column(columnDefinition = "VARCHAR(50)")
     private OrderStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = ColumnConstant.DELIVERY_ADDRESS_ID)
     private AddressEntity deliveryAddress;
 

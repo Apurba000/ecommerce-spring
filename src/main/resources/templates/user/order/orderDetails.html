@@ -15,6 +15,11 @@
 
                 <dt class="col-sm-3">Status</dt>
                 <dd class="col-sm-9" th:text="${order.status}"></dd>
+                <dt class="col-sm-3">Delivery Address</dt>
+                <dd class="col-sm-9">
+                    <span th:text="${order.deliveryAddress.details}"></span><br>
+                    <span th:text="${order.deliveryAddress.zipCode}"></span>
+                </dd>
             </dl>
         </div>
     </div>
