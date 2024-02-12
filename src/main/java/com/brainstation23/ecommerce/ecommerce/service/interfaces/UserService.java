@@ -9,19 +9,29 @@ import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     Page<User> getAll(Pageable pageable);
+
     User getOne(UUID id);
+
     UUID createOne(UserCreateRequest createRequest);
+
     void updateOne(UUID id, UserUpdateRequest updateRequest);
+
     void changePassword(UUID id, ChangePasswordRequest changePasswordRequest);
+
     void deleteOne(UUID id);
+
     UserEntity signIn(UserSignInRequest signInRequest);
+
     UserEntity getSessionUser();
+
     List<OrderEntity> getAllOrdersByUser(UUID userId);
+
     void clearCart(UUID userId);
 }
