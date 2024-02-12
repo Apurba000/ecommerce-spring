@@ -1,5 +1,6 @@
 package com.brainstation23.ecommerce.ecommerce.controller.web;
 
+import com.brainstation23.ecommerce.ecommerce.constant.OtherConstants;
 import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException;
 import com.brainstation23.ecommerce.ecommerce.mapper.CartItemMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Address;
@@ -10,10 +11,7 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.Cart;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
-import com.brainstation23.ecommerce.ecommerce.service.interfaces.AddressService;
-import com.brainstation23.ecommerce.ecommerce.service.interfaces.CartItemService;
-import com.brainstation23.ecommerce.ecommerce.service.interfaces.OrderService;
-import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -51,17 +49,21 @@ public class CartController {
     private final OrderService orderService;
 
     private final AddressService addressService;
-
+    private final UserStatus userStatus;
 
     @GetMapping
     public String allCartItems(@RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer, Model model) {
+        userStatus.loginStatus(model);
         String redirectUrl = "/landingpage";
         model.addAttribute("previousUrl", redirectUrl);
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Cart");
         model.addAttribute(ATTRIBUTE_CONTENT, "user/usercrud/cart");
 
         UserEntity userSession = userService.getSessionUser();
-        if (userSession == null) throw new NotFoundException("Please Log in First");
+        if (userSession == null)
+        {
+            return OtherConstants.signIn;
+        };
 
         User user = userService.getOne(userSession.getId());
         var cartItemList = user.getCartItems();

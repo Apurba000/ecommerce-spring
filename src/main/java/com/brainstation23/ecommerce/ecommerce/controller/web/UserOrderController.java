@@ -1,6 +1,9 @@
 package com.brainstation23.ecommerce.ecommerce.controller.web;
 
+import com.brainstation23.ecommerce.ecommerce.constant.OtherConstants;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.OrderService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -17,10 +20,17 @@ import java.util.UUID;
 @RequestMapping("/user/getOrder")
 public class UserOrderController {
     private final OrderService orderService;
-
+    private final UserStatus userStatus;
+    private UserService userService;
     @GetMapping("{orderId}")
     public String getOrderByOrderId(@PathVariable UUID orderId, Model model)
     {
+        var user = userService.getSessionUser();
+        if (user == null)
+        {
+            return OtherConstants.signIn;
+        };
+        userStatus.loginStatus(model);
         var order = orderService.getOne(orderId);
         model.addAttribute("pageTitle", "Order Details");
         model.addAttribute("order", order);

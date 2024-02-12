@@ -1,6 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.controller.web;
 
 
+import com.brainstation23.ecommerce.ecommerce.constant.OtherConstants;
 import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException;
 import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Address;
@@ -9,6 +10,7 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.AddressService;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +30,7 @@ public class UserAddressController {
     private static final String USER_BASE = "user/base";
     private static final String ATTRIBUTE_PAGE_TITLE = "pageTitle";
     private static final String ATTRIBUTE_CONTENT = "content";
+    private final UserStatus userStatus;
 
     private final UserService userService;
     private final UserMapper userMapper;
@@ -35,6 +38,11 @@ public class UserAddressController {
     @GetMapping
     public String getUserAddresses(Model model) {
         var user = userService.getSessionUser();
+        if (user == null)
+        {
+            return OtherConstants.signIn;
+        };
+        userStatus.loginStatus(model);
         var getUser = userService.getOne(user.getId());
         var addresses = getUser.getAddress();
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "UserAddresses");
@@ -47,6 +55,12 @@ public class UserAddressController {
     @GetMapping("/addorupdate")
     public String addressForm(@RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer,
                               @RequestParam(name = "id", required = false) UUID addressId, Model model) {
+        var user = userService.getSessionUser();
+        if (user == null)
+        {
+            return OtherConstants.signIn;
+        };
+        userStatus.loginStatus(model);
         String redirectUrl = (referrer == null) ? "/landingpage" : referrer;
         model.addAttribute("previousUrl", redirectUrl);
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Add/Edit Address");
@@ -66,8 +80,11 @@ public class UserAddressController {
     @PostMapping("/save")
     public String saveAddress(@ModelAttribute("previousUrl") String redirectUrl, @ModelAttribute Address address) {
         log.info("Address Entered : " + address.getDetails());
-        UserEntity userEntity = userService.getSessionUser();
-        if (userEntity == null) throw new NotFoundException("Please Log in first");
+        var userEntity = userService.getSessionUser();
+        if (userEntity == null)
+        {
+            return OtherConstants.signIn;
+        };
 
         User user = userService.getOne(userEntity.getId());
         List<Address> addresses = user.getAddress() == null ? new ArrayList<>() : user.getAddress();
@@ -91,8 +108,10 @@ public class UserAddressController {
     @GetMapping("/delete/{id}")
     public String deleteAddress(@PathVariable UUID id) {
         UserEntity userEntity = userService.getSessionUser();
-        if (userEntity == null) throw new NotFoundException("Please Log in first");
-
+        if (userEntity == null)
+        {
+            return OtherConstants.signIn;
+        };
         User user = userService.getOne(userEntity.getId());
         List<Address> addresses = user.getAddress();
 
