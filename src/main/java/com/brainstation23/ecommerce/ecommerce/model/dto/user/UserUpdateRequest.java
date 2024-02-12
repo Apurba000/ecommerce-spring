@@ -1,5 +1,6 @@
 package com.brainstation23.ecommerce.ecommerce.model.dto.user;
 
+import com.brainstation23.ecommerce.ecommerce.model.domain.Address;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.AddressEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.CartItemEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.RoleEntity;
@@ -38,5 +39,5 @@ public class UserUpdateRequest {
     @Size(max = 20)
     private String phone;
     @NotEmpty
-    private List<AddressEntity> address = new ArrayList<>();
+    private List<Address> address = new ArrayList<>();
 }

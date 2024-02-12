@@ -8,8 +8,10 @@ import com.brainstation23.ecommerce.ecommerce.model.domain.OrderItem;
 import com.brainstation23.ecommerce.ecommerce.model.domain.User;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.Cart;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateUpdateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemResponse;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.AddressService;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.CartItemService;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.OrderService;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
@@ -49,6 +51,8 @@ public class CartController {
 
     private final OrderService orderService;
 
+    private final AddressService addressService;
+
 
     @GetMapping
     public String allCartItems(@RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer, Model model) {
@@ -66,7 +70,20 @@ public class CartController {
 
         Cart cart = new Cart().setCartItemList(cartItemResponseList);
         model.addAttribute(CART_ATTRIBUTE, cart);
+        model.addAttribute("total", calculateTotal(cartItemList));
+        model.addAttribute("addressList", user.getAddress());
+        model.addAttribute("deliveryAddress", new Address());
         return USER_BASE;
+    }
+
+    private BigDecimal calculateTotal(List<CartItem> cartItemList){
+        BigDecimal total = BigDecimal.ZERO;
+        for (CartItem item : cartItemList){
+            BigDecimal unitPrice = item.getProduct().getUnitPrice();
+            int quantity = item.getQuantity();
+            total = total.add(unitPrice.multiply(BigDecimal.valueOf(quantity)));
+        }
+        return total;
     }
 
     @PostMapping("/update")
@@ -83,21 +100,24 @@ public class CartController {
     }
 
     @PostMapping("/place_order")
-    public String placeOrder() {
+    public String placeOrder(@ModelAttribute Address deliveryAddress) {
         UserEntity userSession = userService.getSessionUser();
 
         User user = userService.getOne(userSession.getId());
         var cartItemList = user.getCartItems();
 
         Set<OrderItem> orderItems = getOrderItems(cartItemList);
-        Address dummyAddress = getDummyDeliveryAddress();
+
+        deliveryAddress = addressService.getOne(deliveryAddress.getId());
+
+//        Address dummyAddress = getDummyDeliveryAddress();
 
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest();
         orderCreateRequest
                 .setUser(user)
                 .setItems(orderItems)
-                .setDeliveryAddress(dummyAddress)
-                .setTotalAmount(BigDecimal.valueOf(1200));
+                .setDeliveryAddress(deliveryAddress)
+                .setTotalAmount(calculateTotal(cartItemList));
 
         orderService.createOne(orderCreateRequest);
 

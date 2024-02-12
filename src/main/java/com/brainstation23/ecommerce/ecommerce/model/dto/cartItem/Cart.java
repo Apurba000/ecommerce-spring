@@ -19,13 +19,13 @@ public class Cart {
 
     private List<CartItemResponse> cartItemList;
 
-    public BigDecimal calculateTotal(){
-        BigDecimal total = BigDecimal.ZERO;
-        for (CartItemResponse item : cartItemList){
-            BigDecimal unitPrice = item.getProduct().getUnitPrice();
-            int quantity = item.getQuantity();
-            total = total.add(unitPrice.multiply(BigDecimal.valueOf(quantity)));
-        }
-        return total;
-    }
+//    public BigDecimal calculateTotal(){
+//        BigDecimal total = BigDecimal.ZERO;
+//        for (CartItemResponse item : cartItemList){
+//            BigDecimal unitPrice = item.getProduct().getUnitPrice();
+//            int quantity = item.getQuantity();
+//            total = total.add(unitPrice.multiply(BigDecimal.valueOf(quantity)));
+//        }
+//        return total;
+//    }
 }

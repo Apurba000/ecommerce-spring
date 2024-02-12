@@ -53,7 +53,6 @@ public class OrderEntity {
     private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade({ PERSIST, REFRESH, MERGE})
     @JoinColumn(name = ColumnConstant.DELIVERY_ADDRESS_ID)
     private AddressEntity deliveryAddress;
 

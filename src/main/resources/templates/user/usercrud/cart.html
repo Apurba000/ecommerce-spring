@@ -31,12 +31,25 @@
         </tbody>
     </table>
 
-    <div><h3>Total :  <span th:text="${cart.calculateTotal()}"/> </h3>
+    <div><h3>Total :  <span th:text="${total}"/> </h3>
     </div>
 
-    <form th:action="@{/user/cart/place_order}" method="POST">
-        <button type="submit" class="btn btn-primary"> Place Order</button>
+
+
+    <form th:action="@{/user/cart/place_order}" th:object="${deliveryAddress}" method="POST">
+        <select id="addressId" th:field="*{id}">
+            <option value="" selected disabled hidden>Select Delivery Address</option>
+            <option th:each="address : ${addressList}" th:value="${address.id}" th:text="${address.details}"></option>
+        </select>
+
+        <a class="btn btn-primary" th:href="@{/user/address/add}">Add Address</a>
+
+        <button type="submit" class="btn btn-primary"> Place Order </button>
     </form>
+
+
+
+
 
     <a class="btn btn-primary m-1" th:href="@{${previousUrl}}"> Go Back </a>
 

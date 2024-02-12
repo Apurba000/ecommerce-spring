@@ -63,14 +63,14 @@ public class UserEntity {
     @Size(max = 255)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(  name = EntityConstant.USER_ROLES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ROLE_ID))
     private Set<RoleEntity> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @Cascade({ PERSIST, REFRESH, MERGE})
+    @Cascade({ PERSIST, REFRESH, MERGE, DETACH})
     @JoinTable(  name = EntityConstant.USER_ADDRESSES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ADDRESS_ID))
