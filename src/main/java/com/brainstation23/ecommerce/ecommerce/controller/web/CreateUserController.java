@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/user")
-public class OpenUserController {
+public class CreateUserController {
     private static final String ATTRIBUTE_PAGE_TITLE = "pageTitle";
     private static final String ATTRIBUTE_USER = "user";
     private static final String ATTRIBUTE_CONTENT = "content";
@@ -32,7 +32,7 @@ public class OpenUserController {
         return USER_BASE;
     }
     @PostMapping("/save")
-    public String saveProduct(@ModelAttribute(ATTRIBUTE_USER) UserCreateRequest userCreateRequest) {
+    public String saveUser(@ModelAttribute(ATTRIBUTE_USER) UserCreateRequest userCreateRequest) {
         //String encodedPassword = passwordEncoder.encode(userCreateRequest.getPassword());
         // Set the encrypted password back to the userCreateRequest
         //userCreateRequest.setPassword(encodedPassword);

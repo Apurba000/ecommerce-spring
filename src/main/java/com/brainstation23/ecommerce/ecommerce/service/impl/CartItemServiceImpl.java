@@ -48,9 +48,8 @@ public class CartItemServiceImpl implements CartItemService{
                 , createRequest.getUser().getId());
         if (optional.isPresent()){
             var entity = optional.get();
-            entity.setProduct(getProduct(createRequest.getProductId()))
-                    .setDate(getCurrentTimeStamp())
-                    .setQuantity(createRequest.getQuantity());
+            entity.setDate(getCurrentTimeStamp())
+                    .setQuantity(entity.getQuantity() + createRequest.getQuantity());
             cartItemRepository.save(entity);
            return entity.getId();
         } else {
@@ -69,8 +68,7 @@ public class CartItemServiceImpl implements CartItemService{
     public void updateOne(CartItemCreateUpdateRequest updateRequest) {
         var entity = cartItemRepository.findById(updateRequest.getId())
                 .orElseThrow(()->new NotFoundException(CART_ITEM_NOT_FOUND));
-        entity.setProduct(getProduct(updateRequest.getProductId()))
-                .setDate(updateRequest.getDate())
+        entity.setDate(updateRequest.getDate())
                 .setQuantity(updateRequest.getQuantity());
         cartItemRepository.save(entity);
     }

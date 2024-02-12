@@ -11,10 +11,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
 import java.util.*;
+
+import static org.hibernate.annotations.CascadeType.*;
+import static org.hibernate.annotations.CascadeType.MERGE;
 
 
 @Entity
@@ -59,18 +63,25 @@ public class UserEntity {
     @Size(max = 255)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(  name = EntityConstant.USER_ROLES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ROLE_ID))
     private Set<RoleEntity> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade({ PERSIST, REFRESH, MERGE, DETACH})
     @JoinTable(  name = EntityConstant.USER_ADDRESSES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ADDRESS_ID))
     private List<AddressEntity> address = new ArrayList<>();
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", orphanRemoval = true)
+    @Cascade(ALL)
     private List<CartItemEntity> cartItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @Cascade(ALL)
+    private List<OrderEntity> orders = new ArrayList<>();
+
 }

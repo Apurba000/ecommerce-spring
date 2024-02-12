@@ -45,7 +45,7 @@ public class ProductEntity {
     private String imageUrl;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @Cascade({ PERSIST, REFRESH, MERGE, DETACH})
+    @Cascade({ PERSIST, REFRESH, MERGE})
     @JoinTable(  name = "product_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))

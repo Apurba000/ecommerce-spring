@@ -3,6 +3,7 @@ package com.brainstation23.ecommerce.ecommerce.service.interfaces;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Order;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderUpdateRequest;
+import com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,4 +15,5 @@ public interface OrderService {
     UUID createOne(OrderCreateRequest createRequest);
     void updateOne(UUID id, OrderUpdateRequest updateRequest);
     void deleteOne(UUID id);
+    void updateOrderStatus(UUID id, OrderStatus orderStatus);
 }

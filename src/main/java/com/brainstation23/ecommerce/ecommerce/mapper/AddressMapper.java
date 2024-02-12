@@ -9,4 +9,5 @@ import org.mapstruct.Mapper;
 public interface AddressMapper {
     Address entityToDomain(AddressEntity entity);
     AddressResponse domainToResponse(Address address);
+    AddressEntity domainToEntity(Address address);
 }

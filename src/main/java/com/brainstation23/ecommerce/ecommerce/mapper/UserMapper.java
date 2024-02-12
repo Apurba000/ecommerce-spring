@@ -9,4 +9,5 @@ import org.mapstruct.Mapper;
 public interface UserMapper {
     User entityToDomain(UserEntity entity);
     UserResponse domainToResponse(User user);
+    UserEntity domainToEntity(User user);
 }
