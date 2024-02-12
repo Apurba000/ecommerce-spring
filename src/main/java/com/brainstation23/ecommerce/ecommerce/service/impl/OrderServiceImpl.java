@@ -6,6 +6,7 @@ import com.brainstation23.ecommerce.ecommerce.mapper.OrderItemMapper;
 import com.brainstation23.ecommerce.ecommerce.mapper.OrderMapper;
 import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.Order;
+import com.brainstation23.ecommerce.ecommerce.model.domain.OrderItem;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.enums.OrderStatus;
@@ -55,8 +56,6 @@ public class OrderServiceImpl implements OrderService{
     public UUID createOne(OrderCreateRequest createRequest) {
         UserEntity userEntity = userMapper.domainToEntity(createRequest.getUser());
         AddressEntity addressEntity = addressMapper.domainToEntity(createRequest.getDeliveryAddress());
-        Set<OrderItemEntity> orderItemEntities = createRequest.getItems().stream()
-                .map(orderItemMapper::domainToEntity).collect(Collectors.toSet());
 
         var entity = new OrderEntity();
         entity.setOrderDate(Timestamp.from(Instant.now()))
@@ -66,14 +65,15 @@ public class OrderServiceImpl implements OrderService{
                 .setStatus(OrderStatus.PENDING);
         var createdEntity = orderRepository.save(entity);
 
-         createOrderItems(createdEntity, orderItemEntities);
+         createOrderItems(createdEntity, createRequest.getItems());
         return createdEntity.getId();
     }
 
-    private void createOrderItems(OrderEntity orderEntity, Set<OrderItemEntity> orderItemEntities){
-        for (OrderItemEntity itemEntity : orderItemEntities){
-            itemEntity.setOrder(orderEntity);
-            orderEntity.getItems().add(itemEntity);
+    private void createOrderItems(OrderEntity orderEntity, Set<OrderItem> orderItems){
+        for (OrderItem item : orderItems){
+            OrderItemEntity entity = orderItemMapper.domainToEntity(item);
+            entity.setOrder(orderEntity);
+            orderEntity.getItems().add(entity);
         }
         orderRepository.save(orderEntity);
     }

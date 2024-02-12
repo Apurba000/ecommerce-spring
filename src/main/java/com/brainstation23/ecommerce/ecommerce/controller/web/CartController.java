@@ -8,7 +8,6 @@ import com.brainstation23.ecommerce.ecommerce.model.domain.OrderItem;
 import com.brainstation23.ecommerce.ecommerce.model.domain.User;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.Cart;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateUpdateRequest;
-import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemResponse;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.AddressService;
@@ -76,9 +75,9 @@ public class CartController {
         return USER_BASE;
     }
 
-    private BigDecimal calculateTotal(List<CartItem> cartItemList){
+    private BigDecimal calculateTotal(List<CartItem> cartItemList) {
         BigDecimal total = BigDecimal.ZERO;
-        for (CartItem item : cartItemList){
+        for (CartItem item : cartItemList) {
             BigDecimal unitPrice = item.getProduct().getUnitPrice();
             int quantity = item.getQuantity();
             total = total.add(unitPrice.multiply(BigDecimal.valueOf(quantity)));
@@ -101,16 +100,23 @@ public class CartController {
 
     @PostMapping("/place_order")
     public String placeOrder(@ModelAttribute Address deliveryAddress) {
+        if (deliveryAddress.getId() == null) throw new NotFoundException("Please Select Delivery Address First");
+
         UserEntity userSession = userService.getSessionUser();
 
         User user = userService.getOne(userSession.getId());
+
+        placeOrder(deliveryAddress, user);
+
+        userService.clearCart(user.getId());
+
+        return "redirect:" + USER_DETAILS + "/getorders";
+    }
+
+    private void placeOrder(Address deliveryAddress, User user){
         var cartItemList = user.getCartItems();
-
         Set<OrderItem> orderItems = getOrderItems(cartItemList);
-
         deliveryAddress = addressService.getOne(deliveryAddress.getId());
-
-//        Address dummyAddress = getDummyDeliveryAddress();
 
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest();
         orderCreateRequest
@@ -120,13 +126,11 @@ public class CartController {
                 .setTotalAmount(calculateTotal(cartItemList));
 
         orderService.createOne(orderCreateRequest);
-
-        return "redirect:" + USER_DETAILS + "/getorders";
     }
 
-    private Set<OrderItem> getOrderItems(List<CartItem> cartItems){
+    private Set<OrderItem> getOrderItems(List<CartItem> cartItems) {
         Set<OrderItem> orderItems = new HashSet<>();
-        for (CartItem cartItem : cartItems){
+        for (CartItem cartItem : cartItems) {
             OrderItem orderItem = new OrderItem();
 
             orderItem.setProduct(cartItem.getProduct())
@@ -137,11 +141,4 @@ public class CartController {
         }
         return orderItems;
     }
-
-    private Address getDummyDeliveryAddress(){
-        return new Address()
-                .setDetails("This is Dummy Address Details")
-                .setZipCode("Dummy Zip Code");
-    }
-
 }
