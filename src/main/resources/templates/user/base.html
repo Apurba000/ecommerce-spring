@@ -16,22 +16,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li class="nav-item" th:if="${isLoggedIn}">
                     <a class="nav-link active" aria-current="page" th:href="@{/userdetails}">Profile</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/userdetails/getorders}">all Orders</a>
+                <li class="nav-item" th:if="${isLoggedIn}">
+                    <a class="nav-link" th:href="@{/userdetails/getorders}">All Orders</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" th:if="${isLoggedIn}">
                     <a class="nav-link" th:href="@{/user/cart}">Cart</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
+                <!-- Additional navigation items -->
             </ul>
         </div>
-        <a class="btn btn-primary m-1" th:href="@{/user/create}">SignUp</a>
-        <a class="btn btn-secondary m-1" th:href="@{/user/sign-in-form}">Login</a>
+        <a class="btn btn-primary m-1" th:href="@{/user/create}" th:unless="${isLoggedIn}">SignUp</a>
+        <a class="btn btn-secondary m-1" th:href="@{/user/sign-in-form}" th:unless="${isLoggedIn}">Login</a>
     </div>
 </nav>
 <div class="mt-5" id="content" th:replace="${content}"></div>

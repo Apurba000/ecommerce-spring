@@ -1,8 +1,10 @@
 package com.brainstation23.ecommerce.ecommerce.controller.web;
 
+import com.brainstation23.ecommerce.ecommerce.constant.OtherConstants;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.ChangePasswordRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,9 +21,15 @@ public class UserUpdateAndDetailsController {
     public static final String USER_DETAILS = "/userdetails";
     private static final String ATTRIBUTE_USER = "user";
     private static final String REDIRECT_USER = "redirect:/useretails";
+    private final UserStatus userStatus;
     @GetMapping
     public String getUserDetails(Model model) {
         var user = userService.getSessionUser();
+        if (user == null)
+        {
+            return OtherConstants.signIn;
+        };
+        userStatus.loginStatus(model);
         model.addAttribute(ATTRIBUTE_USER, user);
         model.addAttribute("pageTitle", "User Details");
         model.addAttribute("content", "user/usercrud/userdetails");
@@ -30,6 +38,11 @@ public class UserUpdateAndDetailsController {
     @GetMapping("/update")
     public String updateUser( Model model) {
         var user = userService.getSessionUser();
+        if (user == null)
+        {
+            return OtherConstants.signIn;
+        };
+        userStatus.loginStatus(model);
         model.addAttribute(ATTRIBUTE_USER, user);
         model.addAttribute("pageTitle", "Update User");
         model.addAttribute("content", "user/usercrud/update_user");
@@ -44,9 +57,14 @@ public class UserUpdateAndDetailsController {
 
     @GetMapping("/passwordchange")
     public String passwordChange(Model model) {
-        var currentUser = userService.getSessionUser();;
+        var user = userService.getSessionUser();
+        if (user == null)
+        {
+            return OtherConstants.signIn;
+        };
+        userStatus.loginStatus(model);
         model.addAttribute("pageTitle", "Change Password");
-        model.addAttribute("id", currentUser.getId());
+        model.addAttribute("id", user.getId());
         model.addAttribute("content", "user/usercrud/changepass");
         return "user/base";
     }
@@ -61,6 +79,11 @@ public class UserUpdateAndDetailsController {
     public String getOrdersByUserId(Model model)
     {
         var currentUser = userService.getSessionUser();
+        if (currentUser == null)
+        {
+            return OtherConstants.signIn;
+        };
+        userStatus.loginStatus(model);
         var orders = userService.getAllOrdersByUser(currentUser.getId());
         model.addAttribute("pageTitle", "Orders");
         model.addAttribute("order_list", orders);

@@ -42,7 +42,7 @@
             <option th:each="address : ${addressList}" th:value="${address.id}" th:text="${address.details}"></option>
         </select>
 
-        <a class="btn btn-primary" th:href="@{/user/address/add}">Add Address</a>
+        <a class="btn btn-primary" th:href="@{/user/addresses/addorupdate}">Add Address</a>
 
         <button type="submit" class="btn btn-primary"> Place Order </button>
     </form>

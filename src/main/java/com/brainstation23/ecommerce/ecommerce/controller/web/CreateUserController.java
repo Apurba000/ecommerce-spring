@@ -3,6 +3,7 @@ package com.brainstation23.ecommerce.ecommerce.controller.web;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserSignInRequest;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -18,13 +19,14 @@ public class CreateUserController {
     private static final String ATTRIBUTE_PAGE_TITLE = "pageTitle";
     private static final String ATTRIBUTE_USER = "user";
     private static final String ATTRIBUTE_CONTENT = "content";
-
+    private final UserStatus userStatus;
     private static final String USER_BASE = "user/base";
     private final UserService userService;
     //private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/create")
     public String createUser(Model model) {
+        userStatus.loginStatus(model);
         UserCreateRequest userCreateRequest = new UserCreateRequest();
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "New User");
         model.addAttribute(ATTRIBUTE_CONTENT, "user/usercrud/create");
@@ -42,6 +44,7 @@ public class CreateUserController {
 
     @GetMapping("/sign-in-form")
     public String signInFrom(@RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer, Model model) {
+        userStatus.loginStatus(model);
         String redirectUrl = (referrer == null) ? "/landingpage" : referrer;
         model.addAttribute("previousUrl", redirectUrl);
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Sign In");
