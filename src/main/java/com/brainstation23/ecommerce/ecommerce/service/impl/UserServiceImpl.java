@@ -1,6 +1,7 @@
 package com.brainstation23.ecommerce.ecommerce.service.impl;
 
 import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException;
+import com.brainstation23.ecommerce.ecommerce.mapper.AddressMapper;
 import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.User;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.ChangePasswordRequest;
@@ -8,6 +9,7 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserSignInRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
+import com.brainstation23.ecommerce.ecommerce.persistence.entity.AddressEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.RoleEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
@@ -21,11 +23,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,6 +44,8 @@ public class UserServiceImpl implements UserService{
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final HttpSession httpSession;
+
+    private final AddressMapper addressMapper;
 
     @Override
     public Page<User> getAll(Pageable pageable) {
@@ -71,14 +77,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public void updateOne(UUID id, UserUpdateRequest updateRequest) {
         var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        List<AddressEntity> addressEntities = updateRequest.getAddress().stream()
+                .map(addressMapper::domainToEntity).collect(Collectors.toList());
+
         entity.setFirstname(updateRequest.getFirstname())
                 .setLastname(updateRequest.getLastname())
                 .setUsername(updateRequest.getUsername())
                 .setEmail(updateRequest.getEmail())
                 .setPhone(updateRequest.getPhone())
-                .setAddress(updateRequest.getAddress());
+                .setAddress(addressEntities);
         userRepository.save(entity);
     }
 

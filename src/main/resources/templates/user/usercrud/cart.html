@@ -11,21 +11,46 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item: ${cart_items}">
-            <img th:src="${item.getProduct().imageUrl}" class="card-img-top" alt="Product Image" style="max-width: 200px; height: 300px;">
-            <td th:text="${item.product.name}"> </td>
-            <td th:text="${item.quantity}"> </td>
-            <td th:text="${item.product.unitPrice}"> </td>
-<!--            <td th:text="${product.name}"></td>-->
-<!--            <td th:text="${product.description}"></td>-->
-<!--            <td th:text="${product.unitPrice}"></td>-->
-<!--            <td th:text="${product.imageUrl}"></td>-->
-<!--            <td th:text="${product.categoriesStr()}"></td>-->
-            <td> <a class="mr-3 btn btn-secondary" th:href="@{/}">Update</a>
-            <td> <a class="ml-3 btn btn-danger" th:href="@{/}">Delete</a>
+        <tr th:each="item: ${cart.cartItemList}">
+            <form th:action="@{/user/cart/update}" method="POST">
+                <input type="hidden" name="id" th:value="${item.id}">
+                <td> <img th:src="${item.product.imageUrl}" class="card-img-top" alt="Product Image" style="max-width: 70px; height: 70px;"> </td>
+                <td th:text="${item.product.name}"> </td>
+                <td> <input type="number" name="quantity" th:value="${item.quantity}" class="form-control" min="1" required> </td>
+                <td th:text="${item.product.unitPrice}"> </td>
+                <td>
+                    <div class="input-group mb-3">
+                        <div>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </td>
+            </form>
+            <td> <a class="ml-3 btn btn-danger" th:href="@{/user/cart/delete/{id}(id=${item.id})}">Delete</a>
         </tr>
         </tbody>
     </table>
 
+    <div><h3>Total :  <span th:text="${total}"/> </h3>
+    </div>
+
+
+
+    <form th:action="@{/user/cart/place_order}" th:object="${deliveryAddress}" method="POST">
+        <select id="addressId" th:field="*{id}">
+            <option value="" selected disabled hidden>Select Delivery Address</option>
+            <option th:each="address : ${addressList}" th:value="${address.id}" th:text="${address.details}"></option>
+        </select>
+
+        <a class="btn btn-primary" th:href="@{/user/address/add}">Add Address</a>
+
+        <button type="submit" class="btn btn-primary"> Place Order </button>
+    </form>
+
+
+
+
+
     <a class="btn btn-primary m-1" th:href="@{${previousUrl}}"> Go Back </a>
+
 </div>
