@@ -21,10 +21,15 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,12 +49,16 @@ public class UserServiceImpl implements UserService{
     private static final String WRONG_PASSWORD = "Wrong Password";
     private static final String PASSWORD_NOT_MATCH = "Password Not Matched";
 
+    private static final String SESSION_USER_ATTRIBUTE = "user";
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final HttpSession httpSession;
 
     private final AddressMapper addressMapper;
+
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Page<User> getAll(Pageable pageable) {
@@ -73,11 +82,17 @@ public class UserServiceImpl implements UserService{
                 .setLastname(createRequest.getLastname())
                 .setUsername(createRequest.getUsername())
                 .setEmail(createRequest.getEmail())
-                .setPassword(createRequest.getPassword())
+                .setPassword(getEncryptedPassword(createRequest.getPassword()))
                 .setPhone(createRequest.getPhone())
                 .setRoles(roles);
         var createdEntity = userRepository.save(entity);
         return createdEntity.getId();
+    }
+
+    private String getEncryptedPassword(String rawPassword){
+        if (passwordEncoder == null)
+            passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(rawPassword);
     }
 
     @Override
@@ -99,15 +114,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public void changePassword(UUID id, ChangePasswordRequest changePasswordRequest) {
         var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
-        if(!Objects.equals(entity.getPassword(), changePasswordRequest.getOldPassword()))
-        {
-            throw new RuntimeException(WRONG_PASSWORD);
-        }
-        if(!Objects.equals(changePasswordRequest.getConfirmPassword(), changePasswordRequest.getNewPassword()))
-        {
-            throw new RuntimeException(PASSWORD_NOT_MATCH);
-        }
-        entity.setPassword(changePasswordRequest.getConfirmPassword());
+        String oldPassEntered = changePasswordRequest.getOldPassword();
+        String oldPassEncoded = entity.getPassword();
+        if (!passwordEncoder.matches(oldPassEntered, oldPassEncoded)) throw new NotFoundException(INVALID_CRED);
+
+        String newPassword = changePasswordRequest.getNewPassword();
+        String confirmedPassword = changePasswordRequest.getConfirmPassword();
+        if (!StringUtils.equals(newPassword, confirmedPassword)) throw new NotFoundException(PASSWORD_NOT_MATCH);
+
+        entity.setPassword(getEncryptedPassword(newPassword));
         userRepository.save(entity);
     }
 
@@ -125,6 +140,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void logOut() {
+        httpSession.setAttribute(SESSION_USER_ATTRIBUTE, null);
+    }
+
+    @Override
     public JwtUserDetails loadUserByUsername(String username){
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_USERNAME + username));
@@ -139,8 +159,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserEntity getSessionUser() {
-        return (UserEntity) httpSession.getAttribute("user");
+        return (UserEntity) httpSession.getAttribute(SESSION_USER_ATTRIBUTE);
     }
+
 
     @Override
     public List<OrderEntity> getAllOrdersByUser(UUID userId) {
@@ -149,14 +170,15 @@ public class UserServiceImpl implements UserService{
     }
 
     private UserEntity temporarySignIn(UserSignInRequest signInRequest){
-        UserEntity user = (UserEntity) httpSession.getAttribute("user");
-        if (user == null) user = userRepository.findByUsername(signInRequest.getUsername())
+        UserEntity user = userRepository.findByUsername(signInRequest.getUsername())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        if (!StringUtils.equals(user.getPassword(), signInRequest.getPassword()))
-            throw new NotFoundException(INVALID_CRED);
+        String rawPassWord = signInRequest.getPassword();
+        String encryptedPassword = user.getPassword();
+        if (passwordEncoder == null) passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(rawPassWord, encryptedPassword)) throw new NotFoundException(INVALID_CRED);
 
-        httpSession.setAttribute("user", user);
+        httpSession.setAttribute(SESSION_USER_ATTRIBUTE, user);
         return user;
     }
 

@@ -51,6 +51,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/landingpage").permitAll()
                                 .requestMatchers("/landingpage/**").permitAll()
                                 .requestMatchers("/user/**").permitAll()
+                                .requestMatchers("/userdetails/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
