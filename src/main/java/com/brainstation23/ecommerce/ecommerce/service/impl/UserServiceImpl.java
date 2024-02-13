@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UUID createOne(UserCreateRequest createRequest) {
         var entity = new UserEntity();
-        var role = roleRepository.findByName(ERole.USER).orElseThrow(()-> new NotFoundException("ROLE NOT FOUND"));
+        var role = roleRepository.findByName(ERole.CUSTOMER).orElseThrow(()-> new NotFoundException("ROLE NOT FOUND"));
         var roles = new HashSet<RoleEntity>();
         roles.add(role);
         entity.setFirstname(createRequest.getFirstname())

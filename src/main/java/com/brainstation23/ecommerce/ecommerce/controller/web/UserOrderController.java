@@ -21,7 +21,7 @@ import java.util.UUID;
 public class UserOrderController {
     private final OrderService orderService;
     private final UserStatus userStatus;
-    private UserService userService;
+    private final UserService userService;
     @GetMapping("{orderId}")
     public String getOrderByOrderId(@PathVariable UUID orderId, Model model)
     {
