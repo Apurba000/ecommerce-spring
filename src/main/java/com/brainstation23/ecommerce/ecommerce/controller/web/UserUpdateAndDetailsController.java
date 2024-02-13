@@ -20,7 +20,7 @@ public class UserUpdateAndDetailsController {
     private final UserService userService;
     public static final String USER_DETAILS = "/userdetails";
     private static final String ATTRIBUTE_USER = "user";
-    private static final String REDIRECT_USER = "redirect:/useretails";
+    private static final String REDIRECT_USER = "redirect:/userdetails";
     private final UserStatus userStatus;
     @GetMapping
     public String getUserDetails(Model model) {
