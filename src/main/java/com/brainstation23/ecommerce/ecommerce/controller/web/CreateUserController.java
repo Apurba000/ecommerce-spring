@@ -54,4 +54,10 @@ public class CreateUserController {
         userService.signIn(signInRequest);
         return "redirect:" + redirectUrl;
     }
+    @GetMapping("/logout")
+    public String logOut()
+    {
+        userService.logOut();
+        return "redirect:/landingpage";
+    }
 }

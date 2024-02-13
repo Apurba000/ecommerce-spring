@@ -30,6 +30,7 @@
         </div>
         <a class="btn btn-primary m-1" th:href="@{/user/create}" th:unless="${isLoggedIn}">SignUp</a>
         <a class="btn btn-secondary m-1" th:href="@{/user/sign-in-form}" th:unless="${isLoggedIn}">Login</a>
+        <a class="btn btn-danger m-1" th:href="@{/user/logout}" th:unless="${!isLoggedIn}">Logout</a>
     </div>
 </nav>
 <div class="mt-5" id="content" th:replace="${content}"></div>
