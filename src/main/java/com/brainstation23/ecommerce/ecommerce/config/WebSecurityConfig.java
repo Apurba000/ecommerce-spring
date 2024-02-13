@@ -27,6 +27,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    private static final String[] WHITE_LISTED_END = {"/api/users/**", "/api/users/test"};
+
     private final UserService userService;
     private final GlobalExceptionHandler unauthorizedHandler;
     private final JwtUtils jwtUtils;
@@ -43,7 +45,7 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/**").permitAll()
+                        auth.requestMatchers(WHITE_LISTED_END).permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/admin").permitAll()
                                 .requestMatchers("/admin/**").permitAll()
