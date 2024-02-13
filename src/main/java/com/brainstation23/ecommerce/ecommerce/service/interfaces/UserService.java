@@ -17,6 +17,7 @@ import java.util.UUID;
 public interface UserService extends UserDetailsService {
     Page<User> getAll(Pageable pageable);
 
+    User getUserByUserName(String userName);
     User getOne(UUID id);
 
     UUID createOne(UserCreateRequest createRequest);
@@ -27,13 +28,8 @@ public interface UserService extends UserDetailsService {
 
     void deleteOne(UUID id);
 
-    UserEntity signIn(UserSignInRequest signInRequest);
-
-    UserEntity getSessionUser();
-
     List<OrderEntity> getAllOrdersByUser(UUID userId);
 
     void clearCart(UUID userId);
 
-    void logOut();
 }

@@ -2,50 +2,47 @@ package com.brainstation23.ecommerce.ecommerce.config;
 
 
 import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
-import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@AllArgsConstructor
+@EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
-    private final UserService userService;
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        /*return http
-                .csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("user/create").permitAll()
-                        .requestMatchers("user/save").permitAll()
-                        .requestMatchers("user/sign-in-form").permitAll()
-                        .requestMatchers("user/sign-in").permitAll()
-                        .requestMatchers("/user/cart/").hasAnyAuthority(String.valueOf(ERole.CUSTOMER))
-                        .requestMatchers("/admin/**").hasAnyAuthority(String.valueOf(ERole.ADMIN))
-                        .requestMatchers("/profile/**").authenticated()
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/user/details/**").permitAll()
+                        .requestMatchers("/user/**").hasAnyRole(String.valueOf(ERole.CUSTOMER), String.valueOf(ERole.ADMIN))
+                        .requestMatchers("/admin/**").hasAnyRole(String.valueOf(ERole.ADMIN))
                         .anyRequest().authenticated()
                 )
-                *//*.formLogin(login->
-                        login.loginPage("/login")
-                )
-                .logout(logout->logout.permitAll())*//*
-                .httpBasic(Customizer.withDefaults())
-                .userDetailsService(userService)
-                .build();*/
-        return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeRequests()
-                .anyRequest().permitAll()
-                .and()
-                .httpBasic(Customizer.withDefaults())
-                .userDetailsService(userService)
-                .build();
+                .formLogin((form) -> form
+                        .loginPage("/auth/sign-in-form")
+                        .loginProcessingUrl("/login")
+                        .permitAll()
+                );
+        http.logout(lOut -> {
+            lOut.invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/")
+                    .permitAll();
+        });
+        return http.build();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

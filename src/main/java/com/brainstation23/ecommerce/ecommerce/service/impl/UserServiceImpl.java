@@ -9,7 +9,6 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserSignInRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
-import com.brainstation23.ecommerce.ecommerce.model.security.JwtUserDetails;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.AddressEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.RoleEntity;
@@ -18,14 +17,13 @@ import com.brainstation23.ecommerce.ecommerce.persistence.repository.RoleReposit
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.UserRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,13 +33,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserServiceImpl implements UserService{
     private static final String USER_NOT_FOUND = "User Not Found";
     private static final String USER_NOT_FOUND_WITH_USERNAME = "User Not Found with username: ";
@@ -64,6 +61,12 @@ public class UserServiceImpl implements UserService{
     public Page<User> getAll(Pageable pageable) {
         var entities = userRepository.findAll(pageable);
         return entities.map(userMapper::entityToDomain);
+    }
+
+    @Override
+    public User getUserByUserName(String userName) {
+        var entity = userRepository.findByUsername(userName).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        return userMapper.entityToDomain(entity);
     }
 
     @Override
@@ -117,12 +120,9 @@ public class UserServiceImpl implements UserService{
         String oldPassEntered = changePasswordRequest.getOldPassword();
         String oldPassEncoded = entity.getPassword();
         if (!passwordEncoder.matches(oldPassEntered, oldPassEncoded)) throw new NotFoundException(INVALID_CRED);
+        if (!StringUtils.equals(changePasswordRequest.getNewPassword(), changePasswordRequest.getConfirmPassword())) throw new NotFoundException(PASSWORD_NOT_MATCH);
 
-        String newPassword = changePasswordRequest.getNewPassword();
-        String confirmedPassword = changePasswordRequest.getConfirmPassword();
-        if (!StringUtils.equals(newPassword, confirmedPassword)) throw new NotFoundException(PASSWORD_NOT_MATCH);
-
-        entity.setPassword(getEncryptedPassword(newPassword));
+        entity.setPassword(getEncryptedPassword(changePasswordRequest.getConfirmPassword()));
         userRepository.save(entity);
     }
 
@@ -140,28 +140,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void logOut() {
-        httpSession.setAttribute(SESSION_USER_ATTRIBUTE, null);
-    }
-
-    @Override
-    public JwtUserDetails loadUserByUsername(String username){
+    public UserDetails loadUserByUsername(String username){
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_USERNAME + username));
 
-        return JwtUserDetails.build(user);
+        return new org.springframework.security.core.userdetails.User(user.getUsername()
+                , user.getPassword(),
+                user.getRoles().stream()
+                        .map((role) -> new SimpleGrantedAuthority(role.getName().toString()))
+                        .collect(Collectors.toList()));
     }
-
-    @Override
-    public UserEntity signIn(UserSignInRequest signInRequest) {
-        return temporarySignIn(signInRequest);
-    }
-
-    @Override
-    public UserEntity getSessionUser() {
-        return (UserEntity) httpSession.getAttribute(SESSION_USER_ATTRIBUTE);
-    }
-
 
     @Override
     public List<OrderEntity> getAllOrdersByUser(UUID userId) {
@@ -169,17 +157,5 @@ public class UserServiceImpl implements UserService{
         return entity.getOrders();
     }
 
-    private UserEntity temporarySignIn(UserSignInRequest signInRequest){
-        UserEntity user = userRepository.findByUsername(signInRequest.getUsername())
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-
-        String rawPassWord = signInRequest.getPassword();
-        String encryptedPassword = user.getPassword();
-        if (passwordEncoder == null) passwordEncoder = new BCryptPasswordEncoder();
-        if (!passwordEncoder.matches(rawPassWord, encryptedPassword)) throw new NotFoundException(INVALID_CRED);
-
-        httpSession.setAttribute(SESSION_USER_ATTRIBUTE, user);
-        return user;
-    }
 
 }

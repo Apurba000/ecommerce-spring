@@ -37,13 +37,13 @@ public class UserAddressController {
     private final AddressService addressService;
     @GetMapping
     public String getUserAddresses(Model model) {
-        var user = userService.getSessionUser();
-        if (user == null)
+        var user = userStatus.getCurrentUser();
+        if (user.isEmpty())
         {
             return OtherConstants.signIn;
         };
         userStatus.loginStatus(model);
-        var getUser = userService.getOne(user.getId());
+        var getUser = userService.getOne(user.get().getId());
         var addresses = getUser.getAddress();
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "UserAddresses");
         model.addAttribute("addresses", addresses); // Change to "addresses" instead of "user_addresses"
@@ -55,8 +55,8 @@ public class UserAddressController {
     @GetMapping("/addorupdate")
     public String addressForm(@RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer,
                               @RequestParam(name = "id", required = false) UUID addressId, Model model) {
-        var user = userService.getSessionUser();
-        if (user == null)
+        var user = userStatus.getCurrentUser();
+        if (user.isEmpty())
         {
             return OtherConstants.signIn;
         };
@@ -80,13 +80,13 @@ public class UserAddressController {
     @PostMapping("/save")
     public String saveAddress(@ModelAttribute("previousUrl") String redirectUrl, @ModelAttribute Address address) {
         log.info("Address Entered : " + address.getDetails());
-        var userEntity = userService.getSessionUser();
-        if (userEntity == null)
+        var userEntity = userStatus.getCurrentUser();
+        if (userEntity.isEmpty())
         {
             return OtherConstants.signIn;
         };
 
-        User user = userService.getOne(userEntity.getId());
+        User user = userService.getOne(userEntity.get().getId());
         List<Address> addresses = user.getAddress() == null ? new ArrayList<>() : user.getAddress();
 
         if (address.getId() == null) {
@@ -107,12 +107,12 @@ public class UserAddressController {
 
     @GetMapping("/delete/{id}")
     public String deleteAddress(@PathVariable UUID id) {
-        UserEntity userEntity = userService.getSessionUser();
-        if (userEntity == null)
+        var userEntity = userStatus.getCurrentUser();
+        if (userEntity.isEmpty())
         {
             return OtherConstants.signIn;
         };
-        User user = userService.getOne(userEntity.getId());
+        User user = userService.getOne(userEntity.get().getId());
         List<Address> addresses = user.getAddress();
 
         addresses.removeIf(address -> address.getId().equals(id));

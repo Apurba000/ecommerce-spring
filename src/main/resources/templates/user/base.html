@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,16 +25,14 @@
                 <li class="nav-item" th:if="${isLoggedIn}">
                     <a class="nav-link" th:href="@{/user/cart}">Cart</a>
                 </li>
-                <!-- Additional navigation items -->
             </ul>
         </div>
         <a class="btn btn-primary m-1" th:href="@{/auth/create}" th:unless="${isLoggedIn}">SignUp</a>
         <a class="btn btn-secondary m-1" th:href="@{/auth/sign-in-form}" th:unless="${isLoggedIn}">Login</a>
-        <a class="btn btn-danger m-1" th:href="@{/auth/logout}" th:unless="${!isLoggedIn}">Logout</a>
+        <a class="btn btn-danger m-1" th:href="@{/logout}" th:unless="${!isLoggedIn}">Logout</a>
     </div>
 </nav>
 <div class="mt-5" id="content" th:replace="${content}"></div>
-<!-- Additional scripts -->
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </html>

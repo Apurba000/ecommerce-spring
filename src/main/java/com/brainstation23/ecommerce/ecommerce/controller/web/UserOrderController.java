@@ -25,8 +25,8 @@ public class UserOrderController {
     @GetMapping("{orderId}")
     public String getOrderByOrderId(@PathVariable UUID orderId, Model model)
     {
-        var user = userService.getSessionUser();
-        if (user == null)
+        var userEntity = userStatus.getCurrentUser();
+        if (userEntity == null)
         {
             return OtherConstants.signIn;
         };

@@ -1,12 +1,17 @@
 package com.brainstation23.ecommerce.ecommerce.controller.web;
 
 import com.brainstation23.ecommerce.ecommerce.constant.OtherConstants;
+import com.brainstation23.ecommerce.ecommerce.exception.custom.NotFoundException;
+import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.ChangePasswordRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
+import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,28 +27,31 @@ public class UserUpdateAndDetailsController {
     private static final String ATTRIBUTE_USER = "user";
     private static final String REDIRECT_USER = "redirect:"+USER_DETAILS;
     private final UserStatus userStatus;
+    private final UserMapper userMapper;
     @GetMapping
     public String getUserDetails(Model model) {
-        var user = userService.getSessionUser();
-        if (user == null)
+        var userEntity = userStatus.getCurrentUser();
+        if (userEntity.isEmpty())
         {
             return OtherConstants.signIn;
         };
+
         userStatus.loginStatus(model);
-        model.addAttribute(ATTRIBUTE_USER, user);
+        model.addAttribute(ATTRIBUTE_USER, userMapper.entityToDomain(userEntity.get()));
         model.addAttribute("pageTitle", "User Details");
         model.addAttribute("content", "user/usercrud/userdetails");
         return "user/base";
     }
     @GetMapping("/update")
     public String updateUser( Model model) {
-        var user = userService.getSessionUser();
-        if (user == null)
+        var userEntity = userStatus.getCurrentUser();
+        if (userEntity.isEmpty())
         {
             return OtherConstants.signIn;
         };
+
         userStatus.loginStatus(model);
-        model.addAttribute(ATTRIBUTE_USER, user);
+        model.addAttribute(ATTRIBUTE_USER, userMapper.entityToDomain(userEntity.get()));
         model.addAttribute("pageTitle", "Update User");
         model.addAttribute("content", "user/usercrud/update_user");
         return "user/base";
@@ -57,11 +65,12 @@ public class UserUpdateAndDetailsController {
 
     @GetMapping("/passwordchange")
     public String passwordChange(Model model) {
-        var user = userService.getSessionUser();
-        if (user == null)
+        var userOptional = userStatus.getCurrentUser();
+        if (userOptional.isEmpty())
         {
             return OtherConstants.signIn;
         };
+        UserEntity user = userOptional.get();
         userStatus.loginStatus(model);
         model.addAttribute("pageTitle", "Change Password");
         model.addAttribute("id", user.getId());
@@ -70,7 +79,12 @@ public class UserUpdateAndDetailsController {
     }
     @PostMapping("/updatepassword")
     public String updateUser(@ModelAttribute(ATTRIBUTE_USER) ChangePasswordRequest passwordChangeRequest) {
-        var user = userService.getSessionUser();
+        var userOptional = userStatus.getCurrentUser();
+        if (userOptional.isEmpty())
+        {
+            return OtherConstants.signIn;
+        };
+        UserEntity user = userOptional.get();
         userService.changePassword(user.getId(),passwordChangeRequest);
         return REDIRECT_USER;
     }
@@ -78,16 +92,18 @@ public class UserUpdateAndDetailsController {
     @GetMapping("/getorders")
     public String getOrdersByUserId(Model model)
     {
-        var currentUser = userService.getSessionUser();
-        if (currentUser == null)
-        {
+        var userOptional = userStatus.getCurrentUser();
+        if (userOptional.isEmpty()) {
             return OtherConstants.signIn;
-        };
+        }
+        UserEntity user = userOptional.get(); // Retrieve the user from the Optional
         userStatus.loginStatus(model);
-        var orders = userService.getAllOrdersByUser(currentUser.getId());
+        var orders = userService.getAllOrdersByUser(user.getId());
         model.addAttribute("pageTitle", "Orders");
         model.addAttribute("order_list", orders);
         model.addAttribute("content", "user/order/index");
         return "user/base";
     }
+
+
 }
