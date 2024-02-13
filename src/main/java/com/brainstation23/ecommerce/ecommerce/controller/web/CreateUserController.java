@@ -22,7 +22,6 @@ public class CreateUserController {
     private final UserStatus userStatus;
     private static final String USER_BASE = "user/base";
     private final UserService userService;
-    //private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/create")
     public String createUser(Model model) {
@@ -30,16 +29,13 @@ public class CreateUserController {
         UserCreateRequest userCreateRequest = new UserCreateRequest();
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "New User");
         model.addAttribute(ATTRIBUTE_CONTENT, "user/usercrud/create");
-        model.addAttribute("action", "/admin/save");
+        model.addAttribute("action", "/user/save");
         return USER_BASE;
     }
     @PostMapping("/save")
     public String saveUser(@ModelAttribute(ATTRIBUTE_USER) UserCreateRequest userCreateRequest) {
-        //String encodedPassword = passwordEncoder.encode(userCreateRequest.getPassword());
-        // Set the encrypted password back to the userCreateRequest
-        //userCreateRequest.setPassword(encodedPassword);
         userService.createOne(userCreateRequest);
-        return "redirect:/admin";
+        return "redirect:sign-in-form";
     }
 
     @GetMapping("/sign-in-form")
