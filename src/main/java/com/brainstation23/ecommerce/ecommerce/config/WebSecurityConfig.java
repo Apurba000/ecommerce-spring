@@ -19,7 +19,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+        /*return http
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers("user/create").permitAll()
@@ -31,10 +31,18 @@ public class WebSecurityConfig {
                         .requestMatchers("/profile/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .formLogin(login->
+                *//*.formLogin(login->
                         login.loginPage("/login")
                 )
-                .logout(logout->logout.permitAll())
+                .logout(logout->logout.permitAll())*//*
+                .httpBasic(Customizer.withDefaults())
+                .userDetailsService(userService)
+                .build();*/
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeRequests()
+                .anyRequest().permitAll()
+                .and()
                 .httpBasic(Customizer.withDefaults())
                 .userDetailsService(userService)
                 .build();

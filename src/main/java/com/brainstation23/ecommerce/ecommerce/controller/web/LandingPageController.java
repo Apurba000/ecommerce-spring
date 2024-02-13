@@ -51,16 +51,6 @@ public class LandingPageController {
         return "user/base";
     }
 
-    @PostMapping("/add-to-cart")
-    public String addToCart(@ModelAttribute(ATTRIBUTE_CART_ITEM) CartItemCreateUpdateRequest cartItemCreateRequest) {
-        var user = userService.getSessionUser();
-        if (user == null) return "redirect:/user/sign-in-form";
-
-        cartItemCreateRequest.setUser(user);
-        cartItemService.createOne(cartItemCreateRequest);
-        return "redirect:/user/cart";
-    }
-
     private Pageable getDefaultProductPage() {
         return PageRequest.of(0, 20, Sort.by(
                 Sort.Order.asc("name"),

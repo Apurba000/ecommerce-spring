@@ -52,12 +52,12 @@ public class AuthController {
     public String signIn(@ModelAttribute(ATTRIBUTE_USER) UserSignInRequest signInRequest
             , @ModelAttribute("previousUrl") String redirectUrl) {
         userService.signIn(signInRequest);
-        return "redirect:" + redirectUrl;
+        return "redirect:/";
     }
     @GetMapping("/logout")
     public String logOut()
     {
         userService.logOut();
-        return "redirect:/landingpage";
+        return "redirect:/";
     }
 }

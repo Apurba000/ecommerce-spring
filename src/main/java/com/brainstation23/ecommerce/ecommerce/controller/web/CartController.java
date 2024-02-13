@@ -132,6 +132,15 @@ public class CartController {
         orderService.createOne(orderCreateRequest);
     }
 
+    @PostMapping("/add-to-cart")
+    public String addToCart(@ModelAttribute("cartItem") CartItemCreateUpdateRequest cartItemCreateRequest) {
+        var user = userService.getSessionUser();
+        if (user == null) return "redirect:/user/sign-in-form";
+
+        cartItemCreateRequest.setUser(user);
+        cartItemService.createOne(cartItemCreateRequest);
+        return "redirect:/user/cart";
+    }
     private Set<OrderItem> getOrderItems(List<CartItem> cartItems) {
         Set<OrderItem> orderItems = new HashSet<>();
         for (CartItem cartItem : cartItems) {
