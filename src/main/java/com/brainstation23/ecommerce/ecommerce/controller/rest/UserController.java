@@ -13,10 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.UUID;
+
 
 @Tag(name = "User")
 @Slf4j
@@ -27,6 +29,7 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Getting All Users")
     @GetMapping("")
     public ResponseEntity<Page<UserResponse>> getAll(Pageable pageable)
@@ -36,6 +39,7 @@ public class UserController {
         return ResponseEntity.ok(entities.map(userMapper::domainToResponse));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Getting User By Id")
     @GetMapping("{id}")
     public ResponseEntity<UserResponse> getById(@PathVariable UUID id)
@@ -44,6 +48,7 @@ public class UserController {
         var entity = userService.getOne(id);
         return ResponseEntity.ok(userMapper.domainToResponse(entity));
     }
+
 
     @Operation(summary = "Creating New Single Users")
     @PostMapping
@@ -54,6 +59,7 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Update Single User")
     @PutMapping("{id}")
     public ResponseEntity<Void> updateOne(@PathVariable UUID id,
@@ -63,6 +69,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete Single User")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteOne(@PathVariable UUID id) {

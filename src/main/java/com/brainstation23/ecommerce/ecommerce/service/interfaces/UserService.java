@@ -34,4 +34,6 @@ public interface UserService extends UserDetailsService {
     List<OrderEntity> getAllOrdersByUser(UUID userId);
 
     void clearCart(UUID userId);
+
+    void logOut();
 }
