@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.UUID;
 
+@PreAuthorize("hasRole('ADMIN')")
 @Tag(name = "Product")
 @Slf4j
 @RestController
@@ -30,8 +32,6 @@ public class ProductController {
         this.productService = productService;
         this.productMapper = productMapper;
     }
-
-
 
     @Operation(summary = "Getting All Products")
     @GetMapping("")
