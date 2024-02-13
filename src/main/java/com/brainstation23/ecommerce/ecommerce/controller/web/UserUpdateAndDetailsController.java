@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(UserUpdateAndDetailsController.USER_DETAILS)
 public class UserUpdateAndDetailsController {
     private final UserService userService;
-    public static final String USER_DETAILS = "/userdetails";
+    public static final String USER_DETAILS = "/user/details";
     private static final String ATTRIBUTE_USER = "user";
-    private static final String REDIRECT_USER = "redirect:/userdetails";
+    private static final String REDIRECT_USER = "redirect:"+USER_DETAILS;
     private final UserStatus userStatus;
     @GetMapping
     public String getUserDetails(Model model) {

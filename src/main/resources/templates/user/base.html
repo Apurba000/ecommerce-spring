@@ -10,7 +10,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/landingpage}">Home</a>
+        <a class="navbar-brand" th:href="@{}">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,9 +28,9 @@
                 <!-- Additional navigation items -->
             </ul>
         </div>
-        <a class="btn btn-primary m-1" th:href="@{/user/create}" th:unless="${isLoggedIn}">SignUp</a>
-        <a class="btn btn-secondary m-1" th:href="@{/user/sign-in-form}" th:unless="${isLoggedIn}">Login</a>
-        <a class="btn btn-danger m-1" th:href="@{/user/logout}" th:unless="${!isLoggedIn}">Logout</a>
+        <a class="btn btn-primary m-1" th:href="@{/auth/create}" th:unless="${isLoggedIn}">SignUp</a>
+        <a class="btn btn-secondary m-1" th:href="@{/auth/sign-in-form}" th:unless="${isLoggedIn}">Login</a>
+        <a class="btn btn-danger m-1" th:href="@{/auth/logout}" th:unless="${!isLoggedIn}">Logout</a>
     </div>
 </nav>
 <div class="mt-5" id="content" th:replace="${content}"></div>

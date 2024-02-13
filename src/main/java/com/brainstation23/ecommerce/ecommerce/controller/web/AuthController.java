@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/user")
-public class CreateUserController {
+@RequestMapping("/auth")
+public class AuthController {
     private static final String ATTRIBUTE_PAGE_TITLE = "pageTitle";
     private static final String ATTRIBUTE_USER = "user";
     private static final String ATTRIBUTE_CONTENT = "content";

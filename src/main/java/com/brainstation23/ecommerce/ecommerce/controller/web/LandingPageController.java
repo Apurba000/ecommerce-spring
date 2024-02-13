@@ -22,7 +22,7 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/landingpage")
+@RequestMapping
 public class LandingPageController {
     private static final String ATTRIBUTE_CART_ITEM = "cartItem";
     private final ProductService productService;
