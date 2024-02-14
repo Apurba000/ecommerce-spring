@@ -25,3 +25,22 @@
 * To add, update, delete category
 
 
+
+
+
+## Knowledge base : 
+
+### Spring Security : 
+
+####  Authentication :
+The main strategy interface for authentication is `AuthenticationManager` . 
+The most common implementation of `AuthenticationManager` is `ProviderManager`, 
+which delegates to a chain of `AuthenticationProvider`.  
+A `ProviderManager` can support multiple different authentication mechanisms in the same application by 
+delegating to a chain of `AuthenticationProviders`. 
+
+More info : [visit here](https://spring.io/guides/topicals/spring-security-architecture)
+
+<div align="center">
+  <img src ="images/s-security.png" width ="800">
+</div>

@@ -27,7 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private static final String[] WHITE_LISTED_END = {"/api/users/**", "/api/users/test"};
+    private static final String[] WHITE_LISTED_END = {"/api/users/**"};
 
     private final UserService userService;
     private final GlobalExceptionHandler unauthorizedHandler;
