@@ -16,6 +16,7 @@ import com.brainstation23.ecommerce.ecommerce.service.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,7 @@ import java.util.UUID;
 
 import static com.brainstation23.ecommerce.ecommerce.controller.web.UserUpdateAndDetailsController.USER_DETAILS;
 
+@PreAuthorize("hasRole('USER')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j

@@ -9,12 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -26,7 +28,6 @@ public class OrderAdminController {
     private static final String REDIRECT_TO_ORDER = "redirect:/admin/orders";
     private static final String ATTRIBUTE_CONTENT = "content";
     private final OrderService orderService;
-    private final OrderMapper orderMapper;
     @GetMapping
     public String adminBoard(Model model) {
         var orders = orderService.getAll(getDefaultOrderPage());
@@ -42,7 +43,6 @@ public class OrderAdminController {
         orderService.updateOrderStatus(orderUpdateRequest.getId(),orderUpdateRequest.getStatus());
         return REDIRECT_TO_ORDER;
     }
-
     private Pageable getDefaultOrderPage() {
         return PageRequest.of(0, 20, Sort.by(
                 Sort.Order.asc("orderDate")));
