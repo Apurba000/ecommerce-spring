@@ -146,10 +146,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDetails loadUserByUsername(String username){
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_USERNAME + username));
-        var authority = user.getAuthorities();
-        return user;
+        var userEntity = userRepository.findByUsername(username).orElseThrow(()->new NotFoundException("User Not Found"));
+        return userMapper.entityToDomain(userEntity);
     }
 
     @Override

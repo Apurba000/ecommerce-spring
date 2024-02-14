@@ -31,7 +31,7 @@ import static org.hibernate.annotations.CascadeType.ALL;
                 @UniqueConstraint(columnNames = ColumnConstant.USERNAME),
                 @UniqueConstraint(columnNames = ColumnConstant.EMAIL)
         })
-public class UserEntity implements UserDetails {
+public class UserEntity  {
 
     @Id @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
@@ -70,41 +70,16 @@ public class UserEntity implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Cascade(ALL)
-    @JoinTable(  name = EntityConstant.USER_ADDRESSES,
+    @JoinTable(name = EntityConstant.USER_ADDRESSES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ADDRESS_ID))
     private List<AddressEntity> address = new ArrayList<>();
 
-    @OneToMany(mappedBy="user", orphanRemoval = true)
+    @OneToMany(mappedBy="user", orphanRemoval = true,fetch = FetchType.EAGER)
     @Cascade(ALL)
     private List<CartItemEntity> cartItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @Cascade(ALL)
     private List<OrderEntity> orders = new ArrayList<>();
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
