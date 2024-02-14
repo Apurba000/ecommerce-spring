@@ -4,6 +4,7 @@ import com.brainstation23.ecommerce.ecommerce.mapper.OrderMapper;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderAdminResponse;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.OrderService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -28,8 +29,10 @@ public class OrderAdminController {
     private static final String REDIRECT_TO_ORDER = "redirect:/admin/orders";
     private static final String ATTRIBUTE_CONTENT = "content";
     private final OrderService orderService;
+    private final UserStatus userStatus;
     @GetMapping
     public String adminBoard(Model model) {
+        userStatus.loginStatus(model);
         var orders = orderService.getAll(getDefaultOrderPage());
 
         model.addAttribute("order_list", orders);
