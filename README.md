@@ -44,3 +44,9 @@ More info : [visit here](https://spring.io/guides/topicals/spring-security-archi
 <div align="center">
   <img src ="images/s-security.png" width ="800">
 </div>
+
+In our implementation it looks like following : 
+
+<div align="center">
+  <img src ="images/s-security-concrete.png" width ="800">
+</div>
