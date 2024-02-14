@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
 
-@PreAuthorize("hasRole('USER')")
+///@PreAuthorize("hasRole('USER')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j

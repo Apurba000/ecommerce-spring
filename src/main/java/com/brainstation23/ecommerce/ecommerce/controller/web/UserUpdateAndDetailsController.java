@@ -17,7 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j

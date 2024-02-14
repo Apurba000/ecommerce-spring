@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import static com.brainstation23.ecommerce.ecommerce.controller.web.UserUpdateAndDetailsController.USER_DETAILS;
 
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
