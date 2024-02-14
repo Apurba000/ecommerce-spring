@@ -13,13 +13,12 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.JdbcTypeCode;
-
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Types;
 import java.util.*;
 
-import static org.hibernate.annotations.CascadeType.*;
-import static org.hibernate.annotations.CascadeType.MERGE;
-
+import static org.hibernate.annotations.CascadeType.ALL;
 
 @Entity
 @Getter
@@ -32,7 +31,7 @@ import static org.hibernate.annotations.CascadeType.MERGE;
                 @UniqueConstraint(columnNames = ColumnConstant.USERNAME),
                 @UniqueConstraint(columnNames = ColumnConstant.EMAIL)
         })
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     @Id @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
@@ -67,10 +66,10 @@ public class UserEntity {
     @JoinTable(  name = EntityConstant.USER_ROLES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ROLE_ID))
-    private Set<RoleEntity> roles = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>(); // Initialize to empty set
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @Cascade({ PERSIST, REFRESH, MERGE, DETACH})
+    @Cascade(ALL)
     @JoinTable(  name = EntityConstant.USER_ADDRESSES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ADDRESS_ID))
@@ -84,4 +83,28 @@ public class UserEntity {
     @Cascade(ALL)
     private List<OrderEntity> orders = new ArrayList<>();
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

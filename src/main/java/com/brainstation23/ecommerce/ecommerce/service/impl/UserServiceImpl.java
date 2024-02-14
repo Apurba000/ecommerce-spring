@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -77,10 +78,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UUID createOne(UserCreateRequest createRequest) {
-        var entity = new UserEntity();
-        var role = roleRepository.findByName(ERole.CUSTOMER).orElseThrow(()-> new NotFoundException("ROLE NOT FOUND"));
-        var roles = new HashSet<RoleEntity>();
-        roles.add(role);
+        UserEntity entity = new UserEntity();
+        RoleEntity customerRole = roleRepository.findByName(ERole.ROLE_CUSTOMER.toString())
+                .orElseThrow(() -> new NotFoundException("ROLE NOT FOUND"));
+
+        Set<RoleEntity> roles = new HashSet<>();
+        roles.add(customerRole);
         entity.setFirstname(createRequest.getFirstname())
                 .setLastname(createRequest.getLastname())
                 .setUsername(createRequest.getUsername())
@@ -88,9 +91,11 @@ public class UserServiceImpl implements UserService{
                 .setPassword(getEncryptedPassword(createRequest.getPassword()))
                 .setPhone(createRequest.getPhone())
                 .setRoles(roles);
-        var createdEntity = userRepository.save(entity);
+
+        UserEntity createdEntity = userRepository.save(entity);
         return createdEntity.getId();
     }
+
 
     private String getEncryptedPassword(String rawPassword){
         if (passwordEncoder == null)
@@ -143,12 +148,8 @@ public class UserServiceImpl implements UserService{
     public UserDetails loadUserByUsername(String username){
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_USERNAME + username));
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername()
-                , user.getPassword(),
-                user.getRoles().stream()
-                        .map((role) -> new SimpleGrantedAuthority(role.getName().toString()))
-                        .collect(Collectors.toList()));
+        var authority = user.getAuthorities();
+        return user;
     }
 
     @Override

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.sql.Types;
 import java.util.UUID;
@@ -18,13 +19,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = EntityConstant.ROLES)
-public class RoleEntity {
+public class RoleEntity implements GrantedAuthority {
         @Id @GeneratedValue
         @JdbcTypeCode(Types.VARCHAR)
         private UUID id;
 
-        @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "VARCHAR(50)")
-        private ERole name;
+        private String name;
 
+        @Override
+        public String getAuthority() {
+                return name;
+        }
 }

@@ -1,3 +1,4 @@
+/*
 package com.brainstation23.ecommerce.ecommerce.filter;
 
 import com.brainstation23.ecommerce.ecommerce.exception.custom.JwtException;
@@ -62,3 +63,4 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 ? headerAuth.substring(7) : null;
     }
 }
+*/

@@ -2,6 +2,7 @@ package com.brainstation23.ecommerce.ecommerce.service.impl;
 
 import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.domain.User;
+import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.repository.UserRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
@@ -23,20 +24,25 @@ public class UserStatusImpl implements UserStatus {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     @Override
-    public Model loginStatus(Model model)
-    {
+    public Model loginStatus(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(authentication.getName());
-        if(user.isPresent() && authentication.isAuthenticated())
-        {
+
+        if (user.isPresent() && authentication.isAuthenticated()) {
             model.addAttribute("isLoggedIn", true);
-        }
-        else
-        {
+
+            boolean isAdmin = user.get().getRoles().stream()
+                    .anyMatch(role -> role.getName().equals(ERole.ROLE_ADMIN.toString()));
+
+            model.addAttribute("isAdmin", isAdmin);
+        } else {
             model.addAttribute("isLoggedIn", false);
+            model.addAttribute("isAdmin", false);
         }
+
         return model;
     }
+
 
     @Override
     public Optional<UserEntity> getCurrentUser() {

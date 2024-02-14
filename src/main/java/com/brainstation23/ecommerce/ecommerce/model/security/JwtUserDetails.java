@@ -1,3 +1,4 @@
+/*
 package com.brainstation23.ecommerce.ecommerce.model.security;
 
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
@@ -107,3 +108,4 @@ public class JwtUserDetails implements UserDetails {
     }
 
 }
+*/

@@ -10,7 +10,7 @@
                     <p th:utext="'Unit Price: <b>' + ${product.getUnitPrice()} + '</b>'" class="card-text"></p>
                     <p th:utext="'Category: <b>' + ${product.categories[0].categoryName} + '</b>'" class="card-text"></p>
                     <p th:utext="'Description: <b>' + ${product.getDescription()} + '</b>'" class="card-text"></p>
-                    <form action="/landingpage/add-to-cart" method="POST">
+                    <form action="/user/cart/add-to-cart" method="POST">
                         <input type="hidden" name="productId" th:value="${product.getId()}">
                         <div class="input-group mb-3">
                             <div class="p-1">

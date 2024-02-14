@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -105,6 +105,5 @@ public class AdminController {
         productService.deleteOne(id);
         return REDIRECT_ADMIN;
     }
-
 
 }

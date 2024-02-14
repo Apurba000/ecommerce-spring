@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-//@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('CUSTOMER')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
