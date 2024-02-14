@@ -50,3 +50,12 @@ In our implementation it looks like following :
 <div align="center">
   <img src ="images/s-security-concrete.png" width ="800">
 </div>
+
+
+
+#### Authorization : 
+
+Previously Spring Security had voter-based architecture . Now `AuthorizationManager` supersedes voter-based architecture.
+For example in our case we are using `PreAuthorizeAuthorizationManager` which is invoked by filter. `PreAuthorizeAuthorizationManager`
+make decision based on evaluating Expressions with an `Authentication` object.In our case we are intercepting and 
+providing Authentication by our `AuthTokenFilter` . 
