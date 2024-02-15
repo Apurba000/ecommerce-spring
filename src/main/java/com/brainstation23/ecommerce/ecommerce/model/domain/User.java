@@ -22,7 +22,7 @@ import java.util.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class User implements UserDetails {
+public class User {
     private UUID id;
 
     private String firstname;
@@ -43,28 +43,4 @@ public class User implements UserDetails {
 
     private List<CartItem> cartItems;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

@@ -1,4 +1,3 @@
-/*
 package com.brainstation23.ecommerce.ecommerce.model.security;
 
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
@@ -30,7 +29,7 @@ public class SecureUserDetails implements UserDetails {
 
     public static SecureUserDetails build(UserEntity userEntity) {
         List<GrantedAuthority> authorities = userEntity.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
 
         return new SecureUserDetails(
@@ -108,4 +107,3 @@ public class SecureUserDetails implements UserDetails {
     }
 
 }
-*/

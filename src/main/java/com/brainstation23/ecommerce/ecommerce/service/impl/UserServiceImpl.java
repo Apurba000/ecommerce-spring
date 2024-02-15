@@ -62,6 +62,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User getUserByUserName(String userName) {
+        var entity = userRepository.findByUsername(userName).orElseThrow(()->new NotFoundException("User Not Found"));
+        return userMapper.entityToDomain(entity);
+    }
+
+    @Override
     public User getOne(UUID id) {
         var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
         return userMapper.entityToDomain(entity);
@@ -70,7 +76,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UUID createOne(UserCreateRequest createRequest) {
         var entity = new UserEntity();
-        var role = roleRepository.findByName(ERole.ROLE_CUSTOMER).orElseThrow(()-> new NotFoundException("ROLE NOT FOUND"));
+        var role = roleRepository.findByName(ERole.ROLE_CUSTOMER.toString()).orElseThrow(()-> new NotFoundException("ROLE NOT FOUND"));
         var roles = new HashSet<RoleEntity>();
         roles.add(role);
         entity.setFirstname(createRequest.getFirstname())
@@ -131,7 +137,6 @@ public class UserServiceImpl implements UserService{
         userRepository.save(entity);
     }
 
-    @Override
     public void logOut() {
         httpSession.setAttribute(SESSION_USER_ATTRIBUTE, null);
     }
@@ -144,12 +149,12 @@ public class UserServiceImpl implements UserService{
         return SecureUserDetails.build(user);
     }
 
-    @Override
+
     public UserEntity signIn(UserSignInRequest signInRequest) {
         return temporarySignIn(signInRequest);
     }
 
-    @Override
+
     public UserEntity getSessionUser() {
         return (UserEntity) httpSession.getAttribute(SESSION_USER_ATTRIBUTE);
     }
