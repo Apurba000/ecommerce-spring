@@ -2,7 +2,7 @@ package com.brainstation23.ecommerce.ecommerce.controller.rest;
 
 import com.brainstation23.ecommerce.ecommerce.mapper.UserMapper;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.*;
-import com.brainstation23.ecommerce.ecommerce.model.security.JwtUserDetails;
+import com.brainstation23.ecommerce.ecommerce.model.security.SecureUserDetails;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
 import com.brainstation23.ecommerce.ecommerce.util.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -97,7 +97,7 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
-        JwtUserDetails userDetails = (JwtUserDetails) authentication.getPrincipal();
+        SecureUserDetails userDetails = (SecureUserDetails) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
@@ -114,4 +114,10 @@ public class UserController {
     public String customerAccess() {
         return "Hello Customer.  !!!!!";
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/test2")
+    public String customerAccessTest() {
+        return "Hello ADMIN.  !!!!!";
+    }
+
 }
