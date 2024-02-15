@@ -32,7 +32,7 @@ public class UserStatusImpl implements UserStatus {
             model.addAttribute("isLoggedIn", true);
 
             boolean isAdmin = user.get().getRoles().stream()
-                    .anyMatch(role -> role.getName().equals(ERole.ROLE_ADMIN.toString()));
+                    .anyMatch(role -> role.getName().name().equals(ERole.ROLE_ADMIN.toString()));
 
             model.addAttribute("isAdmin", isAdmin);
         } else {

@@ -29,7 +29,7 @@ public class SecureUserDetails implements UserDetails {
 
     public static SecureUserDetails build(UserEntity userEntity) {
         List<GrantedAuthority> authorities = userEntity.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
         return new SecureUserDetails(

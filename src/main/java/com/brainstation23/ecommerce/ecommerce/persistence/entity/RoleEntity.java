@@ -2,6 +2,7 @@ package com.brainstation23.ecommerce.ecommerce.persistence.entity;
 
 
 import com.brainstation23.ecommerce.ecommerce.constant.EntityConstant;
+import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,5 +27,6 @@ public class RoleEntity{
         private UUID id;
 
         @Column(columnDefinition = "VARCHAR(50)")
-        private String name;
+        @Enumerated(EnumType.STRING)
+        private ERole name;
 }

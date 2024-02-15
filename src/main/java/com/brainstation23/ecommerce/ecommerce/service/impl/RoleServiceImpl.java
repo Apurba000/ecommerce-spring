@@ -39,7 +39,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public UUID createOne(RoleCreateRequest createRequest) {
         var entity = new RoleEntity();
-        entity.setName(createRequest.getName().toString());
+        entity.setName(createRequest.getName());
         var createdEntity = roleRepository.save(entity);
         return createdEntity.getId();
     }
@@ -47,7 +47,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public void updateOne(UUID id, RoleUpdateRequest updateRequest) {
         var entity = roleRepository.findById(id).orElseThrow(()->new NotFoundException(ROLE_NOT_FOUND));
-        entity.setName(updateRequest.getName().toString());
+        entity.setName(updateRequest.getName());
         roleRepository.save(entity);
     }
 

@@ -13,6 +13,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Role {
     private UUID id;
-    private String name;
-
+    private ERole name;
 }
