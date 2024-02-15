@@ -11,12 +11,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Role implements GrantedAuthority {
+public class Role {
     private UUID id;
     private String name;
 
-    @Override
-    public String getAuthority() {
-        return name;
-    }
 }
