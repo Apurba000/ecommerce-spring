@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Types;
 import java.util.*;
 
-import static org.hibernate.annotations.CascadeType.ALL;
+import static org.hibernate.annotations.CascadeType.*;
 
 @Entity
 @Getter
@@ -69,7 +69,7 @@ public class UserEntity  {
     private Set<RoleEntity> roles = new HashSet<>(); // Initialize to empty set
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @Cascade(ALL)
+    @Cascade({PERSIST, REFRESH, MERGE, DETACH})
     @JoinTable(name = EntityConstant.USER_ADDRESSES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ADDRESS_ID))
