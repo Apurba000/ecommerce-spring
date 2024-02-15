@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthWebController {
     private static final String ATTRIBUTE_PAGE_TITLE = "pageTitle";
     private static final String ATTRIBUTE_USER = "user";
     private static final String ATTRIBUTE_CONTENT = "content";
