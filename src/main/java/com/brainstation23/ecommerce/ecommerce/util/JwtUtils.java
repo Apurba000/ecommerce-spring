@@ -1,8 +1,7 @@
-/*
 package com.brainstation23.ecommerce.ecommerce.util;
 
 
-import com.brainstation23.ecommerce.ecommerce.model.security.JwtUserDetails;
+import com.brainstation23.ecommerce.ecommerce.model.security.SecureUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -28,7 +27,7 @@ public class JwtUtils {
 
     public String generateJwtToken(Authentication authentication) {
 
-        JwtUserDetails userPrincipal = (JwtUserDetails) authentication.getPrincipal();
+        SecureUserDetails userPrincipal = (SecureUserDetails) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
@@ -72,4 +71,3 @@ public class JwtUtils {
     }
 
 }
-*/
