@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class JwtUserDetails implements UserDetails {
+public class SecureUserDetails implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private UUID id;
@@ -28,12 +28,12 @@ public class JwtUserDetails implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static JwtUserDetails build(UserEntity userEntity) {
+    public static SecureUserDetails build(UserEntity userEntity) {
         List<GrantedAuthority> authorities = userEntity.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
-        return new JwtUserDetails(
+        return new SecureUserDetails(
                 userEntity.getId(),
                 userEntity.getFirstname(),
                 userEntity.getLastname(),
@@ -103,7 +103,7 @@ public class JwtUserDetails implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        JwtUserDetails user = (JwtUserDetails) o;
+        SecureUserDetails user = (SecureUserDetails) o;
         return Objects.equals(id, user.id);
     }
 

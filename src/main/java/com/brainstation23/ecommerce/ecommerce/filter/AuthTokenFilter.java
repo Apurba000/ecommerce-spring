@@ -2,7 +2,6 @@
 package com.brainstation23.ecommerce.ecommerce.filter;
 
 import com.brainstation23.ecommerce.ecommerce.exception.custom.JwtException;
-import com.brainstation23.ecommerce.ecommerce.model.security.JwtUserDetails;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
 import com.brainstation23.ecommerce.ecommerce.util.JwtUtils;
 import jakarta.servlet.FilterChain;
