@@ -9,7 +9,7 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserSignInRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.user.UserUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.enums.ERole;
-import com.brainstation23.ecommerce.ecommerce.model.security.JwtUserDetails;
+import com.brainstation23.ecommerce.ecommerce.model.security.SecureUserDetails;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.AddressEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.OrderEntity;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.RoleEntity;
@@ -21,12 +21,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -145,11 +140,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public JwtUserDetails loadUserByUsername(String username){
+    public SecureUserDetails loadUserByUsername(String username){
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_USERNAME + username));
 
-        return JwtUserDetails.build(user);
+        return SecureUserDetails.build(user);
     }
 
     @Override
