@@ -13,13 +13,12 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.JdbcTypeCode;
-
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Types;
 import java.util.*;
 
 import static org.hibernate.annotations.CascadeType.*;
-import static org.hibernate.annotations.CascadeType.MERGE;
-
 
 @Entity
 @Getter
@@ -32,7 +31,7 @@ import static org.hibernate.annotations.CascadeType.MERGE;
                 @UniqueConstraint(columnNames = ColumnConstant.USERNAME),
                 @UniqueConstraint(columnNames = ColumnConstant.EMAIL)
         })
-public class UserEntity {
+public class UserEntity  {
 
     @Id @GeneratedValue
     @JdbcTypeCode(Types.VARCHAR)
@@ -67,21 +66,20 @@ public class UserEntity {
     @JoinTable(  name = EntityConstant.USER_ROLES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ROLE_ID))
-    private Set<RoleEntity> roles = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>(); // Initialize to empty set
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @Cascade({ PERSIST, REFRESH, MERGE, DETACH})
-    @JoinTable(  name = EntityConstant.USER_ADDRESSES,
+    @Cascade({PERSIST, REFRESH, MERGE, DETACH})
+    @JoinTable(name = EntityConstant.USER_ADDRESSES,
             joinColumns = @JoinColumn(name = ColumnConstant.USER_ID),
             inverseJoinColumns = @JoinColumn(name = ColumnConstant.ADDRESS_ID))
     private List<AddressEntity> address = new ArrayList<>();
 
-    @OneToMany(mappedBy="user", orphanRemoval = true)
+    @OneToMany(mappedBy="user", orphanRemoval = true,fetch = FetchType.EAGER)
     @Cascade(ALL)
     private List<CartItemEntity> cartItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @Cascade(ALL)
     private List<OrderEntity> orders = new ArrayList<>();
-
 }

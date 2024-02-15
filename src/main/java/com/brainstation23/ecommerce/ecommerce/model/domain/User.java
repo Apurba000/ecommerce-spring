@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Types;
 import java.util.*;
@@ -40,4 +42,5 @@ public class User {
     private List<Address> address;
 
     private List<CartItem> cartItems;
+
 }

@@ -11,10 +11,14 @@ import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.Cart;
 import com.brainstation23.ecommerce.ecommerce.model.dto.cartItem.CartItemCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.model.dto.order.OrderCreateRequest;
 import com.brainstation23.ecommerce.ecommerce.persistence.entity.UserEntity;
+import com.brainstation23.ecommerce.ecommerce.persistence.repository.UserRepository;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +32,7 @@ import java.util.UUID;
 
 import static com.brainstation23.ecommerce.ecommerce.controller.web.UserUpdateAndDetailsController.USER_DETAILS;
 
+@PreAuthorize("hasRole('CUSTOMER')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -48,24 +53,23 @@ public class CartController {
 
     private final OrderService orderService;
 
+    private final UserRepository userRepository;
     private final AddressService addressService;
     private final UserStatus userStatus;
 
     @GetMapping
-    public String allCartItems(@RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer, Model model) {
+    public String allCartItems(Model model) {
         userStatus.loginStatus(model);
         String redirectUrl = "/landingpage";
         model.addAttribute("previousUrl", redirectUrl);
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Cart");
         model.addAttribute(ATTRIBUTE_CONTENT, "user/usercrud/cart");
-
-        UserEntity userSession = userService.getSessionUser();
-        if (userSession == null)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUserName(authentication.getName());
+        if (user == null)
         {
             return OtherConstants.signIn;
         };
-
-        User user = userService.getOne(userSession.getId());
         var cartItemList = user.getCartItems();
         var cartItemResponseList = cartItemList.stream().map(cartItemMapper::domainToResponse).toList();
 
@@ -104,9 +108,12 @@ public class CartController {
     public String placeOrder(@ModelAttribute Address deliveryAddress) {
         if (deliveryAddress.getId() == null) throw new NotFoundException("Please Select Delivery Address First");
 
-        UserEntity userSession = userService.getSessionUser();
-
-        User user = userService.getOne(userSession.getId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUserName(authentication.getName());
+        if (user == null)
+        {
+            return OtherConstants.signIn;
+        };
 
         if (user.getCartItems().isEmpty()) throw new NotFoundException("Cart is Empty!");
 
@@ -132,6 +139,19 @@ public class CartController {
         orderService.createOne(orderCreateRequest);
     }
 
+    @PostMapping("/add-to-cart")
+    public String addToCart(@ModelAttribute("cartItem") CartItemCreateUpdateRequest cartItemCreateRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var user = userService.getUserByUserName(authentication.getName());
+        if (user == null)
+        {
+            return OtherConstants.signIn;
+        };
+        var userEntity = userRepository.findById(user.getId()).orElseThrow();
+        cartItemCreateRequest.setUser(userEntity);
+        cartItemService.createOne(cartItemCreateRequest);
+        return "redirect:/user/cart";
+    }
     private Set<OrderItem> getOrderItems(List<CartItem> cartItems) {
         Set<OrderItem> orderItems = new HashSet<>();
         for (CartItem cartItem : cartItems) {

@@ -6,6 +6,7 @@ import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserService;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
 
+@PreAuthorize("hasRole('CUSTOMER')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -25,8 +27,8 @@ public class UserOrderController {
     @GetMapping("{orderId}")
     public String getOrderByOrderId(@PathVariable UUID orderId, Model model)
     {
-        var user = userService.getSessionUser();
-        if (user == null)
+        var userEntity = userStatus.getCurrentUser();
+        if (userEntity == null)
         {
             return OtherConstants.signIn;
         };

@@ -20,23 +20,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
+
     private final UserService userService;
     private final GlobalExceptionHandler unauthorizedHandler;
     private final JwtUtils jwtUtils;
-
-    @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter(this.jwtUtils, this.userService);
-    }
-
 
     @Bean
     @Order(1)
@@ -59,39 +54,40 @@ public class WebSecurityConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth ->
-                        auth
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/landingpage").permitAll()
-                                .anyRequest().authenticated())
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/user/details/**").permitAll()
+                        .requestMatchers("/admin/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .formLogin((form) -> form
-                        .loginPage("/auth/sign-in-form-new")
+                        .loginPage("/auth/sign-in-form")
                         .loginProcessingUrl("/login")
                         .permitAll()
                 );
-        http.logout(logout -> logout
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .deleteCookies("JSESSIONID")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
-                .permitAll());
-
+        http.logout(lOut -> {
+            lOut.invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/")
+                    .permitAll();
+        });
         return http.build();
     }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter(this.jwtUtils, this.userService);
+    }
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -100,5 +96,8 @@ public class WebSecurityConfig {
         return authProvider;
     }
 
-
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
 }

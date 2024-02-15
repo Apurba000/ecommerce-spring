@@ -62,6 +62,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User getUserByUserName(String userName) {
+        var entity = userRepository.findByUsername(userName).orElseThrow(()->new NotFoundException("User Not Found"));
+        return userMapper.entityToDomain(entity);
+    }
+
+    @Override
     public User getOne(UUID id) {
         var entity = userRepository.findById(id).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
         return userMapper.entityToDomain(entity);
@@ -112,12 +118,9 @@ public class UserServiceImpl implements UserService{
         String oldPassEntered = changePasswordRequest.getOldPassword();
         String oldPassEncoded = entity.getPassword();
         if (!passwordEncoder.matches(oldPassEntered, oldPassEncoded)) throw new NotFoundException(INVALID_CRED);
+        if (!StringUtils.equals(changePasswordRequest.getNewPassword(), changePasswordRequest.getConfirmPassword())) throw new NotFoundException(PASSWORD_NOT_MATCH);
 
-        String newPassword = changePasswordRequest.getNewPassword();
-        String confirmedPassword = changePasswordRequest.getConfirmPassword();
-        if (!StringUtils.equals(newPassword, confirmedPassword)) throw new NotFoundException(PASSWORD_NOT_MATCH);
-
-        entity.setPassword(getEncryptedPassword(newPassword));
+        entity.setPassword(getEncryptedPassword(changePasswordRequest.getConfirmPassword()));
         userRepository.save(entity);
     }
 
@@ -134,7 +137,6 @@ public class UserServiceImpl implements UserService{
         userRepository.save(entity);
     }
 
-    @Override
     public void logOut() {
         httpSession.setAttribute(SESSION_USER_ATTRIBUTE, null);
     }
@@ -147,12 +149,12 @@ public class UserServiceImpl implements UserService{
         return SecureUserDetails.build(user);
     }
 
-    @Override
+
     public UserEntity signIn(UserSignInRequest signInRequest) {
         return temporarySignIn(signInRequest);
     }
 
-    @Override
+
     public UserEntity getSessionUser() {
         return (UserEntity) httpSession.getAttribute(SESSION_USER_ATTRIBUTE);
     }

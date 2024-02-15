@@ -6,12 +6,14 @@ import com.brainstation23.ecommerce.ecommerce.model.domain.Product;
 import com.brainstation23.ecommerce.ecommerce.model.dto.product.ProductCreateUpdateRequest;
 import com.brainstation23.ecommerce.ecommerce.service.impl.ProductService;
 import com.brainstation23.ecommerce.ecommerce.service.interfaces.CategoryService;
+import com.brainstation23.ecommerce.ecommerce.service.interfaces.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -35,9 +38,11 @@ public class AdminController {
     private final ProductMapper productMapper;
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
+    private final UserStatus userStatus;
 
     @GetMapping
     public String adminBoard(Model model) {
+        userStatus.loginStatus(model);
         Page<Product> pageProductDomains = productService.getAll(getDefaultProductPage());
         model.addAttribute("product_list", pageProductDomains.map(productMapper::domainToResponse));
         model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Admin Home");
@@ -53,6 +58,7 @@ public class AdminController {
 
     @GetMapping("/addnewproduct")
     public String addProduct(Model model) {
+        userStatus.loginStatus(model);
         ProductCreateUpdateRequest productCreateRequest = new ProductCreateUpdateRequest();
         var categories = categoryService.getAll();
         model.addAttribute("categories", categories.stream()
@@ -73,6 +79,7 @@ public class AdminController {
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormUpdate(@PathVariable(value = "id") UUID id, Model model) {
+        userStatus.loginStatus(model);
         Product product = productService.getOne(id);
         ProductCreateUpdateRequest request = productMapper.domainToRequest(product);
         var categories = categoryService.getAll();
@@ -98,6 +105,5 @@ public class AdminController {
         productService.deleteOne(id);
         return REDIRECT_ADMIN;
     }
-
 
 }
