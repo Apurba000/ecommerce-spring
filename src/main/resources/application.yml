@@ -5,8 +5,8 @@ spring:
   application:
     name: ecommerce
   profiles:
-    active: 'local'
+    active: 'dev'
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
