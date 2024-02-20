@@ -2,7 +2,7 @@
 
 ### Requirements
 
-#### As a user I want
+#### As a customer I want
 
 * Land in the home page without log in
 * Home page will show newly updated products
